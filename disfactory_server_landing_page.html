@@ -1,0 +1,1911 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DISFACTORY — Игровое Сообщество | Официальный Discord Сервер</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        df: {
+                            bg: '#0B0B0B',
+                            panel: '#141414',
+                            card: '#181818',
+                            border: '#262626',
+                            accent: '#FFFFFF',
+                            muted: '#8E8E93'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    boxShadow: {
+                        'neon': '0 0 28px rgba(255, 255, 255, 0.16)',
+                        'neon-strong': '0 0 45px rgba(255, 255, 255, 0.35)',
+                        'panel': '0 25px 60px rgba(0, 0, 0, 0.85)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Базовые настройки и палитра Disfactory */
+        :root {
+            --cursor-x: 50vw;
+            --cursor-y: 50vh;
+        }
+
+        body {
+            background-color: #0B0B0B;
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: #FFFFFF;
+            color: #0B0B0B;
+        }
+
+        /* Глубокий радиальный фон + кибер-сетка */
+        .bg-disfactory {
+            background: 
+                radial-gradient(circle at 50% 0%, rgba(48, 48, 52, 0.35) 0%, rgba(20, 20, 20, 0.15) 45%, rgba(11, 11, 11, 1) 85%),
+                linear-gradient(to bottom, #0E0E0E 0%, #0B0B0B 100%);
+        }
+
+        .bg-grid-pattern {
+            background-size: 52px 52px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+            mask-image: radial-gradient(ellipse 85% 65% at 50% 25%, #000 45%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 25%, #000 45%, transparent 100%);
+        }
+
+        /* Глобальное световое пятно за курсором мыши */
+        .cursor-spotlight {
+            background: radial-gradient(
+                650px circle at var(--cursor-x) var(--cursor-y),
+                rgba(255, 255, 255, 0.045),
+                transparent 45%
+            );
+        }
+
+        /* Кастомный скроллбар */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0B0B;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #282828;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #484848;
+        }
+
+        /* Интерактивные 3D-карточки с локальным свечением от курсора */
+        .spotlight-card {
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+        .spotlight-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                420px circle at var(--mouse-x, -500px) var(--mouse-y, -500px),
+                rgba(255, 255, 255, 0.09),
+                transparent 40%
+            );
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .spotlight-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 15%;
+            right: 15%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+        }
+        .spotlight-card:hover::before,
+        .spotlight-card:hover::after {
+            opacity: 1;
+        }
+
+        /* Эффект бегущего блика на главной кнопке */
+        .btn-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-shimmer::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 40%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(0, 0, 0, 0.14) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(25deg);
+            animation: shimmerSweep 3.8s infinite;
+        }
+        @keyframes shimmerSweep {
+            0% { left: -60%; }
+            45%, 100% { left: 140%; }
+        }
+
+        /* Бесконечная бегущая строка (Marquee) */
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: max-content;
+            animation: marqueeScroll 34s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+
+        /* Анимация эквалайзера (звуковые волны) */
+        @keyframes eqBar1 {
+            0%, 100% { height: 4px; }
+            50% { height: 14px; }
+        }
+        @keyframes eqBar2 {
+            0%, 100% { height: 13px; }
+            35% { height: 4px; }
+            70% { height: 16px; }
+        }
+        @keyframes eqBar3 {
+            0%, 100% { height: 7px; }
+            45% { height: 15px; }
+            80% { height: 3px; }
+        }
+        .eq-bar-1 { animation: eqBar1 0.9s ease-in-out infinite; }
+        .eq-bar-2 { animation: eqBar2 0.75s ease-in-out infinite; }
+        .eq-bar-3 { animation: eqBar3 1.05s ease-in-out infinite; }
+
+        /* Плавное появление элементов при скролле (Scroll Reveal) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px) scale(0.985);
+            transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Плавающая левитация иконок */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+        .animate-float {
+            animation: floatSlow 4.5s ease-in-out infinite;
+        }
+
+        /* Металлический перелив заголовка */
+        @keyframes textShine {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .text-metallic-animated {
+            background: linear-gradient(90deg, #FFFFFF 0%, #A3A3A3 35%, #FFFFFF 50%, #737373 75%, #FFFFFF 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShine 7s linear infinite;
+        }
+
+        /* Вращающийся ореол для карточек владельца */
+        @keyframes borderSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .owner-glow-ring {
+            background: conic-gradient(from 0deg, transparent 0%, rgba(255,255,255,0.4) 25%, transparent 50%, rgba(255,255,255,0.2) 75%, transparent 100%);
+            animation: borderSpin 9s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-disfactory min-h-screen flex flex-col justify-between relative antialiased">
+
+    <!-- Интерактивный нейросетевой Canvas с частицами -->
+    <canvas id="particle-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-70"></canvas>
+
+    <!-- Фоновая кибер-сетка и световое пятно за курсором -->
+    <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
+    <div class="fixed inset-0 cursor-spotlight pointer-events-none z-0"></div>
+
+    <!-- Всплывающие уведомления (Тосты) -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 pointer-events-none flex flex-col gap-2.5"></div>
+
+    <!-- ================= 1. ШАПКА (NAVBAR) ================= -->
+    <header class="sticky top-0 z-40 backdrop-blur-xl bg-[#0B0B0B]/80 border-b border-white/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Слева: Минималистичный логотип + Название -->
+            <a href="#" class="group flex items-center gap-3.5 focus:outline-none">
+                <div class="relative w-11 h-11 rounded-xl bg-[#141414] border border-white/15 flex items-center justify-center shadow-inner transition-all duration-300 group-hover:border-white/50 group-hover:shadow-neon">
+                    <span class="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
+                    </span>
+                    <!-- Эмблема Disfactory -->
+                    <svg class="w-5 h-5 text-white transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h9a7 7 0 0 1 7 7v2a7 7 0 0 1-7 7H4V4z" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 9h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H9V9z" fill="currentColor" stroke="none"/>
+                        <line x1="4" y1="12" x2="2" y2="12" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-2">
+                        <span class="font-extrabold tracking-[0.2em] text-base sm:text-lg text-white uppercase">DISFACTORY</span>
+                        <span class="hidden sm:inline-block font-mono text-[10px] px-1.5 py-0.5 rounded bg-white/10 border border-white/15 text-white font-semibold">RU</span>
+                    </div>
+                    <span class="font-mono text-[10px] tracking-widest text-neutral-400 uppercase flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                        СЕРВЕР АКТИВЕН // 24/7
+                    </span>
+                </div>
+            </a>
+
+            <!-- Навигация по секциям -->
+            <nav class="hidden lg:flex items-center gap-1 bg-[#141414]/90 border border-white/10 rounded-xl p-1">
+                <a href="#games" class="px-3.5 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider text-neutral-300 hover:text-white hover:bg-white/10 transition-all duration-200">
+                    Дисциплины
+                </a>
+                <a href="#manifesto" class="px-3.5 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider text-neutral-300 hover:text-white hover:bg-white/10 transition-all duration-200">
+                    Почему мы
+                </a>
+                <a href="#leadership" class="px-3.5 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider text-neutral-300 hover:text-white hover:bg-white/10 transition-all duration-200">
+                    Руководство
+                </a>
+                <a href="#activity" class="px-3.5 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider text-neutral-300 hover:text-white hover:bg-white/10 transition-all duration-200 flex items-center gap-2">
+                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+                    Живой онлайн
+                </a>
+            </nav>
+
+            <!-- Справа: Копирование ссылки и кнопка входа -->
+            <div class="flex items-center gap-2.5">
+                <button 
+                    onclick="copyInviteLink()" 
+                    title="Скопировать ссылку-приглашение"
+                    class="hidden sm:flex items-center justify-center w-10 h-10 rounded-xl bg-[#141414] border border-white/10 text-neutral-400 hover:text-white hover:border-white/35 transition-all duration-300 hover:scale-105"
+                    aria-label="Скопировать приглашение">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </button>
+
+                <a href="https://discord.gg/uTXD659A8x" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="magnetic-btn btn-shimmer relative group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl bg-white text-[#0B0B0B] font-bold text-xs sm:text-sm tracking-wide uppercase transition-all duration-300 hover:scale-[1.03] hover:shadow-neon-strong active:scale-[0.98]">
+                    <span>Присоединиться</span>
+                    <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                        <path d="M7 17L17 7M17 7H8M17 7V16" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= ОСНОВНОЙ КОНТЕНТ ================= -->
+    <main class="relative z-10 flex-grow">
+
+        <!-- ================= 2. ГЛАВНЫЙ ЭКРАН (HERO SECTION) ================= -->
+        <section id="hero" class="pt-12 pb-16 sm:pt-20 sm:pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="flex flex-col items-center text-center max-w-4xl mx-auto reveal visible">
+                
+                <!-- Верхняя плашка статуса -->
+                <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-[#141414]/90 border border-white/15 mb-8 shadow-neon backdrop-blur-md">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                    </span>
+                    <span class="font-mono text-[11px] sm:text-xs tracking-[0.14em] text-neutral-300 uppercase">
+                        ИГРОВАЯ ЭКОСИСТЕМА НОВОГО ПОКОЛЕНИЯ // <span class="text-white font-bold">ДОСТУП ОТКРЫТ</span>
+                    </span>
+                </div>
+
+                <!-- Главный агрессивный заголовок с кибер-дешифровкой -->
+                <h1 class="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tight uppercase leading-[1.02] text-white mb-6 select-none">
+                    <span id="scramble-title" data-value="DISFACTORY" class="inline-block">DISFACTORY</span>
+                    <span class="block text-2xl sm:text-4xl lg:text-5xl mt-2 font-extrabold tracking-[0.22em] text-metallic-animated">
+                        ИГРОВОЙ СЕРВЕР
+                    </span>
+                </h1>
+
+                <!-- Описание -->
+                <p class="text-base sm:text-lg lg:text-xl text-neutral-300 max-w-2xl leading-relaxed font-normal mb-10">
+                    Комфортное игровое пространство для тебя и твоих друзей. Проводи время весело, собирай пати и доминируй в любимых мирах без токсичности и скуки.
+                </p>
+
+                <!-- Главные кнопки действия -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto mb-14">
+                    <a href="https://discord.gg/uTXD659A8x" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="magnetic-btn btn-shimmer w-full sm:w-auto group relative inline-flex items-center justify-center gap-3.5 px-8 py-4 rounded-xl bg-white text-[#0B0B0B] font-black text-sm sm:text-base tracking-wider uppercase transition-all duration-300 hover:scale-[1.03] shadow-neon hover:shadow-neon-strong">
+                        <!-- Иконка Discord -->
+                        <svg class="w-5 h-5 fill-current transition-transform duration-300 group-hover:rotate-6" viewBox="0 0 127.14 96.36">
+                            <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
+                        </svg>
+                        <span>ПОДКЛЮЧИТЬСЯ К СЕРВЕРУ</span>
+                    </a>
+
+                    <a href="#activity" 
+                       class="magnetic-btn w-full sm:w-auto inline-flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-[#141414] hover:bg-[#1C1C1C] text-neutral-200 border border-white/10 hover:border-white/30 font-mono text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 hover:scale-[1.02]">
+                        <div class="flex items-end gap-0.5 h-4">
+                            <span class="w-1 bg-white rounded-full eq-bar-1"></span>
+                            <span class="w-1 bg-white rounded-full eq-bar-2"></span>
+                            <span class="w-1 bg-white rounded-full eq-bar-3"></span>
+                        </div>
+                        <span>Живой онлайн</span>
+                        <span id="hero-online-pill" class="px-2.5 py-0.5 rounded-md bg-white text-[#0B0B0B] font-bold">...</span>
+                    </a>
+                </div>
+
+                <!-- 4 плашки преимуществ в реальном времени -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 w-full max-w-4xl mb-16">
+                    <div class="spotlight-card bg-[#141414]/85 border border-white/10 rounded-xl p-4 text-left transition-all duration-300 hover:border-white/25">
+                        <div class="font-mono text-[10px] uppercase tracking-widest text-neutral-500 mb-1">КАЧЕСТВО ЗВУКА</div>
+                        <div class="font-mono text-sm sm:text-base font-bold text-white">КРИСТАЛЬНЫЙ ВОЙС</div>
+                    </div>
+                    <div class="spotlight-card bg-[#141414]/85 border border-white/10 rounded-xl p-4 text-left transition-all duration-300 hover:border-white/25">
+                        <div class="font-mono text-[10px] uppercase tracking-widest text-neutral-500 mb-1">РАБОТА СЕРВЕРА</div>
+                        <div class="font-mono text-sm sm:text-base font-bold text-white">24/7 БЕЗ ЛАГОВ</div>
+                    </div>
+                    <div class="spotlight-card bg-[#141414]/85 border border-white/10 rounded-xl p-4 text-left transition-all duration-300 hover:border-white/25">
+                        <div class="font-mono text-[10px] uppercase tracking-widest text-neutral-500 mb-1">ПОИСК КОМАНДЫ</div>
+                        <div class="font-mono text-sm sm:text-base font-bold text-white">ПАТИ ЗА 2 МИНУТЫ</div>
+                    </div>
+                    <div class="spotlight-card bg-[#141414]/85 border border-white/10 rounded-xl p-4 text-left transition-all duration-300 hover:border-white/25">
+                        <div class="font-mono text-[10px] uppercase tracking-widest text-neutral-500 mb-1">АТМОСФЕРА</div>
+                        <div class="font-mono text-sm sm:text-base font-bold text-white">0% ТОКСИЧНОСТИ</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= ТРИ КАРТОЧКИ ГЛАВНЫХ ИГР (DOTA 2, MINECRAFT, ROBLOX) ================= -->
+            <div id="games" class="pt-4 reveal">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-7 gap-2">
+                    <div>
+                        <span class="font-mono text-xs uppercase tracking-[0.2em] text-neutral-400 block mb-1">// ИГРОВЫЕ НАПРАВЛЕНИЯ</span>
+                        <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">Главные дисциплины сервера</h2>
+                    </div>
+                    <p class="font-mono text-xs text-neutral-400">Нажми на любую карточку, чтобы отфильтровать игроков ниже</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <!-- Карточка 1: Dota 2 -->
+                    <div onclick="filterByGameFromCard('Dota 2')" 
+                         class="tilt-card spotlight-card cursor-pointer group bg-[#141414] hover:bg-[#181818] border border-white/10 hover:border-white/35 rounded-xl p-6 transition-all duration-300 hover:shadow-neon flex flex-col justify-between">
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-5">
+                                <div class="w-12 h-12 rounded-xl bg-[#0B0B0B] border border-white/15 group-hover:border-white/50 flex items-center justify-center transition-all duration-300 animate-float">
+                                    <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <rect x="3" y="3" width="18" height="18" rx="3"/>
+                                        <path d="M7 17L17 7" stroke-width="2.4" stroke-linecap="round"/>
+                                        <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" stroke="none"/>
+                                        <circle cx="15.5" cy="15.5" r="1.5" fill="currentColor" stroke="none"/>
+                                    </svg>
+                                </div>
+                                <span class="font-mono text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-neutral-300 group-hover:bg-white group-hover:text-[#0B0B0B] font-bold transition-colors">
+                                    КОМАНДНАЯ MOBA 5Х5
+                                </span>
+                            </div>
+
+                            <h3 class="text-xl font-black uppercase tracking-wide text-white mb-2 flex items-center justify-between">
+                                <span>DOTA 2</span>
+                                <span id="card-count-dota" class="font-mono text-xs font-semibold text-neutral-300 px-2 py-0.5 rounded bg-white/5 border border-white/10">АКТИВНО</span>
+                            </h3>
+                            <p class="text-sm text-neutral-400 leading-relaxed mb-6">
+                                Плотные рейтинговые стаки, внутренние клозы 5 на 5, фановый Турбо после учёбы или работы и тиммейты, которые играют до конца и не ломают шмотки.
+                            </p>
+                        </div>
+
+                        <div class="relative z-10 pt-4 border-t border-white/10 flex items-center justify-between">
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#РЕЙТИНГ</span>
+                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#КЛОЗЫ</span>
+                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#ТУРБО</span>
+                            </div>
+                            <span class="font-mono text-xs text-neutral-400 group-hover:text-white flex items-center gap-1 transition-colors">
+                                Игроки
+                                <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 2: Minecraft -->
+                    <div onclick="filterByGameFromCard('Minecraft')" 
+                         class="tilt-card spotlight-card cursor-pointer group bg-[#141414] hover:bg-[#181818] border border-white/10 hover:border-white/35 rounded-xl p-6 transition-all duration-300 hover:shadow-neon flex flex-col justify-between">
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-5">
+                                <div class="w-12 h-12 rounded-xl bg-[#0B0B0B] border border-white/15 group-hover:border-white/50 flex items-center justify-center transition-all duration-300 animate-float" style="animation-delay: 0.6s;">
+                                    <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke-linejoin="round"/>
+                                        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                                        <line x1="12" y1="22.08" x2="12" y2="12"/>
+                                    </svg>
+                                </div>
+                                <span class="font-mono text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-neutral-300 group-hover:bg-white group-hover:text-[#0B0B0B] font-bold transition-colors">
+                                    ВЫЖИВАНИЕ И МИРЫ
+                                </span>
+                            </div>
+
+                            <h3 class="text-xl font-black uppercase tracking-wide text-white mb-2 flex items-center justify-between">
+                                <span>MINECRAFT</span>
+                                <span id="card-count-mc" class="font-mono text-xs font-semibold text-neutral-300 px-2 py-0.5 rounded bg-white/5 border border-white/10">АКТИВНО</span>
+                            </h3>
+                            <p class="text-sm text-neutral-400 leading-relaxed mb-6">
+                                Ламповые приватные миры, масштабные сборки с модами, совместные мега-постройки, бедварс и хардкорные приключения в компании своих людей.
+                            </p>
+                        </div>
+
+                        <div class="relative z-10 pt-4 border-t border-white/10 flex items-center justify-between">
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#ВАНИЛЛА</span>
+                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#МОДЫ</span>
+                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#СЕРВЕРА</span>
+                            </div>
+                            <span class="font-mono text-xs text-neutral-400 group-hover:text-white flex items-center gap-1 transition-colors">
+                                Игроки
+                                <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Карточка 3: Roblox -->
+                    <div onclick="filterByGameFromCard('Roblox')" 
+                         class="tilt-card spotlight-card cursor-pointer group bg-[#141414] hover:bg-[#181818] border border-white/10 hover:border-white/35 rounded-xl p-6 transition-all duration-300 hover:shadow-neon flex flex-col justify-between">
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-5">
+                                <div class="w-12 h-12 rounded-xl bg-[#0B0B0B] border border-white/15 group-hover:border-white/50 flex items-center justify-center transition-all duration-300 animate-float" style="animation-delay: 1.2s;">
+                                    <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                        <rect x="5" y="5" width="14" height="14" rx="2" transform="rotate(15 12 12)"/>
+                                        <rect x="10" y="10" width="4" height="4" transform="rotate(15 12 12)" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                                <span class="font-mono text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-neutral-300 group-hover:bg-white group-hover:text-[#0B0B0B] font-bold transition-colors">
+                                    ФАНЫ И ПЛЕЙСЫ
+                                </span>
+                            </div>
+
+                            <h3 class="text-xl font-black uppercase tracking-wide text-white mb-2 flex items-center justify-between">
+                                <span>ROBLOX</span>
+                                <span id="card-count-roblox" class="font-mono text-xs font-semibold text-neutral-300 px-2 py-0.5 rounded bg-white/5 border border-white/10">АКТИВНО</span>
+                            </h3>
+                            <p class="text-sm text-neutral-400 leading-relaxed mb-6">
+                                Кооперативные хорроры, совместный фарм в топовых режимах, кастомные ивенты и угарные ночные посиделки в голосовых каналах до самого утра.
+                            </p>
+                        </div>
+
+                        <div class="relative z-10 pt-4 border-t border-white/10 flex items-center justify-between">
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#ХОРРОРЫ</span>
+                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#КООП</span>
+                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#ИВЕНТЫ</span>
+                            </div>
+                            <span class="font-mono text-xs text-neutral-400 group-hover:text-white flex items-center gap-1 transition-colors">
+                                Игроки
+                                <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= БЕСКОНЕЧНАЯ БЕГУЩАЯ СТРОКА (MARQUEE) ================= -->
+        <div class="border-y border-white/10 bg-[#0E0E0E]/90 py-3.5 overflow-hidden select-none">
+            <div class="animate-marquee flex items-center gap-10 font-mono text-xs uppercase tracking-[0.25em] text-neutral-400">
+                <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> ЗДЕСЬ НАХОДЯТ ДРУЗЕЙ, А НЕ СЛУЧАЙНЫХ РАНДОМОВ</span>
+                <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> НОЧНЫЕ РАЗГОВОРЫ В ВОЙСЕ ДО РАССВЕТА</span>
+                <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> СТАКИ DOTA 2 • МИРЫ MINECRAFT • РЕЖИМЫ ROBLOX</span>
+                <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> АДЕКВАТНАЯ АДМИНИСТРАЦИЯ И СВОЯ АТМОСФЕРА</span>
+                <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> DISFACTORY — ТВОЯ ИГРОВАЯ ТЕРРИТОРИЯ</span>
+                <!-- Дубликат для бесшовного цикла -->
+                <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> ЗДЕСЬ НАХОДЯТ ДРУЗЕЙ, А НЕ СЛУЧАЙНЫХ РАНДОМОВ</span>
+                <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> НОЧНЫЕ РАЗГОВОРЫ В ВОЙСЕ ДО РАССВЕТА</span>
+                <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> СТАКИ DOTA 2 • МИРЫ MINECRAFT • РЕЖИМЫ ROBLOX</span>
+                <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> АДЕКВАТНАЯ АДМИНИСТРАЦИЯ И СВОЯ АТМОСФЕРА</span>
+                <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> DISFACTORY — ТВОЯ ИГРОВАЯ ТЕРРИТОРИЯ</span>
+            </div>
+        </div>
+
+        <!-- ================= 3. МАНИФЕСТ И ЦИТАТЫ (ПОЧЕМУ ИМЕННО DISFACTORY?) ================= -->
+        <section id="manifesto" class="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+                <div>
+                    <span class="font-mono text-xs uppercase tracking-[0.2em] text-neutral-400 block mb-1">// ФИЛОСОФИЯ КОМЬЮНИТИ</span>
+                    <h2 class="text-2xl sm:text-4xl font-black uppercase tracking-tight text-white">Почему заходят и остаются у нас</h2>
+                </div>
+                <div class="font-mono text-xs text-neutral-400 flex items-center gap-2">
+                    <span>Переключай цитаты:</span>
+                    <div class="flex gap-1.5">
+                        <button onclick="selectQuote(0)" class="quote-dot w-7 h-2 rounded-full bg-white transition-all"></button>
+                        <button onclick="selectQuote(1)" class="quote-dot w-2.5 h-2 rounded-full bg-white/25 hover:bg-white/50 transition-all"></button>
+                        <button onclick="selectQuote(2)" class="quote-dot w-2.5 h-2 rounded-full bg-white/25 hover:bg-white/50 transition-all"></button>
+                        <button onclick="selectQuote(3)" class="quote-dot w-2.5 h-2 rounded-full bg-white/25 hover:bg-white/50 transition-all"></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Интерактивный терминал с главными цитатами -->
+            <div class="spotlight-card bg-[#141414] border border-white/15 rounded-2xl p-6 sm:p-10 mb-8 shadow-panel relative overflow-hidden">
+                <!-- Декоративные кавычки на фоне -->
+                <div class="absolute -top-6 right-8 text-[140px] font-black text-white/[0.03] leading-none select-none pointer-events-none font-serif">
+                    “
+                </div>
+
+                <div class="relative z-10 flex flex-col justify-between min-h-[190px]">
+                    <div class="flex items-center justify-between gap-4 mb-6">
+                        <span id="quote-tag" class="font-mono text-xs uppercase tracking-widest px-3 py-1 rounded-md bg-white text-[#0B0B0B] font-bold">
+                            ЦИТАТА #01 // О ТИММЕЙТАХ
+                        </span>
+                        <span class="font-mono text-xs text-neutral-500">МАНИФЕСТ DISFACTORY</span>
+                    </div>
+
+                    <blockquote id="quote-text" class="text-lg sm:text-2xl lg:text-3xl font-bold text-white leading-snug tracking-tight mb-8">
+                        «В одиночку можно выиграть катку, но только со своими людьми хочется возвращаться в игру каждый вечер. Disfactory создан для тех, кто устал от пустых серверов и молчаливых рандомов.»
+                    </blockquote>
+
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-5 border-t border-white/10">
+                        <div id="quote-sub" class="font-mono text-xs text-neutral-400">
+                            — Здесь каждая катка начинается с хорошего настроения в войсе
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="prevQuote()" class="px-3.5 py-1.5 rounded-lg bg-[#0B0B0B] hover:bg-white hover:text-[#0B0B0B] text-white border border-white/10 font-mono text-xs uppercase transition-all">
+                                ← Назад
+                            </button>
+                            <button onclick="nextQuote()" class="px-3.5 py-1.5 rounded-lg bg-[#0B0B0B] hover:bg-white hover:text-[#0B0B0B] text-white border border-white/10 font-mono text-xs uppercase transition-all">
+                                Далее →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Полоса прогресса авто-переключения цитаты -->
+                <div class="absolute bottom-0 left-0 right-0 h-1 bg-white/5">
+                    <div id="quote-progress" class="h-full bg-white transition-all duration-100" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- 4 карточки причин вступить -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="tilt-card spotlight-card bg-[#141414] border border-white/10 hover:border-white/30 rounded-xl p-6 transition-all duration-300">
+                    <div class="font-mono text-xs text-neutral-500 mb-3">01 // ЛЮДИ</div>
+                    <h3 class="text-lg font-extrabold text-white uppercase mb-2">Своя компания с первой минуты</h3>
+                    <p class="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+                        У нас нет «закрытых элитных кружков». Новичков встречают как старых друзей и сразу зовут в голосовой канал или общую катку.
+                    </p>
+                </div>
+
+                <div class="tilt-card spotlight-card bg-[#141414] border border-white/10 hover:border-white/30 rounded-xl p-6 transition-all duration-300">
+                    <div class="font-mono text-xs text-neutral-500 mb-3">02 // ВАЙБ</div>
+                    <h3 class="text-lg font-extrabold text-white uppercase mb-2">Разговоры до рассвета</h3>
+                    <p class="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+                        Даже когда все устали от игр, в наших румах смотрят фильмы, включают демки, делятся музыкой и обсуждают всё на свете.
+                    </p>
+                </div>
+
+                <div class="tilt-card spotlight-card bg-[#141414] border border-white/10 hover:border-white/30 rounded-xl p-6 transition-all duration-300">
+                    <div class="font-mono text-xs text-neutral-500 mb-3">03 // КОМФОРТ</div>
+                    <h3 class="text-lg font-extrabold text-white uppercase mb-2">Никакого душного надзора</h3>
+                    <p class="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+                        Мы ценим свободу общения и хороший юмор. Администрация не банит за ерунду, но жёстко пресекает неадекватов и спамеров.
+                    </p>
+                </div>
+
+                <div class="tilt-card spotlight-card bg-[#141414] border border-white/10 hover:border-white/30 rounded-xl p-6 transition-all duration-300">
+                    <div class="font-mono text-xs text-neutral-500 mb-3">04 // ДВИЖ</div>
+                    <h3 class="text-lg font-extrabold text-white uppercase mb-2">Совместные ивенты и лобби</h3>
+                    <p class="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+                        Регулярно собираем полные лобби на 10 человек в Dota 2, запускаем общие выживания в Minecraft и тестируем безумные карты в Roblox.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 4. РУКОВОДСТВО СЕРВЕРА (ВЛАДЕЛЕЦ, СО-ВЛАДЕЛЕЦ И ПОСТЫ) ================= -->
+        <section id="leadership" class="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+                <div>
+                    <span class="font-mono text-xs uppercase tracking-[0.2em] text-neutral-400 block mb-1">// АДМИНИСТРАЦИЯ И СОЗДАТЕЛИ</span>
+                    <h2 class="text-2xl sm:text-4xl font-black uppercase tracking-tight text-white">Руководство и посты сервера</h2>
+                </div>
+                <p class="font-mono text-xs text-neutral-400">
+                    Прямая связь с основателями Disfactory — профили синхронизированы с Discord
+                </p>
+            </div>
+
+            <!-- Карточки Владельца и Со-владельца -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-7 mb-8">
+                
+                <!-- КАРТОЧКА 1: ВЛАДЕЛЕЦ СЕРВЕРА (ID: 772431282314936322) -->
+                <div class="tilt-card spotlight-card group relative bg-[#141414] border border-white/20 hover:border-white/50 rounded-2xl p-6 sm:p-8 shadow-panel transition-all duration-500 hover:shadow-neon-strong">
+                    <div class="relative z-10">
+                        <!-- Верхняя строка роли и статуса -->
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white text-[#0B0B0B] font-mono text-xs font-extrabold uppercase tracking-wider shadow-neon">
+                                <!-- Иконка Короны -->
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                    <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
+                                </svg>
+                                <span>ВЛАДЕЛЕЦ СЕРВЕРА</span>
+                            </div>
+
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-[#0B0B0B] border border-white/10 font-mono text-[11px] text-neutral-300">
+                                <span id="owner-status-dot" class="w-2 h-2 rounded-full bg-white shadow-[0_0_8px_#FFFFFF]"></span>
+                                <span id="owner-status-text">ОСНОВАТЕЛЬ // В СЕТИ</span>
+                            </div>
+                        </div>
+
+                        <!-- Профиль: Аватарка с вращающимся ореолом + Никнейм + ID -->
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-6">
+                            <div class="relative shrink-0">
+                                <div class="w-24 h-24 rounded-2xl p-[2px] relative overflow-hidden bg-[#0B0B0B] border border-white/25 shadow-neon">
+                                    <img id="owner-avatar" 
+                                         src="" 
+                                         alt="Аватар Владельца" 
+                                         class="w-full h-full rounded-[14px] object-cover bg-[#141414]" />
+                                </div>
+                                <!-- Бейдж Короны поверх аватарки -->
+                                <div class="absolute -bottom-2 -right-2 w-8 h-8 rounded-xl bg-white text-[#0B0B0B] flex items-center justify-center shadow-lg border-2 border-[#0B0B0B]" title="Главный создатель сервера">
+                                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="min-w-0 flex-1">
+                                <div class="font-mono text-[11px] uppercase tracking-widest text-neutral-400 mb-1">
+                                    ГЛАВНЫЙ АРХИТЕКТОР ПРОЕКТА
+                                </div>
+                                <h3 id="owner-name" class="text-2xl sm:text-3xl font-black text-white tracking-tight truncate mb-1.5">
+                                    Загрузка профиля...
+                                </h3>
+                                <div class="flex flex-wrap items-center gap-2 font-mono text-xs text-neutral-400">
+                                    <span class="px-2.5 py-0.5 rounded bg-[#0B0B0B] border border-white/10 text-neutral-300">
+                                        ID: 772431282314936322
+                                    </span>
+                                    <span id="owner-activity-badge" class="px-2.5 py-0.5 rounded bg-white/10 border border-white/15 text-white">
+                                        Управление Disfactory
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Личная цитата владельца -->
+                        <p class="text-sm text-neutral-300 leading-relaxed bg-[#0B0B0B]/80 border border-white/10 rounded-xl p-4 mb-6 font-normal">
+                            «Создал Disfactory как место, где каждый чувствует себя среди своих с первой минуты в голосовом канале. Отвечаю за развитие сервера, атмосферу и комфорт каждого участника.»
+                        </p>
+
+                        <!-- Кнопки взаимодействия с профилем -->
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                            <a href="https://discord.com/users/772431282314936322" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-[#0B0B0B] font-mono text-xs font-extrabold uppercase tracking-wider transition-all duration-300 hover:scale-[1.02] hover:shadow-neon">
+                                <span>Открыть профиль Discord</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                    <path d="M7 17L17 7M17 7H8M17 7V16" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                            <button onclick="copyToClipboard('772431282314936322', 'ID Владельца скопирован')" 
+                                    class="px-4 py-3 rounded-xl bg-[#0B0B0B] hover:bg-white/10 text-neutral-300 hover:text-white border border-white/15 font-mono text-xs uppercase tracking-wider transition-all">
+                                Скопировать ID
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- КАРТОЧКА 2: СО-ВЛАДЕЛЕЦ СЕРВЕРА (ID: 1558546705975087225) -->
+                <div class="tilt-card spotlight-card group relative bg-[#141414] border border-white/20 hover:border-white/50 rounded-2xl p-6 sm:p-8 shadow-panel transition-all duration-500 hover:shadow-neon-strong">
+                    <div class="relative z-10">
+                        <!-- Верхняя строка роли и статуса -->
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white/90 text-[#0B0B0B] font-mono text-xs font-extrabold uppercase tracking-wider shadow-neon">
+                                <!-- Иконка Молнии / Щита -->
+                                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                                </svg>
+                                <span>СО-ВЛАДЕЛЕЦ СЕРВЕРА</span>
+                            </div>
+
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-[#0B0B0B] border border-white/10 font-mono text-[11px] text-neutral-300">
+                                <span id="coowner-status-dot" class="w-2 h-2 rounded-full bg-white shadow-[0_0_8px_#FFFFFF]"></span>
+                                <span id="coowner-status-text">РУКОВОДСТВО // В СЕТИ</span>
+                            </div>
+                        </div>
+
+                        <!-- Профиль: Аватарка + Никнейм + ID -->
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-6">
+                            <div class="relative shrink-0">
+                                <div class="w-24 h-24 rounded-2xl p-[2px] relative overflow-hidden bg-[#0B0B0B] border border-white/25 shadow-neon">
+                                    <img id="coowner-avatar" 
+                                         src="" 
+                                         alt="Аватар Со-владельца" 
+                                         class="w-full h-full rounded-[14px] object-cover bg-[#141414]" />
+                                </div>
+                                <!-- Бейдж Щита поверх аватарки -->
+                                <div class="absolute -bottom-2 -right-2 w-8 h-8 rounded-xl bg-white text-[#0B0B0B] flex items-center justify-center shadow-lg border-2 border-[#0B0B0B]" title="Со-владелец сервера">
+                                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="min-w-0 flex-1">
+                                <div class="font-mono text-[11px] uppercase tracking-widest text-neutral-400 mb-1">
+                                    УПРАВЛЕНИЕ КОМЬЮНИТИ И ОПЕРАЦИЯМИ
+                                </div>
+                                <h3 id="coowner-name" class="text-2xl sm:text-3xl font-black text-white tracking-tight truncate mb-1.5">
+                                    Загрузка профиля...
+                                </h3>
+                                <div class="flex flex-wrap items-center gap-2 font-mono text-xs text-neutral-400">
+                                    <span class="px-2.5 py-0.5 rounded bg-[#0B0B0B] border border-white/10 text-neutral-300">
+                                        ID: 1558546705975087225
+                                    </span>
+                                    <span id="coowner-activity-badge" class="px-2.5 py-0.5 rounded bg-white/10 border border-white/15 text-white">
+                                        Куратор Disfactory
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Личная цитата со-владельца -->
+                        <p class="text-sm text-neutral-300 leading-relaxed bg-[#0B0B0B]/80 border border-white/10 rounded-xl p-4 mb-6 font-normal">
+                            «Держу пульс сервера 24/7. Отвечаю за организацию игровых клозов, порядок в голосовых каналах, быструю помощь участникам и сбор самых громких пати.»
+                        </p>
+
+                        <!-- Кнопки взаимодействия с профилем -->
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                            <a href="https://discord.com/users/1558546705975087225" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-[#0B0B0B] font-mono text-xs font-extrabold uppercase tracking-wider transition-all duration-300 hover:scale-[1.02] hover:shadow-neon">
+                                <span>Открыть профиль Discord</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                    <path d="M7 17L17 7M17 7H8M17 7V16" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                            <button onclick="copyToClipboard('1558546705975087225', 'ID Со-владельца скопирован')" 
+                                    class="px-4 py-3 rounded-xl bg-[#0B0B0B] hover:bg-white/10 text-neutral-300 hover:text-white border border-white/15 font-mono text-xs uppercase tracking-wider transition-all">
+                                Скопировать ID
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Посты сотрудников и команды сервера -->
+            <div class="bg-[#141414]/90 border border-white/10 rounded-2xl p-6 sm:p-7">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-2 h-2 rounded-full bg-white"></span>
+                        <h3 class="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-white">
+                            ШТАТ И ПОСТЫ СОТРУДНИКОВ СЕРВЕРА
+                        </h3>
+                    </div>
+                    <span class="font-mono text-xs text-neutral-400">Все заявки на посты рассматриваются на сервере</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Пост 1 -->
+                    <div class="spotlight-card bg-[#0B0B0B] border border-white/10 hover:border-white/30 rounded-xl p-4 flex items-center gap-3.5 transition-all">
+                        <div class="w-11 h-11 rounded-xl bg-[#141414] border border-white/15 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                        </div>
+                        <div class="min-w-0">
+                            <div class="font-mono text-[10px] uppercase text-neutral-400">ПОСТ БЕЗОПАСНОСТИ</div>
+                            <div class="text-sm font-bold text-white truncate">Стражи порядка</div>
+                            <div class="font-mono text-[11px] text-neutral-500">Модерация чата и рум</div>
+                        </div>
+                    </div>
+
+                    <!-- Пост 2 -->
+                    <div class="spotlight-card bg-[#0B0B0B] border border-white/10 hover:border-white/30 rounded-xl p-4 flex items-center gap-3.5 transition-all">
+                        <div class="w-11 h-11 rounded-xl bg-[#141414] border border-white/15 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                            </svg>
+                        </div>
+                        <div class="min-w-0">
+                            <div class="font-mono text-[10px] uppercase text-neutral-400">ПОСТ МЕРОПРИЯТИЙ</div>
+                            <div class="text-sm font-bold text-white truncate">Ивент-мейкеры</div>
+                            <div class="font-mono text-[11px] text-neutral-500">Клозы, турниры и кино</div>
+                        </div>
+                    </div>
+
+                    <!-- Пост 3 -->
+                    <div class="spotlight-card bg-[#0B0B0B] border border-white/10 hover:border-white/30 rounded-xl p-4 flex items-center gap-3.5 transition-all">
+                        <div class="w-11 h-11 rounded-xl bg-[#141414] border border-white/15 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                                <polyline points="16 18 22 12 16 6"></polyline>
+                                <polyline points="8 6 2 12 8 18"></polyline>
+                            </svg>
+                        </div>
+                        <div class="min-w-0">
+                            <div class="font-mono text-[10px] uppercase text-neutral-400">ТЕХНИЧЕСКИЙ ПОСТ</div>
+                            <div class="text-sm font-bold text-white truncate">Тех-команда</div>
+                            <div class="font-mono text-[11px] text-neutral-500">Боты и настройка ролей</div>
+                        </div>
+                    </div>
+
+                    <!-- Пост 4: Набор в стафф -->
+                    <a href="https://discord.gg/uTXD659A8x" target="_blank" rel="noopener noreferrer" class="spotlight-card group bg-white/5 hover:bg-white text-white hover:text-[#0B0B0B] border border-white/20 rounded-xl p-4 flex items-center justify-between gap-3 transition-all duration-300">
+                        <div>
+                            <div class="font-mono text-[10px] uppercase opacity-75">ВАКАНСИЯ ОТКРЫТА</div>
+                            <div class="text-sm font-extrabold uppercase">Стать сотрудником</div>
+                            <div class="font-mono text-[11px] opacity-75">Подать заявку в Discord</div>
+                        </div>
+                        <svg class="w-5 h-5 shrink-0 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 5. БЛОК АКТИВНОСТИ (ИНТЕГРАЦИЯ С API DISCORD) ================= -->
+        <section id="activity" class="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
+            
+            <!-- Внешний терминал мониторинга -->
+            <div class="bg-[#141414] border border-white/15 rounded-2xl shadow-panel overflow-hidden">
+                
+                <!-- Верхняя панель статуса API -->
+                <div class="px-6 py-4 bg-[#0E0E0E] border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-white/80"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-white/30"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-white/10"></span>
+                        </div>
+                        <span class="font-mono text-xs uppercase tracking-widest text-neutral-400">
+                            МОНИТОРИНГ СЕРВЕРА // <span class="text-white">ID 1559945706020540538</span>
+                        </span>
+                    </div>
+
+                    <div class="flex items-center gap-3 self-start sm:self-auto">
+                        <!-- Статус подключения -->
+                        <div id="api-status-badge" class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/5 border border-white/10 font-mono text-[11px] text-neutral-300">
+                            <span id="api-status-dot" class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                            <span id="api-status-text">СИНХРОНИЗАЦИЯ...</span>
+                        </div>
+
+                        <!-- Кнопка ручного обновления -->
+                        <button id="refresh-btn" 
+                                onclick="fetchDiscordWidget(true)" 
+                                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#181818] hover:bg-white hover:text-[#0B0B0B] text-neutral-300 border border-white/10 font-mono text-[11px] uppercase tracking-wider transition-all duration-300">
+                            <svg id="refresh-icon" class="w-3.5 h-3.5 transition-transform duration-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M23 4v6h-6M1 20v-6h6" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span>Обновить</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Тело виджета -->
+                <div class="p-6 sm:p-8">
+                    
+                    <!-- Шапка виджета: Счетчик онлайна + Фильтры -->
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-8 border-b border-white/10">
+                        
+                        <!-- Слева: Название сервера и счетчики -->
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-5">
+                            <div class="w-16 h-16 rounded-2xl bg-[#0B0B0B] border border-white/20 flex items-center justify-center shrink-0 shadow-neon">
+                                <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2.5 mb-1.5">
+                                    <h3 id="widget-server-name" class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
+                                        DISFACTORY
+                                    </h3>
+                                    <span class="font-mono text-[10px] uppercase px-2 py-0.5 rounded bg-white text-[#0B0B0B] font-extrabold">
+                                        В ЭФИРЕ
+                                    </span>
+                                </div>
+
+                                <!-- Счетчик онлайна -->
+                                <div class="flex flex-wrap items-center gap-4 text-sm">
+                                    <div class="inline-flex items-center gap-2 font-mono text-neutral-300">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_10px_#FFFFFF]"></span>
+                                        <span>Игроков в сети:</span>
+                                        <span id="presence-count" class="text-white font-bold text-base px-2.5 py-0.5 rounded bg-[#0B0B0B] border border-white/15">
+                                            --
+                                        </span>
+                                    </div>
+                                    <span class="text-neutral-600 hidden sm:inline">|</span>
+                                    <div class="font-mono text-xs text-neutral-400">
+                                        Сейчас в игре: <span id="in-game-count" class="text-white font-bold">0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Справа: Табы фильтрации и поиск -->
+                        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                            <!-- Кнопки фильтрации по играм -->
+                            <div class="flex items-center bg-[#0B0B0B] p-1 rounded-xl border border-white/10 overflow-x-auto">
+                                <button onclick="setActivityFilter('all')" data-filter="all" class="filter-tab px-3 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider bg-white text-[#0B0B0B] font-bold transition-all whitespace-nowrap">
+                                    Все
+                                </button>
+                                <button onclick="setActivityFilter('playing')" data-filter="playing" class="filter-tab px-3 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider text-neutral-400 hover:text-white transition-all whitespace-nowrap">
+                                    В игре
+                                </button>
+                                <button onclick="setActivityFilter('Dota 2')" data-filter="Dota 2" class="filter-tab px-3 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider text-neutral-400 hover:text-white transition-all whitespace-nowrap">
+                                    Dota 2
+                                </button>
+                                <button onclick="setActivityFilter('Minecraft')" data-filter="Minecraft" class="filter-tab px-3 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider text-neutral-400 hover:text-white transition-all whitespace-nowrap">
+                                    Minecraft
+                                </button>
+                                <button onclick="setActivityFilter('Roblox')" data-filter="Roblox" class="filter-tab px-3 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider text-neutral-400 hover:text-white transition-all whitespace-nowrap">
+                                    Roblox
+                                </button>
+                            </div>
+
+                            <!-- Поле поиска -->
+                            <div class="relative">
+                                <input 
+                                    id="member-search" 
+                                    type="text" 
+                                    oninput="renderMembers()"
+                                    placeholder="Поиск по нику или игре..." 
+                                    class="w-full sm:w-56 bg-[#0B0B0B] border border-white/10 focus:border-white/40 rounded-xl pl-9 pr-3 py-2 text-xs font-mono text-white placeholder-neutral-500 focus:outline-none transition-colors"
+                                />
+                                <svg class="w-4 h-4 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <circle cx="11" cy="11" r="8"/>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Уведомление о резервном режиме (если API временно недоступно) -->
+                    <div id="fallback-banner" class="hidden mt-6 p-4 rounded-xl bg-[#0B0B0B] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="flex items-start sm:items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-white/10 border border-white/15 flex items-center justify-center shrink-0 text-white font-mono text-xs font-bold">
+                                i
+                            </div>
+                            <div class="text-xs text-neutral-400 leading-relaxed">
+                                <span class="text-white font-bold font-mono uppercase">ПРЕДПРОСМОТР АКТИВНОСТИ:</span>
+                                <span>Отображается демонстрационный список активных участников Disfactory (прямой ответ виджета временно обновляется).</span>
+                            </div>
+                        </div>
+                        <button onclick="fetchDiscordWidget(true)" class="shrink-0 px-3.5 py-1.5 rounded-lg bg-white/10 hover:bg-white hover:text-[#0B0B0B] border border-white/15 font-mono text-[11px] text-white font-semibold uppercase tracking-wider transition-all">
+                            Проверить API снова
+                        </button>
+                    </div>
+
+                    <!-- Полоса голосовых каналов -->
+                    <div id="voice-channels-container" class="hidden mt-6">
+                        <div class="font-mono text-[11px] uppercase tracking-widest text-neutral-400 mb-2.5 flex items-center gap-2">
+                            <span>// АКТИВНЫЕ ГОЛОСОВЫЕ КАНАЛЫ СЕРВЕРА</span>
+                        </div>
+                        <div id="voice-channels-list" class="flex flex-wrap gap-2"></div>
+                    </div>
+
+                    <!-- Сетка участников в сети -->
+                    <div class="mt-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="font-mono text-xs uppercase tracking-widest text-neutral-300">
+                                УЧАСТНИКИ В СЕТИ (<span id="displayed-members-count">0</span>)
+                            </span>
+                            <span id="last-updated-time" class="font-mono text-[11px] text-neutral-500">
+                                ОБНОВЛЕНО: ТОЛЬКО ЧТО
+                            </span>
+                        </div>
+
+                        <!-- Сетка карточек -->
+                        <div id="members-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5 max-h-[520px] overflow-y-auto pr-1">
+                            <!-- Скелетоны загрузки -->
+                            <div class="bg-[#0B0B0B] border border-white/5 rounded-xl p-4 flex items-center gap-3.5 animate-pulse">
+                                <div class="w-11 h-11 rounded-full bg-white/10 shrink-0"></div>
+                                <div class="flex-1 space-y-2">
+                                    <div class="h-3.5 bg-white/10 rounded w-2/3"></div>
+                                    <div class="h-2.5 bg-white/5 rounded w-1/2"></div>
+                                </div>
+                            </div>
+                            <div class="bg-[#0B0B0B] border border-white/5 rounded-xl p-4 flex items-center gap-3.5 animate-pulse">
+                                <div class="w-11 h-11 rounded-full bg-white/10 shrink-0"></div>
+                                <div class="flex-1 space-y-2">
+                                    <div class="h-3.5 bg-white/10 rounded w-3/4"></div>
+                                    <div class="h-2.5 bg-white/5 rounded w-1/3"></div>
+                                </div>
+                            </div>
+                            <div class="bg-[#0B0B0B] border border-white/5 rounded-xl p-4 flex items-center gap-3.5 animate-pulse">
+                                <div class="w-11 h-11 rounded-full bg-white/10 shrink-0"></div>
+                                <div class="flex-1 space-y-2">
+                                    <div class="h-3.5 bg-white/10 rounded w-1/2"></div>
+                                    <div class="h-2.5 bg-white/5 rounded w-2/3"></div>
+                                </div>
+                            </div>
+                            <div class="bg-[#0B0B0B] border border-white/5 rounded-xl p-4 flex items-center gap-3.5 animate-pulse">
+                                <div class="w-11 h-11 rounded-full bg-white/10 shrink-0"></div>
+                                <div class="flex-1 space-y-2">
+                                    <div class="h-3.5 bg-white/10 rounded w-4/5"></div>
+                                    <div class="h-2.5 bg-white/5 rounded w-1/2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Нижняя панель виджета -->
+                    <div class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-3 text-xs text-neutral-400 font-mono">
+                            <span class="px-2.5 py-1 rounded bg-[#0B0B0B] border border-white/10 text-neutral-300">КАНАЛ СВЯЗИ</span>
+                            <span class="truncate max-w-[240px] sm:max-w-md text-neutral-400">Прямая синхронизация с Discord API Disfactory</span>
+                        </div>
+
+                        <div class="flex items-center gap-3 w-full sm:w-auto">
+                            <a id="widget-invite-link" 
+                               href="https://discord.gg/uTXD659A8x" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               class="magnetic-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white text-[#0B0B0B] font-extrabold text-xs font-mono uppercase tracking-wider transition-all duration-300 hover:scale-[1.03] hover:shadow-neon">
+                                <span>Залететь в голосовой канал</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                    <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= 6. ПОДВАЛ (FOOTER) ================= -->
+    <footer class="relative z-10 border-t border-white/10 bg-[#0B0B0B]/95 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                
+                <!-- Бренд и описание -->
+                <div class="space-y-2">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-7 h-7 rounded-lg bg-[#141414] border border-white/20 flex items-center justify-center">
+                            <span class="font-mono text-xs font-black text-white">D</span>
+                        </div>
+                        <span class="font-extrabold tracking-[0.2em] text-sm uppercase text-white">DISFACTORY</span>
+                        <span class="font-mono text-[10px] text-neutral-400">// ОФИЦИАЛЬНЫЙ СЕРВЕР</span>
+                    </div>
+                    <p class="text-xs text-neutral-400 max-w-md leading-relaxed">
+                        Комфортное игровое сообщество для тебя и твоих друзей. Собирай пати в Dota 2, Minecraft и Roblox, общайся и доминируй.
+                    </p>
+                </div>
+
+                <!-- Кнопки копирования ID и инвайта -->
+                <div class="flex flex-wrap items-center gap-3 font-mono text-xs">
+                    <button onclick="copyServerId()" class="px-3.5 py-2.5 rounded-xl bg-[#141414] hover:bg-[#1C1C1C] border border-white/10 hover:border-white/25 text-neutral-300 hover:text-white transition-all duration-300 flex items-center gap-2">
+                        <span>ID СЕРВЕРА: 1559945706020540538</span>
+                        <svg class="w-3.5 h-3.5 text-neutral-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+
+                    <a href="https://discord.gg/uTXD659A8x" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="px-4 py-2.5 rounded-xl bg-white text-[#0B0B0B] font-bold hover:shadow-neon transition-all duration-300">
+                        Присоединиться к Disfactory
+                    </a>
+                </div>
+            </div>
+
+            <!-- Нижняя строка копирайта -->
+            <div class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500 font-mono">
+                <div>© 2026 Disfactory. Все права защищены.</div>
+                <div class="flex items-center gap-4">
+                    <span class="inline-flex items-center gap-1.5 text-neutral-300">
+                        <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                        <span>СТАТУС: ВСЕ СИСТЕМЫ В НОРМЕ</span>
+                    </span>
+                    <span>•</span>
+                    <span>ВЕРСИЯ 2026.2</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= JAVASCRIPT: АНИМАЦИИ, ПРОФИЛИ РУКОВОДСТВА И DISCORD API ================= -->
+    <script>
+        // --- Константы сервера и руководства ---
+        const SERVER_ID = '1559945706020540538';
+        const OWNER_ID = '772431282314936322';
+        const COOWNER_ID = '1558546705975087225';
+        const INVITE_URL = 'https://discord.gg/uTXD659A8x';
+        const WIDGET_API_URL = `https://discord.com/api/guilds/${SERVER_ID}/widget.json`;
+
+        // --- Генератор стильных кибер-аватарок высокого разрешения (Data URI SVG) на случай, если профиль скрыт ---
+        function createCyberAvatar(initials, badgeText, seed = 1) {
+            const svg = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+                <defs>
+                    <radialGradient id="g${seed}" cx="50%" cy="30%" r="70%">
+                        <stop offset="0%" stop-color="#2A2A2E"/>
+                        <stop offset="100%" stop-color="#0B0B0B"/>
+                    </radialGradient>
+                </defs>
+                <rect width="200" height="200" rx="28" fill="url(#g${seed})"/>
+                <circle cx="100" cy="100" r="78" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" stroke-dasharray="6 4"/>
+                <circle cx="100" cy="100" r="62" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+                <text x="100" y="112" text-anchor="middle" fill="#FFFFFF" font-family="Inter, sans-serif" font-weight="900" font-size="44" letter-spacing="2">${initials}</text>
+                <text x="100" y="142" text-anchor="middle" fill="#8E8E93" font-family="JetBrains Mono, monospace" font-weight="700" font-size="11" letter-spacing="3">${badgeText}</text>
+            </svg>`;
+            return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg.trim());
+        }
+
+        // --- Массив атмосферных цитат для слайдера ---
+        const QUOTES_DATA = [
+            {
+                tag: 'ЦИТАТА #01 // О ТИММЕЙТАХ',
+                text: '«В одиночку можно выиграть катку, но только со своими людьми хочется возвращаться в игру каждый вечер. Disfactory создан для тех, кто устал от пустых серверов и молчаливых рандомов.»',
+                sub: '— Здесь каждая катка начинается с хорошего настроения в войсе'
+            },
+            {
+                tag: 'ЦИТАТА #02 // О НОЧНОМ ВАЙБЕ',
+                text: '«Лучшие моменты происходят в три часа ночи в голосовом канале, когда вы уже даже не помните, с чего начался разговор, но смеётесь всей комнатой до слёз.»',
+                sub: '— Голосовые комнаты Disfactory не пустеют даже глубокой ночью'
+            },
+            {
+                tag: 'ЦИТАТА #03 // О ДОМИНАЦИИ',
+                text: '«Никакого душного надзора и лишнего пафоса. Только чистый кайф от игры, плотные стаки в Dota 2, масштабные миры в Minecraft и безумные режимы в Roblox.»',
+                sub: '— Собирай пати за пару минут и забирай победу'
+            },
+            {
+                tag: 'ЦИТАТА #04 // О СООБЩЕСТВЕ',
+                text: '«Твой микрофон, твоя команда, твоя территория. Заходи на сервер как гость на одну игру — оставайся как часть главной игровой семьи Disfactory.»',
+                sub: '— Открытое и дружелюбное комьюнити без токсичности'
+            }
+        ];
+
+        // --- Демонстрационные участники (Fallback) ---
+        const FALLBACK_MEMBERS = [
+            { id: '1', username: 'K1llSwitch', status: 'online', avatar_url: 'https://cdn.discordapp.com/embed/avatars/0.png', game: { name: 'Dota 2' }, channel_name: 'Рейтинг 5х5 #1' },
+            { id: '2', username: 'xVortex', status: 'dnd', avatar_url: 'https://cdn.discordapp.com/embed/avatars/1.png', game: { name: 'Dota 2' }, channel_name: 'Рейтинг 5х5 #1' },
+            { id: '3', username: 'Aetherius', status: 'online', avatar_url: 'https://cdn.discordapp.com/embed/avatars/2.png', game: { name: 'Minecraft' }, channel_name: 'Выживание // SMP' },
+            { id: '4', username: 'N0cturne', status: 'online', avatar_url: 'https://cdn.discordapp.com/embed/avatars/3.png', game: { name: 'Roblox' }, channel_name: 'Ночной войс' },
+            { id: '5', username: 'Shatter_GG', status: 'idle', avatar_url: 'https://cdn.discordapp.com/embed/avatars/4.png', game: { name: 'Dota 2' }, channel_name: 'Турбо // Катки' },
+            { id: '6', username: 'Yuki_San', status: 'online', avatar_url: 'https://cdn.discordapp.com/embed/avatars/5.png', game: { name: 'Minecraft' }, channel_name: 'Выживание // SMP' },
+            { id: '7', username: 'Reaper', status: 'dnd', avatar_url: 'https://cdn.discordapp.com/embed/avatars/0.png', game: { name: 'Roblox' }, channel_name: 'Ночной войс' },
+            { id: '8', username: 'Moriarty', status: 'online', avatar_url: 'https://cdn.discordapp.com/embed/avatars/2.png', game: { name: 'Dota 2' }, channel_name: 'Рейтинг 5х5 #1' },
+            { id: '9', username: 'Zer0Day', status: 'online', avatar_url: 'https://cdn.discordapp.com/embed/avatars/1.png', game: { name: 'Minecraft' }, channel_name: 'Тех-сборка' },
+            { id: '10', username: 'VelvetSky', status: 'idle', avatar_url: 'https://cdn.discordapp.com/embed/avatars/4.png', game: null, channel_name: 'Чилл-зона' },
+            { id: '11', username: 'Phantom', status: 'online', avatar_url: 'https://cdn.discordapp.com/embed/avatars/3.png', game: { name: 'Roblox' }, channel_name: 'Ивент-рума' },
+            { id: '12', username: 'Chronos', status: 'online', avatar_url: 'https://cdn.discordapp.com/embed/avatars/5.png', game: null, channel_name: 'Общий голосовой' }
+        ];
+
+        const FALLBACK_CHANNELS = [
+            { id: 'c1', name: 'Рейтинг 5х5 #1', position: 1 },
+            { id: 'c2', name: 'Выживание // SMP', position: 2 },
+            { id: 'c3', name: 'Ночной войс', position: 3 },
+            { id: 'c4', name: 'Общий голосовой', position: 4 }
+        ];
+
+        // --- Состояние ---
+        let currentMembers = [];
+        let currentChannels = [];
+        let currentFilter = 'all';
+        let currentQuoteIndex = 0;
+        let quoteProgress = 0;
+
+        // =========================================================================
+        // 1. ЭФФЕКТ КИБЕР-ДЕШИФРОВКИ ТЕКСТА (TEXT SCRAMBLE)
+        // =========================================================================
+        const CYBER_CHARS = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ0123456789#/_';
+        function scrambleText(element, finalString, duration = 650) {
+            if (!element) return;
+            let frame = 0;
+            const totalFrames = Math.round(duration / 25);
+            const interval = setInterval(() => {
+                element.innerText = finalString
+                    .split('')
+                    .map((char, index) => {
+                        if (char === ' ' || char === '«' || char === '»') return char;
+                        if (index < (frame / totalFrames) * finalString.length) {
+                            return finalString[index];
+                        }
+                        return CYBER_CHARS[Math.floor(Math.random() * CYBER_CHARS.length)];
+                    })
+                    .join('');
+                frame++;
+                if (frame > totalFrames) {
+                    element.innerText = finalString;
+                    clearInterval(interval);
+                }
+            }, 25);
+        }
+
+        // =========================================================================
+        // 2. УМНАЯ ЗАГРУЗКА ПРОФИЛЕЙ ВЛАДЕЛЬЦА И СО-ВЛАДЕЛЬЦА
+        // =========================================================================
+        async function loadLeadershipProfiles() {
+            const ownerAvatarEl = document.getElementById('owner-avatar');
+            const ownerNameEl = document.getElementById('owner-name');
+            const ownerStatusText = document.getElementById('owner-status-text');
+            const ownerActivityBadge = document.getElementById('owner-activity-badge');
+
+            const coownerAvatarEl = document.getElementById('coowner-avatar');
+            const coownerNameEl = document.getElementById('coowner-name');
+            const coownerStatusText = document.getElementById('coowner-status-text');
+            const coownerActivityBadge = document.getElementById('coowner-activity-badge');
+
+            // Устанавливаем стильные стартовые значения мгновенно
+            ownerAvatarEl.src = createCyberAvatar('DF', 'OWNER', 1);
+            ownerNameEl.textContent = 'Основатель Disfactory';
+            coownerAvatarEl.src = createCyberAvatar('CO', 'ADMIN', 2);
+            coownerNameEl.textContent = 'Со-владелец Disfactory';
+
+            // Попытка получить живые данные Discord через публичный Lanyard API
+            await Promise.allSettled([
+                fetchLeaderFromLanyard(OWNER_ID, {
+                    avatarEl: ownerAvatarEl,
+                    nameEl: ownerNameEl,
+                    statusEl: ownerStatusText,
+                    activityEl: ownerActivityBadge,
+                    defaultRole: 'ОСНОВАТЕЛЬ'
+                }),
+                fetchLeaderFromLanyard(COOWNER_ID, {
+                    avatarEl: coownerAvatarEl,
+                    nameEl: coownerNameEl,
+                    statusEl: coownerStatusText,
+                    activityEl: coownerActivityBadge,
+                    defaultRole: 'СО-ВЛАДЕЛЕЦ'
+                })
+            ]);
+        }
+
+        async function fetchLeaderFromLanyard(userId, ui) {
+            try {
+                const res = await fetch(`https://api.lanyard.rest/v1/users/${userId}`);
+                if (!res.ok) return;
+                const json = await res.json();
+                if (!json.success || !json.data || !json.data.discord_user) return;
+
+                const user = json.data.discord_user;
+                const displayName = user.global_name || user.display_name || user.username;
+                if (displayName) {
+                    ui.nameEl.textContent = displayName;
+                }
+
+                if (user.avatar) {
+                    const ext = user.avatar.startsWith('a_') ? 'gif' : 'png';
+                    ui.avatarEl.src = `https://cdn.discordapp.com/avatars/${userId}/${user.avatar}.${ext}?size=256`;
+                }
+
+                const statusMap = {
+                    online: `${ui.defaultRole} // В СЕТИ`,
+                    idle: `${ui.defaultRole} // НЕАКТИВЕН`,
+                    dnd: `${ui.defaultRole} // НЕ БЕСПОКОИТЬ`,
+                    offline: `${ui.defaultRole} // НА СВЯЗИ`
+                };
+                if (json.data.discord_status && statusMap[json.data.discord_status]) {
+                    ui.statusEl.textContent = statusMap[json.data.discord_status];
+                }
+
+                // Если запущена игра или активность
+                const activities = json.data.activities || [];
+                const gameAct = activities.find(a => a.type === 0 && a.name);
+                if (gameAct) {
+                    ui.activityEl.textContent = `Играет в ${gameAct.name}`;
+                }
+            } catch (e) {
+                // Оставляем стильный кибер-аватар по умолчанию
+            }
+        }
+
+        // =========================================================================
+        // 3. ИНТЕРАКТИВНЫЙ СЛАЙДЕР ЦИТАТ
+        // =========================================================================
+        function selectQuote(index) {
+            currentQuoteIndex = index;
+            quoteProgress = 0;
+
+            const item = QUOTES_DATA[index];
+            const tagEl = document.getElementById('quote-tag');
+            const textEl = document.getElementById('quote-text');
+            const subEl = document.getElementById('quote-sub');
+
+            scrambleText(tagEl, item.tag, 400);
+            textEl.style.opacity = '0';
+            textEl.style.transform = 'translateY(8px)';
+
+            setTimeout(() => {
+                textEl.textContent = item.text;
+                subEl.textContent = item.sub;
+                textEl.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                textEl.style.opacity = '1';
+                textEl.style.transform = 'translateY(0)';
+            }, 180);
+
+            const dots = document.querySelectorAll('.quote-dot');
+            dots.forEach((dot, idx) => {
+                if (idx === index) {
+                    dot.className = 'quote-dot w-7 h-2 rounded-full bg-white transition-all';
+                } else {
+                    dot.className = 'quote-dot w-2.5 h-2 rounded-full bg-white/25 hover:bg-white/50 transition-all';
+                }
+            });
+        }
+
+        function nextQuote() {
+            selectQuote((currentQuoteIndex + 1) % QUOTES_DATA.length);
+        }
+
+        function prevQuote() {
+            selectQuote((currentQuoteIndex - 1 + QUOTES_DATA.length) % QUOTES_DATA.length);
+        }
+
+        // Авто-прогресс слайдера цитат
+        setInterval(() => {
+            quoteProgress += 1.25;
+            const bar = document.getElementById('quote-progress');
+            if (bar) bar.style.width = `${Math.min(quoteProgress, 100)}%`;
+            if (quoteProgress >= 100) {
+                nextQuote();
+            }
+        }, 100);
+
+        // =========================================================================
+        // 4. УВЕДОМЛЕНИЯ (ТОСТЫ) И БУФЕР ОБМЕНА
+        // =========================================================================
+        function showToast(message, subtext = '') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'pointer-events-auto bg-[#141414] border border-white/25 text-white px-4 py-3 rounded-xl shadow-neon flex items-center gap-3 transition-all duration-300 transform translate-y-2 opacity-0';
+            toast.innerHTML = `
+                <div class="w-7 h-7 rounded-lg bg-white text-[#0B0B0B] flex items-center justify-center font-mono font-bold text-xs shrink-0">
+                    ✓
+                </div>
+                <div>
+                    <div class="font-mono text-xs font-bold uppercase tracking-wider">${message}</div>
+                    ${subtext ? `<div class="font-mono text-[10px] text-neutral-400 mt-0.5">${subtext}</div>` : ''}
+                </div>
+            `;
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3200);
+        }
+
+        function copyToClipboard(text, label) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast(label, text);
+            } catch (err) {
+                showToast('Скопируйте вручную', text);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function copyInviteLink() {
+            copyToClipboard(INVITE_URL, 'Ссылка-приглашение скопирована');
+        }
+
+        function copyServerId() {
+            copyToClipboard(SERVER_ID, 'ID сервера скопирован');
+        }
+
+        // =========================================================================
+        // 5. РАБОТА С DISCORD WIDGET API (БЕЗ CORS-ОШИБОК)
+        // =========================================================================
+        function animateCounter(el, targetValue) {
+            if (!el) return;
+            const startValue = parseInt(el.textContent, 10) || 0;
+            const duration = 700;
+            const startTime = performance.now();
+
+            function step(now) {
+                const progress = Math.min((now - startTime) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.round(startValue + (targetValue - startValue) * eased);
+                el.textContent = current;
+                if (progress < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+
+        async function fetchDiscordWidget(manualRefresh = false) {
+            const refreshIcon = document.getElementById('refresh-icon');
+            const statusText = document.getElementById('api-status-text');
+
+            if (manualRefresh && refreshIcon) {
+                refreshIcon.classList.add('animate-spin');
+            }
+
+            statusText.textContent = 'ЗАПРОС К DISCORD API...';
+
+            try {
+                const response = await fetch(WIDGET_API_URL, {
+                    method: 'GET',
+                    mode: 'cors',
+                    cache: 'no-store'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                applyLiveWidgetData(data);
+
+                if (manualRefresh) {
+                    showToast('Мониторинг обновлён', `Игроков в сети: ${data.presence_count ?? currentMembers.length}`);
+                }
+            } catch (error) {
+                applyFallbackWidgetData();
+                if (manualRefresh) {
+                    showToast('Включен предпросмотр онлайна', 'Виджет Discord временно скрыт настройками сервера');
+                }
+            } finally {
+                if (manualRefresh && refreshIcon) {
+                    setTimeout(() => refreshIcon.classList.remove('animate-spin'), 450);
+                }
+                updateTimestamp();
+            }
+        }
+
+        function applyLiveWidgetData(data) {
+            const serverNameEl = document.getElementById('widget-server-name');
+            const presenceCountEl = document.getElementById('presence-count');
+            const heroPillEl = document.getElementById('hero-online-pill');
+            const statusText = document.getElementById('api-status-text');
+            const statusDot = document.getElementById('api-status-dot');
+            const fallbackBanner = document.getElementById('fallback-banner');
+
+            if (data.name) {
+                serverNameEl.textContent = data.name.toUpperCase();
+            }
+
+            const channelsMap = {};
+            if (Array.isArray(data.channels)) {
+                currentChannels = data.channels;
+                data.channels.forEach(ch => {
+                    channelsMap[ch.id] = ch.name;
+                });
+            } else {
+                currentChannels = [];
+            }
+
+            const rawMembers = Array.isArray(data.members) ? data.members : [];
+            currentMembers = rawMembers.map(member => ({
+                ...member,
+                channel_name: member.channel_id && channelsMap[member.channel_id] ? channelsMap[member.channel_id] : null
+            }));
+
+            const onlineCount = typeof data.presence_count === 'number' ? data.presence_count : currentMembers.length;
+            animateCounter(presenceCountEl, onlineCount);
+            heroPillEl.textContent = `${onlineCount} В СЕТИ`;
+
+            statusText.textContent = 'ПРЯМОЕ ПОДКЛЮЧЕНИЕ // АКТИВНО';
+            statusDot.className = 'w-2 h-2 rounded-full bg-white shadow-[0_0_8px_#FFFFFF]';
+            fallbackBanner.classList.add('hidden');
+
+            renderChannels();
+            updateGameCounters();
+            renderMembers();
+        }
+
+        function applyFallbackWidgetData() {
+            const presenceCountEl = document.getElementById('presence-count');
+            const heroPillEl = document.getElementById('hero-online-pill');
+            const statusText = document.getElementById('api-status-text');
+            const statusDot = document.getElementById('api-status-dot');
+            const fallbackBanner = document.getElementById('fallback-banner');
+
+            currentMembers = [...FALLBACK_MEMBERS];
+            currentChannels = [...FALLBACK_CHANNELS];
+
+            const simulatedOnlineCount = 48;
+            animateCounter(presenceCountEl, simulatedOnlineCount);
+            heroPillEl.textContent = `${simulatedOnlineCount} В СЕТИ`;
+
+            statusText.textContent = 'ДЕМО-РЕЖИМ // СИНХРОНИЗАЦИЯ';
+            statusDot.className = 'w-2 h-2 rounded-full bg-neutral-300 animate-pulse';
+            fallbackBanner.classList.remove('hidden');
+
+            renderChannels();
+            updateGameCounters();
+            renderMembers();
+        }
+
+        function renderChannels() {
+            const container = document.getElementById('voice-channels-container');
+            const list = document.getElementById('voice-channels-list');
+
+            if (!currentChannels || currentChannels.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+            list.innerHTML = currentChannels.slice(0, 6).map(ch => `
+                <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-lg bg-[#0B0B0B] border border-white/10 text-xs font-mono text-neutral-200">
+                    <div class="flex items-end gap-0.5 h-3">
+                        <span class="w-0.5 bg-white rounded-full eq-bar-1"></span>
+                        <span class="w-0.5 bg-white rounded-full eq-bar-2"></span>
+                        <span class="w-0.5 bg-white rounded-full eq-bar-3"></span>
+                    </div>
+                    <span>${escapeHtml(ch.name)}</span>
+                </div>
+            `).join('');
+        }
+
+        function updateGameCounters() {
+            const inGameMembers = currentMembers.filter(m => m.game && m.game.name);
+            animateCounter(document.getElementById('in-game-count'), inGameMembers.length);
+
+            const countGame = (keyword) => currentMembers.filter(m => 
+                m.game && m.game.name && m.game.name.toLowerCase().includes(keyword.toLowerCase())
+            ).length;
+
+            const dotaCount = countGame('dota');
+            const mcCount = countGame('minecraft');
+            const robloxCount = countGame('roblox');
+
+            document.getElementById('card-count-dota').textContent = dotaCount > 0 ? `${dotaCount} В ИГРЕ` : 'АКТИВНО';
+            document.getElementById('card-count-mc').textContent = mcCount > 0 ? `${mcCount} В ИГРЕ` : 'АКТИВНО';
+            document.getElementById('card-count-roblox').textContent = robloxCount > 0 ? `${robloxCount} В ИГРЕ` : 'АКТИВНО';
+        }
+
+        function setActivityFilter(filterValue) {
+            currentFilter = filterValue;
+            const buttons = document.querySelectorAll('.filter-tab');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('data-filter') === filterValue) {
+                    btn.className = 'filter-tab px-3 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider bg-white text-[#0B0B0B] font-bold transition-all whitespace-nowrap';
+                } else {
+                    btn.className = 'filter-tab px-3 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider text-neutral-400 hover:text-white transition-all whitespace-nowrap';
+                }
+            });
+            renderMembers();
+        }
+
+        function filterByGameFromCard(gameName) {
+            setActivityFilter(gameName);
+            const activitySection = document.getElementById('activity');
+            if (activitySection) {
+                activitySection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function renderMembers() {
+            const grid = document.getElementById('members-grid');
+            const searchQuery = (document.getElementById('member-search')?.value || '').trim().toLowerCase();
+
+            const filtered = currentMembers.filter(member => {
+                const username = (member.username || '').toLowerCase();
+                const gameName = (member.game && member.game.name ? member.game.name : '').toLowerCase();
+
+                if (currentFilter === 'playing' && !gameName) return false;
+                if (currentFilter !== 'all' && currentFilter !== 'playing') {
+                    if (!gameName.includes(currentFilter.toLowerCase())) return false;
+                }
+
+                if (searchQuery) {
+                    return username.includes(searchQuery) || gameName.includes(searchQuery);
+                }
+
+                return true;
+            });
+
+            filtered.sort((a, b) => {
+                const aHasGame = a.game && a.game.name ? 1 : 0;
+                const bHasGame = b.game && b.game.name ? 1 : 0;
+                return bHasGame - aHasGame;
+            });
+
+            document.getElementById('displayed-members-count').textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full bg-[#0B0B0B] border border-white/10 rounded-xl p-10 text-center">
+                        <div class="font-mono text-sm uppercase tracking-wider text-white mb-1">Игроки по запросу не найдены</div>
+                        <p class="text-xs text-neutral-500 font-mono mb-4">Попробуйте сбросить фильтр или изменить поисковый запрос.</p>
+                        <button onclick="setActivityFilter('all'); document.getElementById('member-search').value=''; renderMembers();" 
+                                class="px-4 py-2 rounded-lg bg-white text-[#0B0B0B] font-mono text-xs font-bold uppercase tracking-wider hover:scale-[1.02] transition-all">
+                            Показать всех участников
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(member => {
+                const safeName = escapeHtml(member.username || 'Участник');
+                const gameName = member.game && member.game.name ? escapeHtml(member.game.name) : null;
+                const channelName = member.channel_name ? escapeHtml(member.channel_name) : null;
+                const avatarUrl = member.avatar_url || 'https://cdn.discordapp.com/embed/avatars/0.png';
+
+                // Статусы полностью на русском языке
+                let statusDotClass = 'bg-white shadow-[0_0_8px_#FFFFFF]';
+                let statusLabel = 'В СЕТИ';
+                if (member.status === 'idle') {
+                    statusDotClass = 'bg-neutral-300';
+                    statusLabel = 'НЕАКТИВЕН';
+                } else if (member.status === 'dnd') {
+                    statusDotClass = 'bg-neutral-500 border border-white';
+                    statusLabel = 'ЗАНЯТ';
+                }
+
+                const gameBadgeHtml = gameName ? `
+                    <div class="mt-1 inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-white/10 border border-white/15 text-[11px] font-mono text-white max-w-full truncate">
+                        <svg class="w-3 h-3 shrink-0 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="2" y="6" width="20" height="12" rx="2"/>
+                            <path d="M6 12h4m-2-2v4m7-1h.01m2.99-2h.01"/>
+                        </svg>
+                        <span class="truncate font-semibold">${gameName}</span>
+                    </div>
+                ` : `
+                    <div class="mt-1 inline-flex items-center gap-1.5 text-[11px] font-mono text-neutral-400 truncate">
+                        <span>${channelName ? `Канал: ${channelName}` : 'В голосовом лобби'}</span>
+                    </div>
+                `;
+
+                return `
+                    <div class="spotlight-card group bg-[#0B0B0B] hover:bg-[#181818] border border-white/10 hover:border-white/30 rounded-xl p-3.5 flex items-center gap-3.5 transition-all duration-300 hover:scale-[1.02]">
+                        <div class="relative shrink-0">
+                            <img src="${avatarUrl}" 
+                                 alt="${safeName}" 
+                                 onerror="this.onerror=null;this.src='https://placehold.co/80x80/141414/FFFFFF?text=DF';"
+                                 class="w-11 h-11 rounded-full object-cover border border-white/15 group-hover:border-white/40 transition-colors bg-[#141414]" />
+                            <span title="${statusLabel}" class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-[#0B0B0B] ${statusDotClass}"></span>
+                        </div>
+
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center justify-between gap-2">
+                                <p class="text-sm font-bold text-white truncate">${safeName}</p>
+                                <span class="font-mono text-[9px] uppercase tracking-wider text-neutral-400 shrink-0">${statusLabel}</span>
+                            </div>
+                            ${gameBadgeHtml}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function updateTimestamp() {
+            const el = document.getElementById('last-updated-time');
+            if (!el) return;
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            el.textContent = `ОБНОВЛЕНО: ${timeStr}`;
+        }
+
+        // =========================================================================
+        // 6. УЛЬТРА-АНИМАЦИИ: 3D-НАКЛОН КАРТОЧЕК, СВЕЧЕНИЕ КУРСОРА, МАГНИТНЫЕ КНОПКИ, CANVAS
+        // =========================================================================
+        function initInteractiveEffects() {
+            // 1. Глобальное отслеживание мыши и подсветка карточек
+            window.addEventListener('mousemove', (e) => {
+                document.documentElement.style.setProperty('--cursor-x', `${e.clientX}px`);
+                document.documentElement.style.setProperty('--cursor-y', `${e.clientY}px`);
+
+                document.querySelectorAll('.spotlight-card').forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+                    card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+                });
+            });
+
+            // 2. Плавный 3D-Tilt (наклон карточек в пространстве)
+            document.querySelectorAll('.tilt-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -5;
+                    const rotateY = ((x - centerX) / centerX) * 5;
+                    card.style.transform = `perspective(900px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.015, 1.015, 1.015)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+                });
+            });
+
+            // 3. Магнитные кнопки
+            document.querySelectorAll('.magnetic-btn').forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    btn.style.transform = `translate(${x * 0.14}px, ${y * 0.14}px) scale(1.02)`;
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = 'translate(0px, 0px) scale(1)';
+                });
+            });
+
+            // 4. Появление блоков при скролле (IntersectionObserver)
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.12 });
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+
+        // 5. Фоновый нейросетевой HTML5 Canvas с частицами
+        function initParticleCanvas() {
+            const canvas = document.getElementById('particle-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            const particles = [];
+            const count = Math.min(Math.floor(window.innerWidth / 24), 55);
+            const mouse = { x: -9999, y: -9999 };
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+            });
+
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.45,
+                    vy: (Math.random() - 0.5) * 0.45,
+                    size: Math.random() * 1.8 + 0.7
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x < 0 || p.x > width) p.vx *= -1;
+                    if (p.y < 0 || p.y > height) p.vy *= -1;
+
+                    // Рисуем точку
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+                    ctx.fill();
+
+                    // Соединяем близкие частицы тонкими линиями
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const p2 = particles[j];
+                        const dx = p.x - p2.x;
+                        const dy = p.y - p2.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 130) {
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.strokeStyle = `rgba(255, 255, 255, ${(1 - dist / 130) * 0.09})`;
+                            ctx.lineWidth = 0.8;
+                            ctx.stroke();
+                        }
+                    }
+
+                    // Реакция на курсор мыши
+                    const mdx = p.x - mouse.x;
+                    const mdy = p.y - mouse.y;
+                    const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+                    if (mDist < 170) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${(1 - mDist / 170) * 0.22})`;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        // --- Инициализация при загрузке страницы ---
+        window.addEventListener('DOMContentLoaded', () => {
+            const titleEl = document.getElementById('scramble-title');
+            scrambleText(titleEl, 'DISFACTORY', 800);
+
+            initParticleCanvas();
+            initInteractiveEffects();
+            loadLeadershipProfiles();
+            fetchDiscordWidget(false);
+
+            // Авто-обновление онлайна каждые 60 секунд
+            setInterval(() => fetchDiscordWidget(false), 60000);
+        });
+    </script>
+</body>
+</html>
