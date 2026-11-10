@@ -3,15 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DISFACTORY — Игровое Сообщество | Официальный Discord Сервер</title>
+    <title>DISFACTORY — Игровое комьюнити | Официальный Discord Сервер</title>
+    <meta name="description" content="Комфортное игровое пространство для тебя и твоих друзей. Стаки в Dota 2, сборки Minecraft, угар в Roblox и ночные войсы до утра.">
+    <meta name="theme-color" content="#0B0B0B">
+
+    <!-- OpenGraph / Красивая карточка ссылки для Discord и соцсетей -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="DISFACTORY // ОФИЦИАЛЬНЫЙ СЕРВЕР">
+    <meta property="og:title" content="DISFACTORY — Игровое комьюнити">
+    <meta property="og:description" content="Своя атмосфера без духоты. Собирай пати в Dota 2, выживай на сборках Minecraft, залетай в Roblox и сиди в ночных войсах до рассвета. Вход открыт 24/7.">
+    <meta property="og:url" content="https://dielinix.github.io/disfactory/">
+    <meta property="og:image" content="https://placehold.co/1200x630/0B0B0B/FFFFFF.png?text=DISFACTORY+%E2%80%94+DISCORD+COMMUNITY">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DISFACTORY — Игровое комьюнити">
+    <meta name="twitter:description" content="Своя атмосфера без духоты. Dota 2 • Minecraft • Roblox • Ночные войсы 24/7.">
+    <meta name="twitter:image" content="https://placehold.co/1200x630/0B0B0B/FFFFFF.png?text=DISFACTORY+%E2%80%94+DISCORD+COMMUNITY">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter & JetBrains Mono -->
+
+    <!-- Шрифты: Inter и JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind Configuration -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -32,9 +49,9 @@
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                     boxShadow: {
-                        'neon': '0 0 28px rgba(255, 255, 255, 0.16)',
-                        'neon-strong': '0 0 45px rgba(255, 255, 255, 0.35)',
-                        'panel': '0 25px 60px rgba(0, 0, 0, 0.85)',
+                        'neon': '0 0 28px rgba(255, 255, 255, 0.15)',
+                        'neon-strong': '0 0 48px rgba(255, 255, 255, 0.34)',
+                        'panel': '0 25px 60px rgba(0, 0, 0, 0.88)',
                     }
                 }
             }
@@ -42,7 +59,6 @@
     </script>
 
     <style>
-        /* Базовые настройки и палитра Disfactory */
         :root {
             --cursor-x: 50vw;
             --cursor-y: 50vh;
@@ -60,32 +76,32 @@
             color: #0B0B0B;
         }
 
-        /* Глубокий радиальный фон + кибер-сетка */
+        /* Глубокий фон и сетка */
         .bg-disfactory {
-            background: 
-                radial-gradient(circle at 50% 0%, rgba(48, 48, 52, 0.35) 0%, rgba(20, 20, 20, 0.15) 45%, rgba(11, 11, 11, 1) 85%),
+            background:
+                radial-gradient(circle at 50% 0%, rgba(46, 46, 50, 0.34) 0%, rgba(20, 20, 20, 0.14) 45%, rgba(11, 11, 11, 1) 85%),
                 linear-gradient(to bottom, #0E0E0E 0%, #0B0B0B 100%);
         }
 
         .bg-grid-pattern {
             background-size: 52px 52px;
-            background-image: 
+            background-image:
                 linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
                 linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
             mask-image: radial-gradient(ellipse 85% 65% at 50% 25%, #000 45%, transparent 100%);
             -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 25%, #000 45%, transparent 100%);
         }
 
-        /* Глобальное световое пятно за курсором мыши */
+        /* Световое пятно за курсором */
         .cursor-spotlight {
             background: radial-gradient(
                 650px circle at var(--cursor-x) var(--cursor-y),
-                rgba(255, 255, 255, 0.045),
+                rgba(255, 255, 255, 0.042),
                 transparent 45%
             );
         }
 
-        /* Кастомный скроллбар */
+        /* Скроллбар */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -101,7 +117,7 @@
             background: #484848;
         }
 
-        /* Интерактивные 3D-карточки с локальным свечением от курсора */
+        /* Карточки с локальным свечением от мыши */
         .spotlight-card {
             position: relative;
             overflow: hidden;
@@ -139,7 +155,7 @@
             opacity: 1;
         }
 
-        /* Эффект бегущего блика на главной кнопке */
+        /* Блик на кнопках */
         .btn-shimmer {
             position: relative;
             overflow: hidden;
@@ -165,7 +181,7 @@
             45%, 100% { left: 140%; }
         }
 
-        /* Бесконечная бегущая строка (Marquee) */
+        /* Бегущая строка */
         @keyframes marqueeScroll {
             0% { transform: translateX(0%); }
             100% { transform: translateX(-50%); }
@@ -179,26 +195,36 @@
             animation-play-state: paused;
         }
 
-        /* Анимация эквалайзера (звуковые волны) */
+        /* Эквалайзер */
         @keyframes eqBar1 {
             0%, 100% { height: 4px; }
-            50% { height: 14px; }
+            50% { height: 15px; }
         }
         @keyframes eqBar2 {
-            0%, 100% { height: 13px; }
+            0%, 100% { height: 14px; }
             35% { height: 4px; }
             70% { height: 16px; }
         }
         @keyframes eqBar3 {
             0%, 100% { height: 7px; }
-            45% { height: 15px; }
+            45% { height: 16px; }
             80% { height: 3px; }
         }
-        .eq-bar-1 { animation: eqBar1 0.9s ease-in-out infinite; }
-        .eq-bar-2 { animation: eqBar2 0.75s ease-in-out infinite; }
-        .eq-bar-3 { animation: eqBar3 1.05s ease-in-out infinite; }
+        @keyframes eqBar4 {
+            0%, 100% { height: 11px; }
+            25% { height: 16px; }
+            65% { height: 4px; }
+        }
+        .eq-bar-1 { animation: eqBar1 0.65s ease-in-out infinite; }
+        .eq-bar-2 { animation: eqBar2 0.55s ease-in-out infinite; }
+        .eq-bar-3 { animation: eqBar3 0.75s ease-in-out infinite; }
+        .eq-bar-4 { animation: eqBar4 0.6s ease-in-out infinite; }
+        .eq-paused span {
+            animation-play-state: paused !important;
+            height: 4px !important;
+        }
 
-        /* Плавное появление элементов при скролле (Scroll Reveal) */
+        /* Плавное появление секций при скролле */
         .reveal {
             opacity: 0;
             transform: translateY(28px) scale(0.985);
@@ -209,7 +235,7 @@
             transform: translateY(0) scale(1);
         }
 
-        /* Плавающая левитация иконок */
+        /* Левитация */
         @keyframes floatSlow {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-6px); }
@@ -218,7 +244,7 @@
             animation: floatSlow 4.5s ease-in-out infinite;
         }
 
-        /* Металлический перелив заголовка */
+        /* Перелив текста */
         @keyframes textShine {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -232,45 +258,203 @@
             animation: textShine 7s linear infinite;
         }
 
-        /* Вращающийся ореол для карточек владельца */
-        @keyframes borderSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        /* Кастомный ползунок громкости */
+        input[type=range].df-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.12);
+            height: 4px;
+            border-radius: 999px;
         }
-        .owner-glow-ring {
-            background: conic-gradient(from 0deg, transparent 0%, rgba(255,255,255,0.4) 25%, transparent 50%, rgba(255,255,255,0.2) 75%, transparent 100%);
-            animation: borderSpin 9s linear infinite;
+        input[type=range].df-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #FFFFFF;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
         }
     </style>
 </head>
 <body class="bg-disfactory min-h-screen flex flex-col justify-between relative antialiased">
 
+    <!-- ================= ИНТРО-ЭКРАН (PRELOADER) ================= -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#0B0B0B] flex flex-col items-center justify-center px-4 select-none transition-all duration-700">
+        <div class="fixed inset-0 bg-grid-pattern pointer-events-none opacity-60"></div>
+
+        <div class="relative z-10 w-full max-w-md bg-[#141414] border border-white/15 rounded-2xl p-6 sm:p-8 shadow-panel text-center">
+            <!-- Фирменный черно-белый знак Disfactory (форма с рогами/ушами и паутиной) -->
+            <div class="w-20 h-20 mx-auto mb-5 rounded-2xl bg-[#0B0B0B] border border-white/20 flex items-center justify-center shadow-neon relative overflow-hidden">
+                <svg class="w-12 h-12 text-white" viewBox="0 0 100 100" fill="currentColor">
+                    <!-- Острый силуэт маски/ушей Disfactory с паутиной и расколом -->
+                    <path d="M18 82 C10 66, 12 40, 26 12 C34 26, 40 42, 47 48 L50 53 L53 48 C60 42, 66 26, 74 12 C88 40, 90 66, 82 82 C76 86, 70 80, 68 74 C58 82, 42 82, 32 74 C30 80, 24 86, 18 82 Z" />
+                    <!-- Контрастные черные глаза и разломы внутри формы -->
+                    <polygon points="28,48 44,54 34,60" fill="#0B0B0B"/>
+                    <polygon points="72,48 56,54 66,60" fill="#0B0B0B"/>
+                    <path d="M74 16 L60 46 M78 28 L58 48 M82 42 L60 52 M65 26 C70 30, 74 35, 79 38 M61 36 C67 39, 72 44, 77 48" stroke="#0B0B0B" stroke-width="2" fill="none"/>
+                    <path d="M27 22 L34 38 L29 44 L38 56" stroke="#0B0B0B" stroke-width="2.2" fill="none"/>
+                </svg>
+            </div>
+
+            <div class="font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-400 mb-1">
+                ИНИЦИАЛИЗАЦИЯ ПРОСТРАНСТВА
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-[0.18em] text-white mb-5">
+                DISFACTORY
+            </h2>
+
+            <!-- Полоса прогресса -->
+            <div class="w-full bg-[#0B0B0B] border border-white/10 h-2.5 rounded-full overflow-hidden mb-3 p-0.5">
+                <div id="preloader-bar" class="h-full bg-white rounded-full transition-all duration-150 shadow-[0_0_12px_#FFFFFF]" style="width: 0%"></div>
+            </div>
+
+            <div class="flex items-center justify-between font-mono text-xs text-neutral-400 mb-5">
+                <span id="preloader-status" class="truncate max-w-[230px] text-left">Подключение к узлу...</span>
+                <span id="preloader-percent" class="text-white font-bold">0%</span>
+            </div>
+
+            <!-- Терминальные логи загрузки -->
+            <div id="preloader-logs" class="bg-[#0B0B0B] border border-white/10 rounded-xl p-3 mb-6 text-left font-mono text-[11px] text-neutral-400 space-y-1 h-24 overflow-hidden">
+                <div class="text-neutral-500">&gt; Проверка шлюза ID 1559945706020540538...</div>
+            </div>
+
+            <!-- Кнопка входа (активирует звук и открывает сайт) -->
+            <button id="preloader-enter-btn"
+                    onclick="enterDisfactory(true)"
+                    class="btn-shimmer w-full py-3.5 px-6 rounded-xl bg-white text-[#0B0B0B] font-mono font-black text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 hover:scale-[1.02] shadow-neon hover:shadow-neon-strong flex items-center justify-center gap-2.5">
+                <span>ВОЙТИ В ПРОСТРАНСТВО</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <button onclick="enterDisfactory(false)"
+                    class="mt-3 font-mono text-[11px] text-neutral-500 hover:text-neutral-300 transition-colors">
+                Войти в тихом режиме (без музыки и звуков)
+            </button>
+        </div>
+    </div>
+
     <!-- Интерактивный нейросетевой Canvas с частицами -->
     <canvas id="particle-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-70"></canvas>
 
-    <!-- Фоновая кибер-сетка и световое пятно за курсором -->
+    <!-- Фоновая сетка и световое пятно за курсором -->
     <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
     <div class="fixed inset-0 cursor-spotlight pointer-events-none z-0"></div>
 
     <!-- Всплывающие уведомления (Тосты) -->
-    <div id="toast-container" class="fixed bottom-6 right-6 z-50 pointer-events-none flex flex-col gap-2.5"></div>
+    <div id="toast-container" class="fixed top-24 right-6 z-50 pointer-events-none flex flex-col gap-2.5"></div>
+
+    <!-- ================= ПЛАВАЮЩИЙ МИНИ-ПЛЕЕР (DEAD INTERNET THEORY SPED UP) ================= -->
+    <div id="music-player-widget" class="fixed bottom-5 right-5 z-40 transition-all duration-300">
+        <!-- Скрытый HTML5 Audio для реального потока или локального mp3 -->
+        <audio id="bg-audio-element" loop preload="auto" crossorigin="anonymous"></audio>
+        <!-- Скрытый input для выбора своего файла при желании -->
+        <input type="file" id="custom-audio-input" accept="audio/*" class="hidden" onchange="loadCustomAudioFile(event)">
+
+        <div class="bg-[#141414]/95 backdrop-blur-xl border border-white/20 rounded-2xl shadow-panel overflow-hidden w-[310px] sm:w-[340px]">
+            <!-- Верхняя плашка плеера -->
+            <div class="px-4 py-2.5 bg-[#0B0B0B] border-b border-white/10 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div id="player-eq" class="flex items-end gap-0.5 h-3.5 eq-paused">
+                        <span class="w-0.5 bg-white rounded-full eq-bar-1"></span>
+                        <span class="w-0.5 bg-white rounded-full eq-bar-2"></span>
+                        <span class="w-0.5 bg-white rounded-full eq-bar-3"></span>
+                        <span class="w-0.5 bg-white rounded-full eq-bar-4"></span>
+                    </div>
+                    <span class="font-mono text-[10px] uppercase tracking-widest text-white font-bold">
+                        АУДИОПОТОК // ПОВТОР 24/7
+                    </span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span id="player-speed-badge"
+                          onclick="togglePlaybackSpeed()"
+                          title="Переключить скорость (Sped Up 1.25x / Оригинал 1.0x)"
+                          class="cursor-pointer font-mono text-[9px] px-1.5 py-0.5 rounded bg-white text-[#0B0B0B] font-extrabold uppercase hover:opacity-80 transition-opacity">
+                        1.25x SPED UP
+                    </span>
+                    <button onclick="togglePlayerCollapse()"
+                            title="Свернуть / Развернуть плеер"
+                            class="text-neutral-400 hover:text-white p-1 transition-colors">
+                        <svg id="player-collapse-icon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Основное тело плеера -->
+            <div id="player-body" class="p-3.5 space-y-3">
+                <div class="flex items-center gap-3">
+                    <!-- Кнопка Play / Pause -->
+                    <button id="player-toggle-btn"
+                            onclick="toggleMusicPlayback()"
+                            class="w-11 h-11 rounded-xl bg-white text-[#0B0B0B] flex items-center justify-center shrink-0 shadow-neon hover:scale-105 active:scale-95 transition-all"
+                            aria-label="Воспроизвести или поставить на паузу">
+                        <svg id="icon-play" class="w-5 h-5 fill-current ml-0.5" viewBox="0 0 24 24">
+                            <polygon points="5 3 19 12 5 21 5 3"/>
+                        </svg>
+                        <svg id="icon-pause" class="w-5 h-5 fill-current hidden" viewBox="0 0 24 24">
+                            <rect x="6" y="4" width="4" height="16"/>
+                            <rect x="14" y="4" width="4" height="16"/>
+                        </svg>
+                    </button>
+
+                    <!-- Название трека и источник -->
+                    <div class="min-w-0 flex-1">
+                        <div class="font-bold text-xs sm:text-sm text-white truncate">
+                            Dead Internet Theory (Sped Up)
+                        </div>
+                        <div id="player-source-label" class="font-mono text-[10px] text-neutral-400 truncate">
+                            Готов к воспроизведению • Бесконечный цикл
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ползунок громкости и смена источника -->
+                <div class="flex items-center justify-between gap-3 pt-1 border-t border-white/10">
+                    <div class="flex items-center gap-2 flex-1">
+                        <svg class="w-3.5 h-3.5 text-neutral-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                        </svg>
+                        <input id="player-volume"
+                               type="range"
+                               min="0"
+                               max="100"
+                               value="45"
+                               oninput="setMusicVolume(this.value)"
+                               class="df-slider w-full cursor-pointer" />
+                    </div>
+
+                    <button onclick="document.getElementById('custom-audio-input').click()"
+                            title="Выбрать свой MP3-файл с компьютера"
+                            class="font-mono text-[10px] px-2 py-1 rounded bg-[#0B0B0B] hover:bg-white hover:text-[#0B0B0B] text-neutral-300 border border-white/10 transition-colors shrink-0">
+                        Свой MP3
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- ================= 1. ШАПКА (NAVBAR) ================= -->
-    <header class="sticky top-0 z-40 backdrop-blur-xl bg-[#0B0B0B]/80 border-b border-white/10 transition-all duration-300">
+    <header class="sticky top-0 z-40 backdrop-blur-xl bg-[#0B0B0B]/85 border-b border-white/10 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            
-            <!-- Слева: Минималистичный логотип + Название -->
-            <a href="#" class="group flex items-center gap-3.5 focus:outline-none">
-                <div class="relative w-11 h-11 rounded-xl bg-[#141414] border border-white/15 flex items-center justify-center shadow-inner transition-all duration-300 group-hover:border-white/50 group-hover:shadow-neon">
+
+            <!-- Логотип Disfactory (с новой черно-белой иконкой) -->
+            <a href="#" onmouseenter="playHoverSfx()" onclick="playClickSfx()" class="group flex items-center gap-3.5 focus:outline-none">
+                <div class="relative w-11 h-11 rounded-xl bg-[#141414] border border-white/20 flex items-center justify-center shadow-inner transition-all duration-300 group-hover:border-white/60 group-hover:shadow-neon">
                     <span class="absolute -top-1 -right-1 flex h-2.5 w-2.5">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
                     </span>
-                    <!-- Эмблема Disfactory -->
-                    <svg class="w-5 h-5 text-white transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M4 4h9a7 7 0 0 1 7 7v2a7 7 0 0 1-7 7H4V4z" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M9 9h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H9V9z" fill="currentColor" stroke="none"/>
-                        <line x1="4" y1="12" x2="2" y2="12" stroke-linecap="round"/>
+                    <svg class="w-7 h-7 text-white transition-transform duration-500 group-hover:scale-110" viewBox="0 0 100 100" fill="currentColor">
+                        <path d="M18 82 C10 66, 12 40, 26 12 C34 26, 40 42, 47 48 L50 53 L53 48 C60 42, 66 26, 74 12 C88 40, 90 66, 82 82 C76 86, 70 80, 68 74 C58 82, 42 82, 32 74 C30 80, 24 86, 18 82 Z" />
+                        <polygon points="28,48 44,54 34,60" fill="#0B0B0B"/>
+                        <polygon points="72,48 56,54 66,60" fill="#0B0B0B"/>
+                        <path d="M74 16 L60 46 M78 28 L58 48" stroke="#0B0B0B" stroke-width="2.5" fill="none"/>
                     </svg>
                 </div>
                 <div class="flex flex-col">
@@ -285,39 +469,53 @@
                 </div>
             </a>
 
-            <!-- Навигация по секциям -->
-            <nav class="hidden lg:flex items-center gap-1 bg-[#141414]/90 border border-white/10 rounded-xl p-1">
-                <a href="#games" class="px-3.5 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider text-neutral-300 hover:text-white hover:bg-white/10 transition-all duration-200">
-                    Дисциплины
+            <!-- Навигация -->
+            <nav class="hidden xl:flex items-center gap-1 bg-[#141414]/90 border border-white/10 rounded-xl p-1">
+                <a href="#games" onmouseenter="playHoverSfx()" onclick="playClickSfx()" class="px-3 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider text-neutral-300 hover:text-white hover:bg-white/10 transition-all">
+                    Игры
                 </a>
-                <a href="#manifesto" class="px-3.5 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider text-neutral-300 hover:text-white hover:bg-white/10 transition-all duration-200">
-                    Почему мы
+                <a href="#roles" onmouseenter="playHoverSfx()" onclick="playClickSfx()" class="px-3 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider text-neutral-300 hover:text-white hover:bg-white/10 transition-all">
+                    Витрина ролей
                 </a>
-                <a href="#leadership" class="px-3.5 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider text-neutral-300 hover:text-white hover:bg-white/10 transition-all duration-200">
+                <a href="#hall-of-fame" onmouseenter="playHoverSfx()" onclick="playClickSfx()" class="px-3 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider text-neutral-300 hover:text-white hover:bg-white/10 transition-all">
+                    Топ-3 недели
+                </a>
+                <a href="#leadership" onmouseenter="playHoverSfx()" onclick="playClickSfx()" class="px-3 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider text-neutral-300 hover:text-white hover:bg-white/10 transition-all">
                     Руководство
                 </a>
-                <a href="#activity" class="px-3.5 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider text-neutral-300 hover:text-white hover:bg-white/10 transition-all duration-200 flex items-center gap-2">
+                <a href="#activity" onmouseenter="playHoverSfx()" onclick="playClickSfx()" class="px-3 py-1.5 rounded-lg text-xs font-mono uppercase tracking-wider text-neutral-300 hover:text-white hover:bg-white/10 transition-all flex items-center gap-2">
                     <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
-                    Живой онлайн
+                    Онлайн
                 </a>
             </nav>
 
-            <!-- Справа: Копирование ссылки и кнопка входа -->
-            <div class="flex items-center gap-2.5">
-                <button 
-                    onclick="copyInviteLink()" 
-                    title="Скопировать ссылку-приглашение"
-                    class="hidden sm:flex items-center justify-center w-10 h-10 rounded-xl bg-[#141414] border border-white/10 text-neutral-400 hover:text-white hover:border-white/35 transition-all duration-300 hover:scale-105"
-                    aria-label="Скопировать приглашение">
+            <!-- Справа: Переключатель SFX, копирование инвайта и вход -->
+            <div class="flex items-center gap-2">
+                <!-- Переключатель тактильного звука UI SFX -->
+                <button id="sfx-toggle-btn"
+                        onclick="toggleSfx()"
+                        title="Включить или выключить звуковой отклик кнопок (UI SFX)"
+                        class="hidden md:inline-flex items-center gap-2 px-3 py-2.5 rounded-xl bg-[#141414] border border-white/10 hover:border-white/30 font-mono text-[11px] uppercase tracking-wider text-white transition-all">
+                    <span id="sfx-dot" class="w-2 h-2 rounded-full bg-white shadow-[0_0_8px_#FFFFFF]"></span>
+                    <span id="sfx-label">SFX: ВКЛ</span>
+                </button>
+
+                <button onclick="playClickSfx(); copyInviteLink()"
+                        onmouseenter="playHoverSfx()"
+                        title="Скопировать ссылку-приглашение"
+                        class="hidden sm:flex items-center justify-center w-10 h-10 rounded-xl bg-[#141414] border border-white/10 text-neutral-400 hover:text-white hover:border-white/35 transition-all duration-300 hover:scale-105"
+                        aria-label="Скопировать приглашение">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                         <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                         <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                     </svg>
                 </button>
 
-                <a href="https://discord.gg/uTXD659A8x" 
-                   target="_blank" 
+                <a href="https://discord.gg/uTXD659A8x"
+                   target="_blank"
                    rel="noopener noreferrer"
+                   onmouseenter="playHoverSfx()"
+                   onclick="playClickSfx()"
                    class="magnetic-btn btn-shimmer relative group inline-flex items-center gap-2.5 px-5 py-2.5 rounded-xl bg-white text-[#0B0B0B] font-bold text-xs sm:text-sm tracking-wide uppercase transition-all duration-300 hover:scale-[1.03] hover:shadow-neon-strong active:scale-[0.98]">
                     <span>Присоединиться</span>
                     <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
@@ -334,91 +532,89 @@
         <!-- ================= 2. ГЛАВНЫЙ ЭКРАН (HERO SECTION) ================= -->
         <section id="hero" class="pt-12 pb-16 sm:pt-20 sm:pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
             <div class="flex flex-col items-center text-center max-w-4xl mx-auto reveal visible">
-                
-                <!-- Верхняя плашка статуса -->
+
+                <!-- Верхняя плашка -->
                 <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-[#141414]/90 border border-white/15 mb-8 shadow-neon backdrop-blur-md">
                     <span class="relative flex h-2 w-2">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
                     </span>
                     <span class="font-mono text-[11px] sm:text-xs tracking-[0.14em] text-neutral-300 uppercase">
-                        ИГРОВАЯ ЭКОСИСТЕМА НОВОГО ПОКОЛЕНИЯ // <span class="text-white font-bold">ДОСТУП ОТКРЫТ</span>
+                        ТЕРРИТОРИЯ СВОИХ // <span class="text-white font-bold">ДОСТУП ОТКРЫТ</span>
                     </span>
                 </div>
 
-                <!-- Главный агрессивный заголовок с кибер-дешифровкой -->
+                <!-- Заголовок с кибер-дешифровкой -->
                 <h1 class="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tight uppercase leading-[1.02] text-white mb-6 select-none">
                     <span id="scramble-title" data-value="DISFACTORY" class="inline-block">DISFACTORY</span>
                     <span class="block text-2xl sm:text-4xl lg:text-5xl mt-2 font-extrabold tracking-[0.22em] text-metallic-animated">
-                        ИГРОВОЙ СЕРВЕР
+                        ИГРОВОЕ КОМЬЮНИТИ
                     </span>
                 </h1>
 
                 <!-- Описание -->
                 <p class="text-base sm:text-lg lg:text-xl text-neutral-300 max-w-2xl leading-relaxed font-normal mb-10">
-                    Комфортное игровое пространство для тебя и твоих друзей. Проводи время весело, собирай пати и доминируй в любимых мирах без токсичности и скуки.
+                    Комфортное игровое пространство для тебя и твоих друзей. Проводи время весело, собирай пати в любимых играх и залетай в ночные голосовые до самого утра.
                 </p>
 
-                <!-- Главные кнопки действия -->
+                <!-- Главные кнопки -->
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto mb-14">
-                    <a href="https://discord.gg/uTXD659A8x" 
-                       target="_blank" 
+                    <a href="https://discord.gg/uTXD659A8x"
+                       target="_blank"
                        rel="noopener noreferrer"
+                       onmouseenter="playHoverSfx()"
+                       onclick="playClickSfx()"
                        class="magnetic-btn btn-shimmer w-full sm:w-auto group relative inline-flex items-center justify-center gap-3.5 px-8 py-4 rounded-xl bg-white text-[#0B0B0B] font-black text-sm sm:text-base tracking-wider uppercase transition-all duration-300 hover:scale-[1.03] shadow-neon hover:shadow-neon-strong">
-                        <!-- Иконка Discord -->
                         <svg class="w-5 h-5 fill-current transition-transform duration-300 group-hover:rotate-6" viewBox="0 0 127.14 96.36">
                             <path d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/>
                         </svg>
                         <span>ПОДКЛЮЧИТЬСЯ К СЕРВЕРУ</span>
                     </a>
 
-                    <a href="#activity" 
+                    <a href="#roles"
+                       onmouseenter="playHoverSfx()"
+                       onclick="playClickSfx()"
                        class="magnetic-btn w-full sm:w-auto inline-flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-[#141414] hover:bg-[#1C1C1C] text-neutral-200 border border-white/10 hover:border-white/30 font-mono text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 hover:scale-[1.02]">
-                        <div class="flex items-end gap-0.5 h-4">
-                            <span class="w-1 bg-white rounded-full eq-bar-1"></span>
-                            <span class="w-1 bg-white rounded-full eq-bar-2"></span>
-                            <span class="w-1 bg-white rounded-full eq-bar-3"></span>
-                        </div>
-                        <span>Живой онлайн</span>
-                        <span id="hero-online-pill" class="px-2.5 py-0.5 rounded-md bg-white text-[#0B0B0B] font-bold">...</span>
+                        <span>Витрина ролей</span>
+                        <span class="px-2 py-0.5 rounded bg-white/10 text-white font-bold">12+</span>
                     </a>
                 </div>
 
-                <!-- 4 плашки преимуществ в реальном времени -->
+                <!-- 4 быстрых факта -->
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 w-full max-w-4xl mb-16">
                     <div class="spotlight-card bg-[#141414]/85 border border-white/10 rounded-xl p-4 text-left transition-all duration-300 hover:border-white/25">
-                        <div class="font-mono text-[10px] uppercase tracking-widest text-neutral-500 mb-1">КАЧЕСТВО ЗВУКА</div>
-                        <div class="font-mono text-sm sm:text-base font-bold text-white">КРИСТАЛЬНЫЙ ВОЙС</div>
+                        <div class="font-mono text-[10px] uppercase tracking-widest text-neutral-500 mb-1">ГОЛОСОВЫЕ РУМЫ</div>
+                        <div class="font-mono text-sm sm:text-base font-bold text-white">БИТРЕЙТ НА МАКСИМУМ</div>
                     </div>
                     <div class="spotlight-card bg-[#141414]/85 border border-white/10 rounded-xl p-4 text-left transition-all duration-300 hover:border-white/25">
                         <div class="font-mono text-[10px] uppercase tracking-widest text-neutral-500 mb-1">РАБОТА СЕРВЕРА</div>
-                        <div class="font-mono text-sm sm:text-base font-bold text-white">24/7 БЕЗ ЛАГОВ</div>
+                        <div class="font-mono text-sm sm:text-base font-bold text-white">24/7 БЕЗ ПЕРЕРЫВОВ</div>
                     </div>
                     <div class="spotlight-card bg-[#141414]/85 border border-white/10 rounded-xl p-4 text-left transition-all duration-300 hover:border-white/25">
-                        <div class="font-mono text-[10px] uppercase tracking-widest text-neutral-500 mb-1">ПОИСК КОМАНДЫ</div>
-                        <div class="font-mono text-sm sm:text-base font-bold text-white">ПАТИ ЗА 2 МИНУТЫ</div>
+                        <div class="font-mono text-[10px] uppercase tracking-widest text-neutral-500 mb-1">УНИКАЛЬНЫЕ РАНГИ</div>
+                        <div class="font-mono text-sm sm:text-base font-bold text-white">SSS GHOUL &amp; MODDED+</div>
                     </div>
                     <div class="spotlight-card bg-[#141414]/85 border border-white/10 rounded-xl p-4 text-left transition-all duration-300 hover:border-white/25">
                         <div class="font-mono text-[10px] uppercase tracking-widest text-neutral-500 mb-1">АТМОСФЕРА</div>
-                        <div class="font-mono text-sm sm:text-base font-bold text-white">0% ТОКСИЧНОСТИ</div>
+                        <div class="font-mono text-sm sm:text-base font-bold text-white">БЕЗ ДУШНЫХ ПРАВИЛ</div>
                     </div>
                 </div>
             </div>
 
-            <!-- ================= ТРИ КАРТОЧКИ ГЛАВНЫХ ИГР (DOTA 2, MINECRAFT, ROBLOX) ================= -->
+            <!-- ================= ТРИ КАРТОЧКИ ГЛАВНЫХ ИГР ================= -->
             <div id="games" class="pt-4 reveal">
                 <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-7 gap-2">
                     <div>
                         <span class="font-mono text-xs uppercase tracking-[0.2em] text-neutral-400 block mb-1">// ИГРОВЫЕ НАПРАВЛЕНИЯ</span>
-                        <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">Главные дисциплины сервера</h2>
+                        <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">Во что мы рубимся каждый день</h2>
                     </div>
-                    <p class="font-mono text-xs text-neutral-400">Нажми на любую карточку, чтобы отфильтровать игроков ниже</p>
+                    <p class="font-mono text-xs text-neutral-400">Нажми на карточку, чтобы отфильтровать список игроков внизу</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    
                     <!-- Карточка 1: Dota 2 -->
-                    <div onclick="filterByGameFromCard('Dota 2')" 
+                    <div onmouseenter="playHoverSfx()"
+                         onclick="playClickSfx(); filterByGameFromCard('Dota 2')"
                          class="tilt-card spotlight-card cursor-pointer group bg-[#141414] hover:bg-[#181818] border border-white/10 hover:border-white/35 rounded-xl p-6 transition-all duration-300 hover:shadow-neon flex flex-col justify-between">
                         <div class="relative z-10">
                             <div class="flex items-center justify-between mb-5">
@@ -431,7 +627,7 @@
                                     </svg>
                                 </div>
                                 <span class="font-mono text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-neutral-300 group-hover:bg-white group-hover:text-[#0B0B0B] font-bold transition-colors">
-                                    КОМАНДНАЯ MOBA 5Х5
+                                    СТАКИ • КЛОЗЫ • ZXC
                                 </span>
                             </div>
 
@@ -440,7 +636,7 @@
                                 <span id="card-count-dota" class="font-mono text-xs font-semibold text-neutral-300 px-2 py-0.5 rounded bg-white/5 border border-white/10">АКТИВНО</span>
                             </h3>
                             <p class="text-sm text-neutral-400 leading-relaxed mb-6">
-                                Плотные рейтинговые стаки, внутренние клозы 5 на 5, фановый Турбо после учёбы или работы и тиммейты, которые играют до конца и не ломают шмотки.
+                                Фулл-пати в рейтинг, вечерние внутренние клозы 5х5 на престиж, лобби 1v1 на СФах за роль <span class="text-white font-mono">1000-7</span> и чилловый Турбо под музыку.
                             </p>
                         </div>
 
@@ -451,16 +647,14 @@
                                 <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#ТУРБО</span>
                             </div>
                             <span class="font-mono text-xs text-neutral-400 group-hover:text-white flex items-center gap-1 transition-colors">
-                                Игроки
-                                <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
+                                Игроки →
                             </span>
                         </div>
                     </div>
 
                     <!-- Карточка 2: Minecraft -->
-                    <div onclick="filterByGameFromCard('Minecraft')" 
+                    <div onmouseenter="playHoverSfx()"
+                         onclick="playClickSfx(); filterByGameFromCard('Minecraft')"
                          class="tilt-card spotlight-card cursor-pointer group bg-[#141414] hover:bg-[#181818] border border-white/10 hover:border-white/35 rounded-xl p-6 transition-all duration-300 hover:shadow-neon flex flex-col justify-between">
                         <div class="relative z-10">
                             <div class="flex items-center justify-between mb-5">
@@ -472,7 +666,7 @@
                                     </svg>
                                 </div>
                                 <span class="font-mono text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-neutral-300 group-hover:bg-white group-hover:text-[#0B0B0B] font-bold transition-colors">
-                                    ВЫЖИВАНИЕ И МИРЫ
+                                    MODDED+ • SMP
                                 </span>
                             </div>
 
@@ -481,27 +675,25 @@
                                 <span id="card-count-mc" class="font-mono text-xs font-semibold text-neutral-300 px-2 py-0.5 rounded bg-white/5 border border-white/10">АКТИВНО</span>
                             </h3>
                             <p class="text-sm text-neutral-400 leading-relaxed mb-6">
-                                Ламповые приватные миры, масштабные сборки с модами, совместные мега-постройки, бедварс и хардкорные приключения в компании своих людей.
+                                Кастомные сборки с модами для обладателей <span class="text-white font-mono">Modded+</span>, ламповое выживание со своими, масштабные базы и ночные походы в энд.
                             </p>
                         </div>
 
                         <div class="relative z-10 pt-4 border-t border-white/10 flex items-center justify-between">
                             <div class="flex flex-wrap gap-1.5">
+                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#MODDED+</span>
                                 <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#ВАНИЛЛА</span>
-                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#МОДЫ</span>
-                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#СЕРВЕРА</span>
+                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#СБОРКИ</span>
                             </div>
                             <span class="font-mono text-xs text-neutral-400 group-hover:text-white flex items-center gap-1 transition-colors">
-                                Игроки
-                                <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
+                                Игроки →
                             </span>
                         </div>
                     </div>
 
                     <!-- Карточка 3: Roblox -->
-                    <div onclick="filterByGameFromCard('Roblox')" 
+                    <div onmouseenter="playHoverSfx()"
+                         onclick="playClickSfx(); filterByGameFromCard('Roblox')"
                          class="tilt-card spotlight-card cursor-pointer group bg-[#141414] hover:bg-[#181818] border border-white/10 hover:border-white/35 rounded-xl p-6 transition-all duration-300 hover:shadow-neon flex flex-col justify-between">
                         <div class="relative z-10">
                             <div class="flex items-center justify-between mb-5">
@@ -512,7 +704,7 @@
                                     </svg>
                                 </div>
                                 <span class="font-mono text-[10px] uppercase tracking-widest px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-neutral-300 group-hover:bg-white group-hover:text-[#0B0B0B] font-bold transition-colors">
-                                    ФАНЫ И ПЛЕЙСЫ
+                                    ПЛЕЙСЫ • ХОРРОРЫ
                                 </span>
                             </div>
 
@@ -521,55 +713,217 @@
                                 <span id="card-count-roblox" class="font-mono text-xs font-semibold text-neutral-300 px-2 py-0.5 rounded bg-white/5 border border-white/10">АКТИВНО</span>
                             </h3>
                             <p class="text-sm text-neutral-400 leading-relaxed mb-6">
-                                Кооперативные хорроры, совместный фарм в топовых режимах, кастомные ивенты и угарные ночные посиделки в голосовых каналах до самого утра.
+                                Кооперативные хорроры в темноте, совместный гринд, фановые плейсы на 10 человек и голосовой чат, где невозможно сдержать смех.
                             </p>
                         </div>
 
                         <div class="relative z-10 pt-4 border-t border-white/10 flex items-center justify-between">
                             <div class="flex flex-wrap gap-1.5">
                                 <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#ХОРРОРЫ</span>
-                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#КООП</span>
+                                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#ФАНЫ</span>
                                 <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-[#0B0B0B] text-neutral-300 border border-white/10">#ИВЕНТЫ</span>
                             </div>
                             <span class="font-mono text-xs text-neutral-400 group-hover:text-white flex items-center gap-1 transition-colors">
-                                Игроки
-                                <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
+                                Игроки →
                             </span>
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
 
-        <!-- ================= БЕСКОНЕЧНАЯ БЕГУЩАЯ СТРОКА (MARQUEE) ================= -->
+        <!-- ================= БЕСКОНЕЧНАЯ БЕГУЩАЯ СТРОКА ================= -->
         <div class="border-y border-white/10 bg-[#0E0E0E]/90 py-3.5 overflow-hidden select-none">
             <div class="animate-marquee flex items-center gap-10 font-mono text-xs uppercase tracking-[0.25em] text-neutral-400">
-                <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> ЗДЕСЬ НАХОДЯТ ДРУЗЕЙ, А НЕ СЛУЧАЙНЫХ РАНДОМОВ</span>
+                <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> HUNTER OF SOULS • SSS GHOUL • 1000-7 • MODDED+</span>
                 <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> НОЧНЫЕ РАЗГОВОРЫ В ВОЙСЕ ДО РАССВЕТА</span>
                 <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> СТАКИ DOTA 2 • МИРЫ MINECRAFT • РЕЖИМЫ ROBLOX</span>
-                <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> АДЕКВАТНАЯ АДМИНИСТРАЦИЯ И СВОЯ АТМОСФЕРА</span>
+                <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> DEAD INTERNET THEORY (SPED UP) НА ПОВТОРЕ</span>
                 <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> DISFACTORY — ТВОЯ ИГРОВАЯ ТЕРРИТОРИЯ</span>
-                <!-- Дубликат для бесшовного цикла -->
-                <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> ЗДЕСЬ НАХОДЯТ ДРУЗЕЙ, А НЕ СЛУЧАЙНЫХ РАНДОМОВ</span>
+                <!-- Дубликат -->
+                <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> HUNTER OF SOULS • SSS GHOUL • 1000-7 • MODDED+</span>
                 <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> НОЧНЫЕ РАЗГОВОРЫ В ВОЙСЕ ДО РАССВЕТА</span>
                 <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> СТАКИ DOTA 2 • МИРЫ MINECRAFT • РЕЖИМЫ ROBLOX</span>
-                <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> АДЕКВАТНАЯ АДМИНИСТРАЦИЯ И СВОЯ АТМОСФЕРА</span>
+                <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> DEAD INTERNET THEORY (SPED UP) НА ПОВТОРЕ</span>
                 <span class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-white"></span> DISFACTORY — ТВОЯ ИГРОВАЯ ТЕРРИТОРИЯ</span>
             </div>
         </div>
 
-        <!-- ================= 3. МАНИФЕСТ И ЦИТАТЫ (ПОЧЕМУ ИМЕННО DISFACTORY?) ================= -->
+        <!-- ================= 3. ИНТЕРАКТИВНАЯ ВИТРИНА РОЛЕЙ (ROLE SHOWCASE) ================= -->
+        <section id="roles" class="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-10 gap-4">
+                <div>
+                    <span class="font-mono text-xs uppercase tracking-[0.2em] text-neutral-400 block mb-1">// ИЕРАРХИЯ И КАСТОМНЫЕ ТЕГИ</span>
+                    <h2 class="text-2xl sm:text-4xl font-black uppercase tracking-tight text-white">Интерактивная витрина ролей</h2>
+                </div>
+
+                <!-- Фильтр категорий ролей -->
+                <div class="flex flex-wrap items-center gap-1.5 bg-[#141414] p-1.5 rounded-xl border border-white/10">
+                    <button onclick="filterRoles('all')" data-rfilter="all" class="role-filter-btn px-3 py-1.5 rounded-lg font-mono text-xs uppercase bg-white text-[#0B0B0B] font-bold transition-all">
+                        Все роли (12)
+                    </button>
+                    <button onclick="filterRoles('elite')" data-rfilter="elite" class="role-filter-btn px-3 py-1.5 rounded-lg font-mono text-xs uppercase text-neutral-400 hover:text-white transition-all">
+                        Элитные
+                    </button>
+                    <button onclick="filterRoles('gaming')" data-rfilter="gaming" class="role-filter-btn px-3 py-1.5 rounded-lg font-mono text-xs uppercase text-neutral-400 hover:text-white transition-all">
+                        Игровые и Гули
+                    </button>
+                    <button onclick="filterRoles('special')" data-rfilter="special" class="role-filter-btn px-3 py-1.5 rounded-lg font-mono text-xs uppercase text-neutral-400 hover:text-white transition-all">
+                        Особые и Мемные
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-7 items-start">
+                <!-- Слева: Сетка плашек ролей в стиле Discord -->
+                <div class="lg:col-span-7 bg-[#141414] border border-white/15 rounded-2xl p-5 sm:p-6 shadow-panel">
+                    <div class="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
+                        <span class="font-mono text-xs uppercase tracking-wider text-neutral-400">
+                            ВЫБЕРИ РОЛЬ ДЛЯ ПРОСМОТРА ПРИВИЛЕГИЙ:
+                        </span>
+                        <span class="font-mono text-[11px] text-neutral-500">КЛИКНИ НА ТЕГ</span>
+                    </div>
+
+                    <div id="roles-pills-container" class="flex flex-wrap gap-2.5">
+                        <!-- Плашки генерируются через JS -->
+                    </div>
+
+                    <!-- Мини-примерочная роли на профиль Discord -->
+                    <div class="mt-6 pt-5 border-t border-white/10">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                            <span class="font-mono text-xs uppercase tracking-wider text-neutral-300">
+                                // ПРИМЕРКА РОЛИ НА ПРОФИЛЬ DISCORD
+                            </span>
+                            <input id="preview-nick-input"
+                                   type="text"
+                                   maxlength="22"
+                                   placeholder="Введи свой никнейм..."
+                                   oninput="updateRoleProfilePreview()"
+                                   class="bg-[#0B0B0B] border border-white/15 focus:border-white/40 rounded-lg px-3 py-1.5 text-xs font-mono text-white placeholder-neutral-500 focus:outline-none w-full sm:w-52" />
+                        </div>
+
+                        <div class="bg-[#0B0B0B] border border-white/10 rounded-xl p-4 flex items-center gap-4">
+                            <div class="relative w-12 h-12 rounded-full bg-[#181818] border border-white/20 flex items-center justify-center shrink-0">
+                                <span id="preview-avatar-letter" class="font-mono font-black text-base text-white">DF</span>
+                                <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-white border-2 border-[#0B0B0B]"></span>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <div class="flex flex-wrap items-center gap-2 mb-1">
+                                    <span id="preview-nick-display" class="font-bold text-sm text-white truncate">Твой_Никнейм</span>
+                                    <span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-neutral-300">УЧАСТНИК DISFACTORY</span>
+                                </div>
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    <span id="preview-role-pill" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-[#181818] border border-white/25 text-xs font-mono text-white">
+                                        <span id="preview-role-dot" class="w-2 h-2 rounded-full bg-white"></span>
+                                        <span id="preview-role-name">Hunter of souls</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Справа: Детальное досье выбранной роли -->
+                <div class="lg:col-span-5 spotlight-card bg-[#141414] border border-white/20 rounded-2xl p-6 sm:p-7 shadow-panel relative">
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between gap-2 mb-5">
+                            <span id="role-detail-rarity" class="font-mono text-[11px] uppercase tracking-widest px-2.5 py-1 rounded bg-white text-[#0B0B0B] font-extrabold">
+                                ЛЕГЕНДАРНАЯ РОЛЬ
+                            </span>
+                            <span id="role-detail-holders" class="font-mono text-xs text-neutral-400">
+                                Владельцев: ~3%
+                            </span>
+                        </div>
+
+                        <div class="flex items-center gap-3.5 mb-4">
+                            <div id="role-detail-icon-box" class="w-12 h-12 rounded-xl bg-[#0B0B0B] border border-white/25 flex items-center justify-center shrink-0 shadow-neon">
+                                <span id="role-detail-dot" class="w-3.5 h-3.5 rounded-full bg-white shadow-[0_0_12px_#FFFFFF]"></span>
+                            </div>
+                            <div>
+                                <div class="font-mono text-[10px] uppercase tracking-widest text-neutral-400">ВЫБРАННЫЙ РАНГ</div>
+                                <h3 id="role-detail-title" class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                                    Hunter of souls
+                                </h3>
+                            </div>
+                        </div>
+
+                        <p id="role-detail-desc" class="text-sm text-neutral-300 leading-relaxed mb-6 bg-[#0B0B0B]/90 border border-white/10 rounded-xl p-4">
+                            Охотники за душами в голосовых румах и ночных лобби. Выдается тем, кто держит актив сервера на своих плечах и не оставляет ни одного шанса соперникам в клозах.
+                        </p>
+
+                        <div class="space-y-4 mb-6">
+                            <div>
+                                <div class="font-mono text-[10px] uppercase tracking-widest text-neutral-400 mb-2">
+                                    ЧТО ДАЕТ ЭТА РОЛЬ НА СЕРВЕРЕ:
+                                </div>
+                                <ul id="role-detail-perks" class="space-y-1.5 text-xs sm:text-sm text-neutral-200 font-mono">
+                                    <!-- Генерируется через JS -->
+                                </ul>
+                            </div>
+
+                            <div class="pt-3 border-t border-white/10">
+                                <div class="font-mono text-[10px] uppercase tracking-widest text-neutral-400 mb-1">
+                                    КАК ПОЛУЧИТЬ:
+                                </div>
+                                <div id="role-detail-obtain" class="text-xs sm:text-sm text-white font-medium">
+                                    Выдается за высокий онлайн в войсе, победы в ивентах или решением основателей.
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="https://discord.gg/uTXD659A8x"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           onmouseenter="playHoverSfx()"
+                           onclick="playClickSfx()"
+                           class="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white text-[#0B0B0B] font-mono text-xs font-extrabold uppercase tracking-wider transition-all hover:scale-[1.02] shadow-neon">
+                            <span>Забрать роль на сервере</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= 4. ДОСКА ПОЧЁТА (ТОП-3 НЕДЕЛИ) ================= -->
+        <section id="hall-of-fame" class="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-10 gap-4">
+                <div>
+                    <span class="font-mono text-xs uppercase tracking-[0.2em] text-neutral-400 block mb-1">// ЛИДЕРЫ DISFACTORY</span>
+                    <h2 class="text-2xl sm:text-4xl font-black uppercase tracking-tight text-white">Доска почёта: Топ-3 недели</h2>
+                </div>
+
+                <!-- Переключатель категорий топа -->
+                <div class="flex flex-wrap items-center gap-1.5 bg-[#141414] p-1.5 rounded-xl border border-white/10">
+                    <button onclick="switchLeaderboardTab('voice')" data-ltab="voice" class="leaderboard-tab-btn px-3.5 py-1.5 rounded-lg font-mono text-xs uppercase bg-white text-[#0B0B0B] font-bold transition-all">
+                        Голосовой онлайн
+                    </button>
+                    <button onclick="switchLeaderboardTab('closes')" data-ltab="closes" class="leaderboard-tab-btn px-3.5 py-1.5 rounded-lg font-mono text-xs uppercase text-neutral-400 hover:text-white transition-all">
+                        Клозы и турниры
+                    </button>
+                    <button onclick="switchLeaderboardTab('chat')" data-ltab="chat" class="leaderboard-tab-btn px-3.5 py-1.5 rounded-lg font-mono text-xs uppercase text-neutral-400 hover:text-white transition-all">
+                        Актив в чате
+                    </button>
+                </div>
+            </div>
+
+            <!-- Сетка Топ-3 карточек -->
+            <div id="leaderboard-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Карточки генерируются через JS -->
+            </div>
+        </section>
+
+        <!-- ================= 5. МАНИФЕСТ И ЦИТАТЫ ================= -->
         <section id="manifesto" class="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
             <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
                 <div>
                     <span class="font-mono text-xs uppercase tracking-[0.2em] text-neutral-400 block mb-1">// ФИЛОСОФИЯ КОМЬЮНИТИ</span>
-                    <h2 class="text-2xl sm:text-4xl font-black uppercase tracking-tight text-white">Почему заходят и остаются у нас</h2>
+                    <h2 class="text-2xl sm:text-4xl font-black uppercase tracking-tight text-white">Почему заходят на одну катку, а остаются навсегда</h2>
                 </div>
                 <div class="font-mono text-xs text-neutral-400 flex items-center gap-2">
-                    <span>Переключай цитаты:</span>
+                    <span>Цитаты:</span>
                     <div class="flex gap-1.5">
                         <button onclick="selectQuote(0)" class="quote-dot w-7 h-2 rounded-full bg-white transition-all"></button>
                         <button onclick="selectQuote(1)" class="quote-dot w-2.5 h-2 rounded-full bg-white/25 hover:bg-white/50 transition-all"></button>
@@ -579,9 +933,8 @@
                 </div>
             </div>
 
-            <!-- Интерактивный терминал с главными цитатами -->
+            <!-- Терминал с цитатами -->
             <div class="spotlight-card bg-[#141414] border border-white/15 rounded-2xl p-6 sm:p-10 mb-8 shadow-panel relative overflow-hidden">
-                <!-- Декоративные кавычки на фоне -->
                 <div class="absolute -top-6 right-8 text-[140px] font-black text-white/[0.03] leading-none select-none pointer-events-none font-serif">
                     “
                 </div>
@@ -595,7 +948,7 @@
                     </div>
 
                     <blockquote id="quote-text" class="text-lg sm:text-2xl lg:text-3xl font-bold text-white leading-snug tracking-tight mb-8">
-                        «В одиночку можно выиграть катку, но только со своими людьми хочется возвращаться в игру каждый вечер. Disfactory создан для тех, кто устал от пустых серверов и молчаливых рандомов.»
+                        «В соло можно апнуть рейтинг, но только со своими людьми хочется запускать игру каждый вечер. Disfactory собран для тех, кто устал от мёртвых серверов и немых рандомов.»
                     </blockquote>
 
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-5 border-t border-white/10">
@@ -603,59 +956,23 @@
                             — Здесь каждая катка начинается с хорошего настроения в войсе
                         </div>
                         <div class="flex items-center gap-2">
-                            <button onclick="prevQuote()" class="px-3.5 py-1.5 rounded-lg bg-[#0B0B0B] hover:bg-white hover:text-[#0B0B0B] text-white border border-white/10 font-mono text-xs uppercase transition-all">
+                            <button onclick="playClickSfx(); prevQuote()" class="px-3.5 py-1.5 rounded-lg bg-[#0B0B0B] hover:bg-white hover:text-[#0B0B0B] text-white border border-white/10 font-mono text-xs uppercase transition-all">
                                 ← Назад
                             </button>
-                            <button onclick="nextQuote()" class="px-3.5 py-1.5 rounded-lg bg-[#0B0B0B] hover:bg-white hover:text-[#0B0B0B] text-white border border-white/10 font-mono text-xs uppercase transition-all">
+                            <button onclick="playClickSfx(); nextQuote()" class="px-3.5 py-1.5 rounded-lg bg-[#0B0B0B] hover:bg-white hover:text-[#0B0B0B] text-white border border-white/10 font-mono text-xs uppercase transition-all">
                                 Далее →
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Полоса прогресса авто-переключения цитаты -->
                 <div class="absolute bottom-0 left-0 right-0 h-1 bg-white/5">
                     <div id="quote-progress" class="h-full bg-white transition-all duration-100" style="width: 0%"></div>
                 </div>
             </div>
-
-            <!-- 4 карточки причин вступить -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                <div class="tilt-card spotlight-card bg-[#141414] border border-white/10 hover:border-white/30 rounded-xl p-6 transition-all duration-300">
-                    <div class="font-mono text-xs text-neutral-500 mb-3">01 // ЛЮДИ</div>
-                    <h3 class="text-lg font-extrabold text-white uppercase mb-2">Своя компания с первой минуты</h3>
-                    <p class="text-xs sm:text-sm text-neutral-400 leading-relaxed">
-                        У нас нет «закрытых элитных кружков». Новичков встречают как старых друзей и сразу зовут в голосовой канал или общую катку.
-                    </p>
-                </div>
-
-                <div class="tilt-card spotlight-card bg-[#141414] border border-white/10 hover:border-white/30 rounded-xl p-6 transition-all duration-300">
-                    <div class="font-mono text-xs text-neutral-500 mb-3">02 // ВАЙБ</div>
-                    <h3 class="text-lg font-extrabold text-white uppercase mb-2">Разговоры до рассвета</h3>
-                    <p class="text-xs sm:text-sm text-neutral-400 leading-relaxed">
-                        Даже когда все устали от игр, в наших румах смотрят фильмы, включают демки, делятся музыкой и обсуждают всё на свете.
-                    </p>
-                </div>
-
-                <div class="tilt-card spotlight-card bg-[#141414] border border-white/10 hover:border-white/30 rounded-xl p-6 transition-all duration-300">
-                    <div class="font-mono text-xs text-neutral-500 mb-3">03 // КОМФОРТ</div>
-                    <h3 class="text-lg font-extrabold text-white uppercase mb-2">Никакого душного надзора</h3>
-                    <p class="text-xs sm:text-sm text-neutral-400 leading-relaxed">
-                        Мы ценим свободу общения и хороший юмор. Администрация не банит за ерунду, но жёстко пресекает неадекватов и спамеров.
-                    </p>
-                </div>
-
-                <div class="tilt-card spotlight-card bg-[#141414] border border-white/10 hover:border-white/30 rounded-xl p-6 transition-all duration-300">
-                    <div class="font-mono text-xs text-neutral-500 mb-3">04 // ДВИЖ</div>
-                    <h3 class="text-lg font-extrabold text-white uppercase mb-2">Совместные ивенты и лобби</h3>
-                    <p class="text-xs sm:text-sm text-neutral-400 leading-relaxed">
-                        Регулярно собираем полные лобби на 10 человек в Dota 2, запускаем общие выживания в Minecraft и тестируем безумные карты в Roblox.
-                    </p>
-                </div>
-            </div>
         </section>
 
-        <!-- ================= 4. РУКОВОДСТВО СЕРВЕРА (ВЛАДЕЛЕЦ, СО-ВЛАДЕЛЕЦ И ПОСТЫ) ================= -->
+        <!-- ================= 6. РУКОВОДСТВО СЕРВЕРА (ВЛАДЕЛЕЦ, СО-ВЛАДЕЛЕЦ И ПОСТЫ) ================= -->
         <section id="leadership" class="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
             <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
                 <div>
@@ -667,16 +984,12 @@
                 </p>
             </div>
 
-            <!-- Карточки Владельца и Со-владельца -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-7 mb-8">
-                
                 <!-- КАРТОЧКА 1: ВЛАДЕЛЕЦ СЕРВЕРА (ID: 772431282314936322) -->
                 <div class="tilt-card spotlight-card group relative bg-[#141414] border border-white/20 hover:border-white/50 rounded-2xl p-6 sm:p-8 shadow-panel transition-all duration-500 hover:shadow-neon-strong">
                     <div class="relative z-10">
-                        <!-- Верхняя строка роли и статуса -->
                         <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
                             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white text-[#0B0B0B] font-mono text-xs font-extrabold uppercase tracking-wider shadow-neon">
-                                <!-- Иконка Короны -->
                                 <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                                     <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
                                 </svg>
@@ -689,16 +1002,14 @@
                             </div>
                         </div>
 
-                        <!-- Профиль: Аватарка с вращающимся ореолом + Никнейм + ID -->
                         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-6">
                             <div class="relative shrink-0">
                                 <div class="w-24 h-24 rounded-2xl p-[2px] relative overflow-hidden bg-[#0B0B0B] border border-white/25 shadow-neon">
-                                    <img id="owner-avatar" 
-                                         src="" 
-                                         alt="Аватар Владельца" 
+                                    <img id="owner-avatar"
+                                         src=""
+                                         alt="Аватар Владельца"
                                          class="w-full h-full rounded-[14px] object-cover bg-[#141414]" />
                                 </div>
-                                <!-- Бейдж Короны поверх аватарки -->
                                 <div class="absolute -bottom-2 -right-2 w-8 h-8 rounded-xl bg-white text-[#0B0B0B] flex items-center justify-center shadow-lg border-2 border-[#0B0B0B]" title="Главный создатель сервера">
                                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                                         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
@@ -711,7 +1022,7 @@
                                     ГЛАВНЫЙ АРХИТЕКТОР ПРОЕКТА
                                 </div>
                                 <h3 id="owner-name" class="text-2xl sm:text-3xl font-black text-white tracking-tight truncate mb-1.5">
-                                    Загрузка профиля...
+                                    Основатель Disfactory
                                 </h3>
                                 <div class="flex flex-wrap items-center gap-2 font-mono text-xs text-neutral-400">
                                     <span class="px-2.5 py-0.5 rounded bg-[#0B0B0B] border border-white/10 text-neutral-300">
@@ -724,23 +1035,24 @@
                             </div>
                         </div>
 
-                        <!-- Личная цитата владельца -->
                         <p class="text-sm text-neutral-300 leading-relaxed bg-[#0B0B0B]/80 border border-white/10 rounded-xl p-4 mb-6 font-normal">
-                            «Создал Disfactory как место, где каждый чувствует себя среди своих с первой минуты в голосовом канале. Отвечаю за развитие сервера, атмосферу и комфорт каждого участника.»
+                            «Собрал Disfactory как место, где каждый чувствует себя среди своих с первой минуты в войсе. Отвечаю за развитие сервера, уникальные роли и комфорт всех участников.»
                         </p>
 
-                        <!-- Кнопки взаимодействия с профилем -->
                         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                            <a href="https://discord.com/users/772431282314936322" 
-                               target="_blank" 
+                            <a href="https://discord.com/users/772431282314936322"
+                               target="_blank"
                                rel="noopener noreferrer"
+                               onmouseenter="playHoverSfx()"
+                               onclick="playClickSfx()"
                                class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-[#0B0B0B] font-mono text-xs font-extrabold uppercase tracking-wider transition-all duration-300 hover:scale-[1.02] hover:shadow-neon">
                                 <span>Открыть профиль Discord</span>
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                                     <path d="M7 17L17 7M17 7H8M17 7V16" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </a>
-                            <button onclick="copyToClipboard('772431282314936322', 'ID Владельца скопирован')" 
+                            <button onclick="playClickSfx(); copyToClipboard('772431282314936322', 'ID Владельца скопирован')"
+                                    onmouseenter="playHoverSfx()"
                                     class="px-4 py-3 rounded-xl bg-[#0B0B0B] hover:bg-white/10 text-neutral-300 hover:text-white border border-white/15 font-mono text-xs uppercase tracking-wider transition-all">
                                 Скопировать ID
                             </button>
@@ -751,10 +1063,8 @@
                 <!-- КАРТОЧКА 2: СО-ВЛАДЕЛЕЦ СЕРВЕРА (ID: 1558546705975087225) -->
                 <div class="tilt-card spotlight-card group relative bg-[#141414] border border-white/20 hover:border-white/50 rounded-2xl p-6 sm:p-8 shadow-panel transition-all duration-500 hover:shadow-neon-strong">
                     <div class="relative z-10">
-                        <!-- Верхняя строка роли и статуса -->
                         <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
                             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white/90 text-[#0B0B0B] font-mono text-xs font-extrabold uppercase tracking-wider shadow-neon">
-                                <!-- Иконка Молнии / Щита -->
                                 <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                                     <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
                                 </svg>
@@ -767,16 +1077,14 @@
                             </div>
                         </div>
 
-                        <!-- Профиль: Аватарка + Никнейм + ID -->
                         <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-6">
                             <div class="relative shrink-0">
                                 <div class="w-24 h-24 rounded-2xl p-[2px] relative overflow-hidden bg-[#0B0B0B] border border-white/25 shadow-neon">
-                                    <img id="coowner-avatar" 
-                                         src="" 
-                                         alt="Аватар Со-владельца" 
+                                    <img id="coowner-avatar"
+                                         src=""
+                                         alt="Аватар Со-владельца"
                                          class="w-full h-full rounded-[14px] object-cover bg-[#141414]" />
                                 </div>
-                                <!-- Бейдж Щита поверх аватарки -->
                                 <div class="absolute -bottom-2 -right-2 w-8 h-8 rounded-xl bg-white text-[#0B0B0B] flex items-center justify-center shadow-lg border-2 border-[#0B0B0B]" title="Со-владелец сервера">
                                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                                         <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
@@ -786,10 +1094,10 @@
 
                             <div class="min-w-0 flex-1">
                                 <div class="font-mono text-[11px] uppercase tracking-widest text-neutral-400 mb-1">
-                                    УПРАВЛЕНИЕ КОМЬЮНИТИ И ОПЕРАЦИЯМИ
+                                    УПРАВЛЕНИЕ КОМЬЮНИТИ И ТУРНИРАМИ
                                 </div>
                                 <h3 id="coowner-name" class="text-2xl sm:text-3xl font-black text-white tracking-tight truncate mb-1.5">
-                                    Загрузка профиля...
+                                    Со-владелец Disfactory
                                 </h3>
                                 <div class="flex flex-wrap items-center gap-2 font-mono text-xs text-neutral-400">
                                     <span class="px-2.5 py-0.5 rounded bg-[#0B0B0B] border border-white/10 text-neutral-300">
@@ -802,33 +1110,33 @@
                             </div>
                         </div>
 
-                        <!-- Личная цитата со-владельца -->
                         <p class="text-sm text-neutral-300 leading-relaxed bg-[#0B0B0B]/80 border border-white/10 rounded-xl p-4 mb-6 font-normal">
-                            «Держу пульс сервера 24/7. Отвечаю за организацию игровых клозов, порядок в голосовых каналах, быструю помощь участникам и сбор самых громких пати.»
+                            «Держу пульс сервера 24/7. Отвечаю за проведение вечерних клозов, выдачу редких ролей, порядок в голосовых каналах и сбор самых шумных пати.»
                         </p>
 
-                        <!-- Кнопки взаимодействия с профилем -->
                         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                            <a href="https://discord.com/users/1558546705975087225" 
-                               target="_blank" 
+                            <a href="https://discord.com/users/1558546705975087225"
+                               target="_blank"
                                rel="noopener noreferrer"
+                               onmouseenter="playHoverSfx()"
+                               onclick="playClickSfx()"
                                class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-[#0B0B0B] font-mono text-xs font-extrabold uppercase tracking-wider transition-all duration-300 hover:scale-[1.02] hover:shadow-neon">
                                 <span>Открыть профиль Discord</span>
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                                     <path d="M7 17L17 7M17 7H8M17 7V16" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </a>
-                            <button onclick="copyToClipboard('1558546705975087225', 'ID Со-владельца скопирован')" 
+                            <button onclick="playClickSfx(); copyToClipboard('1558546705975087225', 'ID Со-владельца скопирован')"
+                                    onmouseenter="playHoverSfx()"
                                     class="px-4 py-3 rounded-xl bg-[#0B0B0B] hover:bg-white/10 text-neutral-300 hover:text-white border border-white/15 font-mono text-xs uppercase tracking-wider transition-all">
                                 Скопировать ID
                             </button>
                         </div>
                     </div>
                 </div>
-
             </div>
 
-            <!-- Посты сотрудников и команды сервера -->
+            <!-- Посты сотрудников -->
             <div class="bg-[#141414]/90 border border-white/10 rounded-2xl p-6 sm:p-7">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
                     <div class="flex items-center gap-2.5">
@@ -837,11 +1145,10 @@
                             ШТАТ И ПОСТЫ СОТРУДНИКОВ СЕРВЕРА
                         </h3>
                     </div>
-                    <span class="font-mono text-xs text-neutral-400">Все заявки на посты рассматриваются на сервере</span>
+                    <span class="font-mono text-xs text-neutral-400">Набор открыт для активных участников</span>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <!-- Пост 1 -->
                     <div class="spotlight-card bg-[#0B0B0B] border border-white/10 hover:border-white/30 rounded-xl p-4 flex items-center gap-3.5 transition-all">
                         <div class="w-11 h-11 rounded-xl bg-[#141414] border border-white/15 flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
@@ -851,11 +1158,10 @@
                         <div class="min-w-0">
                             <div class="font-mono text-[10px] uppercase text-neutral-400">ПОСТ БЕЗОПАСНОСТИ</div>
                             <div class="text-sm font-bold text-white truncate">Стражи порядка</div>
-                            <div class="font-mono text-[11px] text-neutral-500">Модерация чата и рум</div>
+                            <div class="font-mono text-[11px] text-neutral-500">Модерация чата и войса</div>
                         </div>
                     </div>
 
-                    <!-- Пост 2 -->
                     <div class="spotlight-card bg-[#0B0B0B] border border-white/10 hover:border-white/30 rounded-xl p-4 flex items-center gap-3.5 transition-all">
                         <div class="w-11 h-11 rounded-xl bg-[#141414] border border-white/15 flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
@@ -865,11 +1171,10 @@
                         <div class="min-w-0">
                             <div class="font-mono text-[10px] uppercase text-neutral-400">ПОСТ МЕРОПРИЯТИЙ</div>
                             <div class="text-sm font-bold text-white truncate">Ивент-мейкеры</div>
-                            <div class="font-mono text-[11px] text-neutral-500">Клозы, турниры и кино</div>
+                            <div class="font-mono text-[11px] text-neutral-500">Клозы 5х5, турниры и кино</div>
                         </div>
                     </div>
 
-                    <!-- Пост 3 -->
                     <div class="spotlight-card bg-[#0B0B0B] border border-white/10 hover:border-white/30 rounded-xl p-4 flex items-center gap-3.5 transition-all">
                         <div class="w-11 h-11 rounded-xl bg-[#141414] border border-white/15 flex items-center justify-center shrink-0">
                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
@@ -879,17 +1184,21 @@
                         </div>
                         <div class="min-w-0">
                             <div class="font-mono text-[10px] uppercase text-neutral-400">ТЕХНИЧЕСКИЙ ПОСТ</div>
-                            <div class="text-sm font-bold text-white truncate">Тех-команда</div>
-                            <div class="font-mono text-[11px] text-neutral-500">Боты и настройка ролей</div>
+                            <div class="text-sm font-bold text-white truncate">Кураторы Modded+</div>
+                            <div class="font-mono text-[11px] text-neutral-500">Боты, сборки и настройка</div>
                         </div>
                     </div>
 
-                    <!-- Пост 4: Набор в стафф -->
-                    <a href="https://discord.gg/uTXD659A8x" target="_blank" rel="noopener noreferrer" class="spotlight-card group bg-white/5 hover:bg-white text-white hover:text-[#0B0B0B] border border-white/20 rounded-xl p-4 flex items-center justify-between gap-3 transition-all duration-300">
+                    <a href="https://discord.gg/uTXD659A8x"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       onmouseenter="playHoverSfx()"
+                       onclick="playClickSfx()"
+                       class="spotlight-card group bg-white/5 hover:bg-white text-white hover:text-[#0B0B0B] border border-white/20 rounded-xl p-4 flex items-center justify-between gap-3 transition-all duration-300">
                         <div>
                             <div class="font-mono text-[10px] uppercase opacity-75">ВАКАНСИЯ ОТКРЫТА</div>
-                            <div class="text-sm font-extrabold uppercase">Стать сотрудником</div>
-                            <div class="font-mono text-[11px] opacity-75">Подать заявку в Discord</div>
+                            <div class="text-sm font-extrabold uppercase">Вступить в стафф</div>
+                            <div class="font-mono text-[11px] opacity-75">Оставить заявку в Discord</div>
                         </div>
                         <svg class="w-5 h-5 shrink-0 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                             <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
@@ -899,12 +1208,10 @@
             </div>
         </section>
 
-        <!-- ================= 5. БЛОК АКТИВНОСТИ (ИНТЕГРАЦИЯ С API DISCORD) ================= -->
+        <!-- ================= 7. БЛОК АКТИВНОСТИ (ИНТЕГРАЦИЯ С API DISCORD) ================= -->
         <section id="activity" class="py-12 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
-            
-            <!-- Внешний терминал мониторинга -->
             <div class="bg-[#141414] border border-white/15 rounded-2xl shadow-panel overflow-hidden">
-                
+
                 <!-- Верхняя панель статуса API -->
                 <div class="px-6 py-4 bg-[#0E0E0E] border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div class="flex items-center gap-3">
@@ -919,15 +1226,14 @@
                     </div>
 
                     <div class="flex items-center gap-3 self-start sm:self-auto">
-                        <!-- Статус подключения -->
                         <div id="api-status-badge" class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/5 border border-white/10 font-mono text-[11px] text-neutral-300">
                             <span id="api-status-dot" class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
                             <span id="api-status-text">СИНХРОНИЗАЦИЯ...</span>
                         </div>
 
-                        <!-- Кнопка ручного обновления -->
-                        <button id="refresh-btn" 
-                                onclick="fetchDiscordWidget(true)" 
+                        <button id="refresh-btn"
+                                onclick="playClickSfx(); fetchDiscordWidget(true)"
+                                onmouseenter="playHoverSfx()"
                                 class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#181818] hover:bg-white hover:text-[#0B0B0B] text-neutral-300 border border-white/10 font-mono text-[11px] uppercase tracking-wider transition-all duration-300">
                             <svg id="refresh-icon" class="w-3.5 h-3.5 transition-transform duration-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path d="M23 4v6h-6M1 20v-6h6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -940,15 +1246,13 @@
 
                 <!-- Тело виджета -->
                 <div class="p-6 sm:p-8">
-                    
-                    <!-- Шапка виджета: Счетчик онлайна + Фильтры -->
                     <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-8 border-b border-white/10">
-                        
-                        <!-- Слева: Название сервера и счетчики -->
                         <div class="flex flex-col sm:flex-row sm:items-center gap-5">
                             <div class="w-16 h-16 rounded-2xl bg-[#0B0B0B] border border-white/20 flex items-center justify-center shrink-0 shadow-neon">
-                                <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
+                                <svg class="w-10 h-10 text-white" viewBox="0 0 100 100" fill="currentColor">
+                                    <path d="M18 82 C10 66, 12 40, 26 12 C34 26, 40 42, 47 48 L50 53 L53 48 C60 42, 66 26, 74 12 C88 40, 90 66, 82 82 C76 86, 70 80, 68 74 C58 82, 42 82, 32 74 C30 80, 24 86, 18 82 Z" />
+                                    <polygon points="28,48 44,54 34,60" fill="#0B0B0B"/>
+                                    <polygon points="72,48 56,54 66,60" fill="#0B0B0B"/>
                                 </svg>
                             </div>
                             <div>
@@ -957,11 +1261,10 @@
                                         DISFACTORY
                                     </h3>
                                     <span class="font-mono text-[10px] uppercase px-2 py-0.5 rounded bg-white text-[#0B0B0B] font-extrabold">
-                                        В ЭФИРЕ
+                                        ОНЛАЙН
                                     </span>
                                 </div>
 
-                                <!-- Счетчик онлайна -->
                                 <div class="flex flex-wrap items-center gap-4 text-sm">
                                     <div class="inline-flex items-center gap-2 font-mono text-neutral-300">
                                         <span class="w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_10px_#FFFFFF]"></span>
@@ -972,42 +1275,38 @@
                                     </div>
                                     <span class="text-neutral-600 hidden sm:inline">|</span>
                                     <div class="font-mono text-xs text-neutral-400">
-                                        Сейчас в игре: <span id="in-game-count" class="text-white font-bold">0</span>
+                                        В катках прямо сейчас: <span id="in-game-count" class="text-white font-bold">0</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Справа: Табы фильтрации и поиск -->
+                        <!-- Фильтры и поиск -->
                         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                            <!-- Кнопки фильтрации по играм -->
                             <div class="flex items-center bg-[#0B0B0B] p-1 rounded-xl border border-white/10 overflow-x-auto">
-                                <button onclick="setActivityFilter('all')" data-filter="all" class="filter-tab px-3 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider bg-white text-[#0B0B0B] font-bold transition-all whitespace-nowrap">
+                                <button onclick="playSwitchSfx(); setActivityFilter('all')" data-filter="all" class="filter-tab px-3 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider bg-white text-[#0B0B0B] font-bold transition-all whitespace-nowrap">
                                     Все
                                 </button>
-                                <button onclick="setActivityFilter('playing')" data-filter="playing" class="filter-tab px-3 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider text-neutral-400 hover:text-white transition-all whitespace-nowrap">
+                                <button onclick="playSwitchSfx(); setActivityFilter('playing')" data-filter="playing" class="filter-tab px-3 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider text-neutral-400 hover:text-white transition-all whitespace-nowrap">
                                     В игре
                                 </button>
-                                <button onclick="setActivityFilter('Dota 2')" data-filter="Dota 2" class="filter-tab px-3 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider text-neutral-400 hover:text-white transition-all whitespace-nowrap">
+                                <button onclick="playSwitchSfx(); setActivityFilter('Dota 2')" data-filter="Dota 2" class="filter-tab px-3 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider text-neutral-400 hover:text-white transition-all whitespace-nowrap">
                                     Dota 2
                                 </button>
-                                <button onclick="setActivityFilter('Minecraft')" data-filter="Minecraft" class="filter-tab px-3 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider text-neutral-400 hover:text-white transition-all whitespace-nowrap">
+                                <button onclick="playSwitchSfx(); setActivityFilter('Minecraft')" data-filter="Minecraft" class="filter-tab px-3 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider text-neutral-400 hover:text-white transition-all whitespace-nowrap">
                                     Minecraft
                                 </button>
-                                <button onclick="setActivityFilter('Roblox')" data-filter="Roblox" class="filter-tab px-3 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider text-neutral-400 hover:text-white transition-all whitespace-nowrap">
+                                <button onclick="playSwitchSfx(); setActivityFilter('Roblox')" data-filter="Roblox" class="filter-tab px-3 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider text-neutral-400 hover:text-white transition-all whitespace-nowrap">
                                     Roblox
                                 </button>
                             </div>
 
-                            <!-- Поле поиска -->
                             <div class="relative">
-                                <input 
-                                    id="member-search" 
-                                    type="text" 
-                                    oninput="renderMembers()"
-                                    placeholder="Поиск по нику или игре..." 
-                                    class="w-full sm:w-56 bg-[#0B0B0B] border border-white/10 focus:border-white/40 rounded-xl pl-9 pr-3 py-2 text-xs font-mono text-white placeholder-neutral-500 focus:outline-none transition-colors"
-                                />
+                                <input id="member-search"
+                                       type="text"
+                                       oninput="renderMembers()"
+                                       placeholder="Поиск по нику или игре..."
+                                       class="w-full sm:w-56 bg-[#0B0B0B] border border-white/10 focus:border-white/40 rounded-xl pl-9 pr-3 py-2 text-xs font-mono text-white placeholder-neutral-500 focus:outline-none transition-colors" />
                                 <svg class="w-4 h-4 text-neutral-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                     <circle cx="11" cy="11" r="8"/>
                                     <line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -1016,7 +1315,7 @@
                         </div>
                     </div>
 
-                    <!-- Уведомление о резервном режиме (если API временно недоступно) -->
+                    <!-- Плашка резервного режима -->
                     <div id="fallback-banner" class="hidden mt-6 p-4 rounded-xl bg-[#0B0B0B] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div class="flex items-start sm:items-center gap-3">
                             <div class="w-8 h-8 rounded-lg bg-white/10 border border-white/15 flex items-center justify-center shrink-0 text-white font-mono text-xs font-bold">
@@ -1024,23 +1323,23 @@
                             </div>
                             <div class="text-xs text-neutral-400 leading-relaxed">
                                 <span class="text-white font-bold font-mono uppercase">ПРЕДПРОСМОТР АКТИВНОСТИ:</span>
-                                <span>Отображается демонстрационный список активных участников Disfactory (прямой ответ виджета временно обновляется).</span>
+                                <span>Показан список активных ребят из лобби Disfactory (прямой ответ JSON-виджета временно обновляется).</span>
                             </div>
                         </div>
-                        <button onclick="fetchDiscordWidget(true)" class="shrink-0 px-3.5 py-1.5 rounded-lg bg-white/10 hover:bg-white hover:text-[#0B0B0B] border border-white/15 font-mono text-[11px] text-white font-semibold uppercase tracking-wider transition-all">
-                            Проверить API снова
+                        <button onclick="playClickSfx(); fetchDiscordWidget(true)" class="shrink-0 px-3.5 py-1.5 rounded-lg bg-white/10 hover:bg-white hover:text-[#0B0B0B] border border-white/15 font-mono text-[11px] text-white font-semibold uppercase tracking-wider transition-all">
+                            Проверить API
                         </button>
                     </div>
 
-                    <!-- Полоса голосовых каналов -->
+                    <!-- Голосовые каналы -->
                     <div id="voice-channels-container" class="hidden mt-6">
-                        <div class="font-mono text-[11px] uppercase tracking-widest text-neutral-400 mb-2.5 flex items-center gap-2">
-                            <span>// АКТИВНЫЕ ГОЛОСОВЫЕ КАНАЛЫ СЕРВЕРА</span>
+                        <div class="font-mono text-[11px] uppercase tracking-widest text-neutral-400 mb-2.5">
+                            // АКТИВНЫЕ ГОЛОСОВЫЕ РУМЫ
                         </div>
                         <div id="voice-channels-list" class="flex flex-wrap gap-2"></div>
                     </div>
 
-                    <!-- Сетка участников в сети -->
+                    <!-- Сетка участников -->
                     <div class="mt-6">
                         <div class="flex items-center justify-between mb-4">
                             <span class="font-mono text-xs uppercase tracking-widest text-neutral-300">
@@ -1051,77 +1350,68 @@
                             </span>
                         </div>
 
-                        <!-- Сетка карточек -->
-                        <div id="members-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5 max-h-[520px] overflow-y-auto pr-1">
-                            <!-- Скелетоны загрузки -->
-                            <div class="bg-[#0B0B0B] border border-white/5 rounded-xl p-4 flex items-center gap-3.5 animate-pulse">
-                                <div class="w-11 h-11 rounded-full bg-white/10 shrink-0"></div>
-                                <div class="flex-1 space-y-2">
-                                    <div class="h-3.5 bg-white/10 rounded w-2/3"></div>
-                                    <div class="h-2.5 bg-white/5 rounded w-1/2"></div>
-                                </div>
-                            </div>
-                            <div class="bg-[#0B0B0B] border border-white/5 rounded-xl p-4 flex items-center gap-3.5 animate-pulse">
-                                <div class="w-11 h-11 rounded-full bg-white/10 shrink-0"></div>
-                                <div class="flex-1 space-y-2">
-                                    <div class="h-3.5 bg-white/10 rounded w-3/4"></div>
-                                    <div class="h-2.5 bg-white/5 rounded w-1/3"></div>
-                                </div>
-                            </div>
-                            <div class="bg-[#0B0B0B] border border-white/5 rounded-xl p-4 flex items-center gap-3.5 animate-pulse">
-                                <div class="w-11 h-11 rounded-full bg-white/10 shrink-0"></div>
-                                <div class="flex-1 space-y-2">
-                                    <div class="h-3.5 bg-white/10 rounded w-1/2"></div>
-                                    <div class="h-2.5 bg-white/5 rounded w-2/3"></div>
-                                </div>
-                            </div>
-                            <div class="bg-[#0B0B0B] border border-white/5 rounded-xl p-4 flex items-center gap-3.5 animate-pulse">
-                                <div class="w-11 h-11 rounded-full bg-white/10 shrink-0"></div>
-                                <div class="flex-1 space-y-2">
-                                    <div class="h-3.5 bg-white/10 rounded w-4/5"></div>
-                                    <div class="h-2.5 bg-white/5 rounded w-1/2"></div>
-                                </div>
-                            </div>
-                        </div>
+                        <div id="members-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5 max-h-[500px] overflow-y-auto pr-1"></div>
                     </div>
+                </div>
+            </div>
+        </section>
 
-                    <!-- Нижняя панель виджета -->
-                    <div class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <div class="flex items-center gap-3 text-xs text-neutral-400 font-mono">
-                            <span class="px-2.5 py-1 rounded bg-[#0B0B0B] border border-white/10 text-neutral-300">КАНАЛ СВЯЗИ</span>
-                            <span class="truncate max-w-[240px] sm:max-w-md text-neutral-400">Прямая синхронизация с Discord API Disfactory</span>
-                        </div>
-
-                        <div class="flex items-center gap-3 w-full sm:w-auto">
-                            <a id="widget-invite-link" 
-                               href="https://discord.gg/uTXD659A8x" 
-                               target="_blank" 
-                               rel="noopener noreferrer"
-                               class="magnetic-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white text-[#0B0B0B] font-extrabold text-xs font-mono uppercase tracking-wider transition-all duration-300 hover:scale-[1.03] hover:shadow-neon">
-                                <span>Залететь в голосовой канал</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                                    <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                        </div>
+        <!-- ================= 8. КАК ССЫЛКА НА САЙТ ВЫГЛЯДИТ В DISCORD (OPENGRAPH PREVIEW) ================= -->
+        <section class="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto reveal">
+            <div class="bg-[#141414] border border-white/15 rounded-2xl p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-8">
+                <div class="max-w-xl space-y-3">
+                    <span class="font-mono text-xs uppercase tracking-[0.2em] text-neutral-400 block">
+                        // OPENGRAPH МЕТА-ТЕГИ ВСТРОЕНЫ
+                    </span>
+                    <h3 class="text-xl sm:text-2xl font-black uppercase text-white">
+                        Готовая карточка-превью для чатов Discord
+                    </h3>
+                    <p class="text-sm text-neutral-400 leading-relaxed">
+                        Когда ты кидаешь ссылку на сайт <span class="text-white font-mono">dielinix.github.io/disfactory/</span> в любой чат или личку Discord, она автоматически разворачивается в стильную чёрно-белую карточку с описанием и баннером.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <button onclick="playClickSfx(); copyToClipboard('https://dielinix.github.io/disfactory/', 'Ссылка на сайт скопирована')"
+                                onmouseenter="playHoverSfx()"
+                                class="px-5 py-3 rounded-xl bg-white text-[#0B0B0B] font-mono text-xs font-extrabold uppercase tracking-wider hover:scale-[1.02] transition-all shadow-neon">
+                            Скопировать ссылку на сайт
+                        </button>
+                        <button onclick="playClickSfx(); copyInviteLink()"
+                                onmouseenter="playHoverSfx()"
+                                class="px-5 py-3 rounded-xl bg-[#0B0B0B] text-white border border-white/15 hover:border-white/40 font-mono text-xs uppercase tracking-wider transition-all">
+                            Скопировать инвайт Discord
+                        </button>
                     </div>
+                </div>
 
+                <!-- Визуальный макет Discord Embed -->
+                <div class="w-full max-w-md bg-[#0B0B0B] border-l-4 border-l-white border border-white/10 rounded-xl p-4 shadow-panel">
+                    <div class="font-mono text-[10px] text-neutral-400 uppercase mb-1">
+                        DISFACTORY // ОФИЦИАЛЬНЫЙ СЕРВЕР
+                    </div>
+                    <div class="text-white font-bold text-sm sm:text-base mb-1.5 hover:underline cursor-pointer">
+                        DISFACTORY — Игровое комьюнити
+                    </div>
+                    <p class="text-xs text-neutral-400 leading-relaxed mb-3">
+                        Своя атмосфера без духоты. Собирай пати в Dota 2, выживай на сборках Minecraft, залетай в Roblox и сиди в ночных войсах до рассвета.
+                    </p>
+                    <div class="w-full h-32 rounded-lg bg-[#141414] border border-white/10 flex flex-col items-center justify-center p-4 text-center relative overflow-hidden">
+                        <div class="font-black tracking-[0.22em] text-lg text-white uppercase">DISFACTORY</div>
+                        <div class="font-mono text-[10px] text-neutral-400 tracking-widest mt-1">DOTA 2 • MINECRAFT • ROBLOX</div>
+                    </div>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- ================= 6. ПОДВАЛ (FOOTER) ================= -->
-    <footer class="relative z-10 border-t border-white/10 bg-[#0B0B0B]/95 backdrop-blur-md">
+    <!-- ================= 9. ПОДВАЛ (FOOTER) ================= -->
+    <footer class="relative z-10 border-t border-white/10 bg-[#0B0B0B]/95 backdrop-blur-md pb-24 sm:pb-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-                
-                <!-- Бренд и описание -->
                 <div class="space-y-2">
                     <div class="flex items-center gap-2.5">
                         <div class="w-7 h-7 rounded-lg bg-[#141414] border border-white/20 flex items-center justify-center">
-                            <span class="font-mono text-xs font-black text-white">D</span>
+                            <span class="font-mono text-xs font-black text-white">DF</span>
                         </div>
                         <span class="font-extrabold tracking-[0.2em] text-sm uppercase text-white">DISFACTORY</span>
                         <span class="font-mono text-[10px] text-neutral-400">// ОФИЦИАЛЬНЫЙ СЕРВЕР</span>
@@ -1131,50 +1421,870 @@
                     </p>
                 </div>
 
-                <!-- Кнопки копирования ID и инвайта -->
                 <div class="flex flex-wrap items-center gap-3 font-mono text-xs">
-                    <button onclick="copyServerId()" class="px-3.5 py-2.5 rounded-xl bg-[#141414] hover:bg-[#1C1C1C] border border-white/10 hover:border-white/25 text-neutral-300 hover:text-white transition-all duration-300 flex items-center gap-2">
-                        <span>ID СЕРВЕРА: 1559945706020540538</span>
+                    <button onclick="playClickSfx(); copyServerId()"
+                            onmouseenter="playHoverSfx()"
+                            class="px-3.5 py-2.5 rounded-xl bg-[#141414] hover:bg-[#1C1C1C] border border-white/10 hover:border-white/25 text-neutral-300 hover:text-white transition-all duration-300 flex items-center gap-2">
+                        <span>ID: 1559945706020540538</span>
                         <svg class="w-3.5 h-3.5 text-neutral-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                         </svg>
                     </button>
 
-                    <a href="https://discord.gg/uTXD659A8x" 
-                       target="_blank" 
+                    <a href="https://discord.gg/uTXD659A8x"
+                       target="_blank"
                        rel="noopener noreferrer"
+                       onmouseenter="playHoverSfx()"
+                       onclick="playClickSfx()"
                        class="px-4 py-2.5 rounded-xl bg-white text-[#0B0B0B] font-bold hover:shadow-neon transition-all duration-300">
                         Присоединиться к Disfactory
                     </a>
                 </div>
             </div>
 
-            <!-- Нижняя строка копирайта -->
             <div class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500 font-mono">
                 <div>© 2026 Disfactory. Все права защищены.</div>
                 <div class="flex items-center gap-4">
                     <span class="inline-flex items-center gap-1.5 text-neutral-300">
                         <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
-                        <span>СТАТУС: ВСЕ СИСТЕМЫ В НОРМЕ</span>
+                        <span>СТАТУС: ВСЕ СИСТЕМЫ АКТИВНЫ</span>
                     </span>
-                    <span>•</span>
-                    <span>ВЕРСИЯ 2026.2</span>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- ================= JAVASCRIPT: АНИМАЦИИ, ПРОФИЛИ РУКОВОДСТВА И DISCORD API ================= -->
+    <!-- ================= JAVASCRIPT: ЛОГИКА, ЗВУК, ВИТРИНА РОЛЕЙ, ТОП-3 И ПЛЕЕР ================= -->
     <script>
-        // --- Константы сервера и руководства ---
+        // --- Основные константы сервера ---
         const SERVER_ID = '1559945706020540538';
         const OWNER_ID = '772431282314936322';
         const COOWNER_ID = '1558546705975087225';
         const INVITE_URL = 'https://discord.gg/uTXD659A8x';
         const WIDGET_API_URL = `https://discord.com/api/guilds/${SERVER_ID}/widget.json`;
 
-        // --- Генератор стильных кибер-аватарок высокого разрешения (Data URI SVG) на случай, если профиль скрыт ---
+        // =========================================================================
+        // 1. ЗВУКОВОЙ ДВИЖОК (UI SFX + DEAD INTERNET THEORY SPED UP АУДИОПОТОК)
+        // =========================================================================
+        let audioCtx = null;
+        let sfxEnabled = true;
+        let isMusicPlaying = false;
+        let isSpedUp = true; // 1.25x Sped Up по умолчанию
+        let musicVolume = 0.45;
+        let usingSynthFallback = false;
+        let synthIntervalId = null;
+        let synthStep = 0;
+
+        function ensureAudioContext() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioCtx = new AudioContextClass();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        // Тихий тактильный щелчок при наведении
+        function playHoverSfx() {
+            if (!sfxEnabled || !audioCtx || audioCtx.state !== 'running') return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(680, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.025);
+
+                gain.gain.setValueAtTime(0.025, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.025);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.028);
+            } catch (e) {}
+        }
+
+        // Чёткий клик при нажатии
+        function playClickSfx() {
+            if (!sfxEnabled) return;
+            ensureAudioContext();
+            if (!audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(190, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(520, audioCtx.currentTime + 0.055);
+
+                gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.065);
+            } catch (e) {}
+        }
+
+        // Звук переключения роли или вкладки
+        function playSwitchSfx() {
+            if (!sfxEnabled) return;
+            ensureAudioContext();
+            if (!audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(420, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(840, audioCtx.currentTime + 0.045);
+
+                gain.gain.setValueAtTime(0.045, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.055);
+            } catch (e) {}
+        }
+
+        function toggleSfx() {
+            sfxEnabled = !sfxEnabled;
+            const dot = document.getElementById('sfx-dot');
+            const label = document.getElementById('sfx-label');
+            if (sfxEnabled) {
+                ensureAudioContext();
+                playClickSfx();
+                dot.className = 'w-2 h-2 rounded-full bg-white shadow-[0_0_8px_#FFFFFF]';
+                label.textContent = 'SFX: ВКЛ';
+                showToast('Звуковой отклик включён');
+            } else {
+                dot.className = 'w-2 h-2 rounded-full bg-neutral-600';
+                label.textContent = 'SFX: ВЫКЛ';
+                showToast('Звуковой отклик выключен');
+            }
+        }
+
+        // =========================================================================
+        // 2. МИНИ-ПЛЕЕР: "DEAD INTERNET THEORY (SPED UP)" (ПОТОК + ПРОЦЕДУРНЫЙ ДВИЖОК)
+        // =========================================================================
+        async function initTrackSource() {
+            const audioEl = document.getElementById('bg-audio-element');
+            const sourceLabel = document.getElementById('player-source-label');
+            audioEl.volume = musicVolume;
+
+            // 1. Сначала пробуем найти реальный аудиопоток трека "Dead Internet Theory" через открытый iTunes Search API
+            try {
+                const res = await fetch('https://itunes.apple.com/search?term=Dead+Internet+Theory&entity=song&limit=5');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.results && data.results.length > 0 && data.results[0].previewUrl) {
+                        const track = data.results[0];
+                        audioEl.src = track.previewUrl;
+                        // Делаем настоящий эффект Sped Up (ускорение темпа + высоты тона)
+                        audioEl.preservesPitch = false;
+                        audioEl.mozPreservesPitch = false;
+                        audioEl.webkitPreservesPitch = false;
+                        audioEl.playbackRate = isSpedUp ? 1.25 : 1.0;
+                        usingSynthFallback = false;
+                        sourceLabel.textContent = `${track.artistName || 'Аудиопоток'} • Цикл 24/7`;
+                        return;
+                    }
+                }
+            } catch (err) {
+                // Если сеть заблокировала внешний каталог, переключаемся на встроенный синтезатор
+            }
+
+            usingSynthFallback = true;
+            sourceLabel.textContent = 'Синт-движок Disfactory • 156 BPM Sped Up';
+        }
+
+        // Процедурный Sped-Up Darkwave / Breakcore синтезатор (если нет интернета или поток заблокирован)
+        function startProceduralDarkSynth() {
+            ensureAudioContext();
+            if (!audioCtx) return;
+            stopProceduralDarkSynth();
+
+            // Тёмная минорная прогрессия (D#m -> B -> C# -> A#m) в высоком темпе Sped Up
+            const bassNotes = [77.78, 77.78, 61.74, 61.74, 69.30, 69.30, 58.27, 65.41];
+            const arpNotes = [311.13, 369.99, 466.16, 622.25, 466.16, 369.99, 277.18, 311.13];
+
+            const stepTimeMs = isSpedUp ? 120 : 155;
+
+            synthIntervalId = setInterval(() => {
+                if (!isMusicPlaying || !audioCtx || audioCtx.state !== 'running') return;
+                const now = audioCtx.currentTime;
+
+                // 1. Глубокий бас (на чётных долях)
+                if (synthStep % 2 === 0) {
+                    const bOsc = audioCtx.createOscillator();
+                    const bGain = audioCtx.createGain();
+                    bOsc.type = 'sawtooth';
+                    const note = bassNotes[Math.floor(synthStep / 4) % bassNotes.length];
+                    bOsc.frequency.setValueAtTime(note * (isSpedUp ? 1.15 : 1.0), now);
+
+                    bGain.gain.setValueAtTime(musicVolume * 0.14, now);
+                    bGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+                    bOsc.connect(bGain);
+                    bGain.connect(audioCtx.destination);
+                    bOsc.start(now);
+                    bOsc.stop(now + 0.23);
+                }
+
+                // 2. Атмосферное Sped-Up арпеджио
+                const aOsc = audioCtx.createOscillator();
+                const aGain = audioCtx.createGain();
+                aOsc.type = 'triangle';
+                const arpFreq = arpNotes[synthStep % arpNotes.length] * (isSpedUp ? 1.25 : 1.0);
+                aOsc.frequency.setValueAtTime(arpFreq, now);
+
+                aGain.gain.setValueAtTime(musicVolume * 0.08, now);
+                aGain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+
+                aOsc.connect(aGain);
+                aGain.connect(audioCtx.destination);
+                aOsc.start(now);
+                aOsc.stop(now + 0.12);
+
+                // 3. Мягкая бочка на 0 и 4 шаг
+                if (synthStep % 4 === 0) {
+                    const kOsc = audioCtx.createOscillator();
+                    const kGain = audioCtx.createGain();
+                    kOsc.type = 'sine';
+                    kOsc.frequency.setValueAtTime(135, now);
+                    kOsc.frequency.exponentialRampToValueAtTime(36, now + 0.11);
+
+                    kGain.gain.setValueAtTime(musicVolume * 0.28, now);
+                    kGain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+                    kOsc.connect(kGain);
+                    kGain.connect(audioCtx.destination);
+                    kOsc.start(now);
+                    kOsc.stop(now + 0.13);
+                }
+
+                synthStep = (synthStep + 1) % 32;
+            }, stepTimeMs);
+        }
+
+        function stopProceduralDarkSynth() {
+            if (synthIntervalId) {
+                clearInterval(synthIntervalId);
+                synthIntervalId = null;
+            }
+        }
+
+        async function toggleMusicPlayback(forceState = null) {
+            ensureAudioContext();
+            const audioEl = document.getElementById('bg-audio-element');
+            const targetState = forceState !== null ? forceState : !isMusicPlaying;
+
+            if (targetState) {
+                isMusicPlaying = true;
+                if (!usingSynthFallback && audioEl.src) {
+                    try {
+                        audioEl.playbackRate = isSpedUp ? 1.25 : 1.0;
+                        await audioEl.play();
+                    } catch (err) {
+                        usingSynthFallback = true;
+                        startProceduralDarkSynth();
+                    }
+                } else {
+                    usingSynthFallback = true;
+                    startProceduralDarkSynth();
+                }
+            } else {
+                isMusicPlaying = false;
+                audioEl.pause();
+                stopProceduralDarkSynth();
+            }
+
+            updatePlayerUI();
+        }
+
+        function togglePlaybackSpeed() {
+            playSwitchSfx();
+            isSpedUp = !isSpedUp;
+            const badge = document.getElementById('player-speed-badge');
+            const audioEl = document.getElementById('bg-audio-element');
+
+            if (isSpedUp) {
+                badge.textContent = '1.25x SPED UP';
+                badge.className = 'cursor-pointer font-mono text-[9px] px-1.5 py-0.5 rounded bg-white text-[#0B0B0B] font-extrabold uppercase hover:opacity-80 transition-opacity';
+                audioEl.playbackRate = 1.25;
+            } else {
+                badge.textContent = '1.0x ОРИГИНАЛ';
+                badge.className = 'cursor-pointer font-mono text-[9px] px-1.5 py-0.5 rounded bg-white/15 text-white font-extrabold uppercase hover:opacity-80 transition-opacity';
+                audioEl.playbackRate = 1.0;
+            }
+
+            if (isMusicPlaying && usingSynthFallback) {
+                startProceduralDarkSynth();
+            }
+        }
+
+        function setMusicVolume(val) {
+            musicVolume = Math.max(0, Math.min(1, val / 100));
+            const audioEl = document.getElementById('bg-audio-element');
+            if (audioEl) audioEl.volume = musicVolume;
+        }
+
+        function loadCustomAudioFile(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            const url = URL.createObjectURL(file);
+            const audioEl = document.getElementById('bg-audio-element');
+            stopProceduralDarkSynth();
+            usingSynthFallback = false;
+            audioEl.src = url;
+            audioEl.preservesPitch = false;
+            audioEl.playbackRate = isSpedUp ? 1.25 : 1.0;
+            document.getElementById('player-source-label').textContent = `Локальный файл: ${file.name}`;
+            toggleMusicPlayback(true);
+            showToast('Трек загружен в плеер', file.name);
+        }
+
+        function updatePlayerUI() {
+            const iconPlay = document.getElementById('icon-play');
+            const iconPause = document.getElementById('icon-pause');
+            const eq = document.getElementById('player-eq');
+
+            if (isMusicPlaying) {
+                iconPlay.classList.add('hidden');
+                iconPause.classList.remove('hidden');
+                eq.classList.remove('eq-paused');
+            } else {
+                iconPlay.classList.remove('hidden');
+                iconPause.classList.add('hidden');
+                eq.classList.add('eq-paused');
+            }
+        }
+
+        function togglePlayerCollapse() {
+            playClickSfx();
+            const body = document.getElementById('player-body');
+            const icon = document.getElementById('player-collapse-icon');
+            body.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+
+        // =========================================================================
+        // 3. ПРЕЛОАДЕР (ИНТРО-ЭКРАН)
+        // =========================================================================
+        function runPreloaderAnimation() {
+            const bar = document.getElementById('preloader-bar');
+            const percentEl = document.getElementById('preloader-percent');
+            const statusEl = document.getElementById('preloader-status');
+            const logsEl = document.getElementById('preloader-logs');
+
+            const steps = [
+                { p: 24, status: 'Загрузка ролей: SSS GHOUL, Hunter of souls...', log: '> Синхронизация иерархии ролей [OK]' },
+                { p: 58, status: 'Настройка потока Dead Internet Theory (Sped Up)...', log: '> Аудио-модуль 1.25x Sped Up готов [OK]' },
+                { p: 86, status: 'Получение онлайна Disfactory...', log: '> Канал связи Discord API активен [OK]' },
+                { p: 100, status: 'Система готова к входу', log: '> ДОБРО ПОЖАЛОВАТЬ В DISFACTORY' }
+            ];
+
+            let idx = 0;
+            const timer = setInterval(() => {
+                if (idx >= steps.length) {
+                    clearInterval(timer);
+                    return;
+                }
+                const step = steps[idx];
+                bar.style.width = `${step.p}%`;
+                percentEl.textContent = `${step.p}%`;
+                statusEl.textContent = step.status;
+
+                const line = document.createElement('div');
+                line.className = idx === steps.length - 1 ? 'text-white font-bold' : 'text-neutral-400';
+                line.textContent = step.log;
+                logsEl.appendChild(line);
+                logsEl.scrollTop = logsEl.scrollHeight;
+                idx++;
+            }, 320);
+        }
+
+        function enterDisfactory(withAudio = true) {
+            const preloader = document.getElementById('preloader');
+            if (withAudio) {
+                sfxEnabled = true;
+                ensureAudioContext();
+                playClickSfx();
+                toggleMusicPlayback(true);
+            } else {
+                sfxEnabled = false;
+                document.getElementById('sfx-dot').className = 'w-2 h-2 rounded-full bg-neutral-600';
+                document.getElementById('sfx-label').textContent = 'SFX: ВЫКЛ';
+            }
+
+            preloader.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 700);
+
+            const titleEl = document.getElementById('scramble-title');
+            scrambleText(titleEl, 'DISFACTORY', 850);
+        }
+
+        // =========================================================================
+        // 4. ИНТЕРАКТИВНАЯ ВИТРИНА РОЛЕЙ (ROLE SHOWCASE)
+        // =========================================================================
+        const ROLES_DATA = [
+            {
+                id: 'hunter-of-souls',
+                name: 'Hunter of souls',
+                category: 'elite',
+                rarity: 'ЛЕГЕНДАРНАЯ РОЛЬ',
+                holders: 'Владельцев: ~3%',
+                dotColor: '#FFFFFF',
+                desc: 'Охотники за душами в голосовых румах и ночных лобби. Выдаётся тем, кто держит актив сервера на своих плечах и не оставляет ни единого шанса соперникам в клозах.',
+                perks: [
+                    '• Выделенный высокий слот в списке участников справа',
+                    '• Доступ в закрытый голосовой канал охотников',
+                    '• Право собирать приоритетные стаки и клозы'
+                ],
+                obtain: 'За регулярный топ-актив в голосовых каналах или победы в турнирах сервера.'
+            },
+            {
+                id: 'sss-ghoul',
+                name: 'SSS GHOUL',
+                category: 'gaming',
+                rarity: 'ВЫСШИЙ РАНГ ГУЛЯ',
+                holders: 'Владельцев: ~2%',
+                dotColor: '#F43F5E',
+                desc: 'Абсолютный предел ранга 1000-7 без права на паузу. Для тех, кто пережил тысячи каток на СФе, знает все тайминги койлов с закрытыми глазами и не тильтует даже в самых потных играх.',
+                perks: [
+                    '• Статус главного гуля арены Disfactory',
+                    '• Приоритетный слот на мид в локальных лобби 5х5',
+                    '• Особый тёмно-алый значок в таблице лидеров'
+                ],
+                obtain: 'Победа в серии дуэлей 1х1 на Shadow Fiend или 6000+ MMR в Dota 2.'
+            },
+            {
+                id: 'modded-plus',
+                name: 'Modded+',
+                category: 'gaming',
+                rarity: 'ТЕХ-СТАТУС // ИГРЫ',
+                holders: 'Владельцев: ~8%',
+                dotColor: '#38BDF8',
+                desc: 'Особый пропуск в мир кастомных сборок Minecraft, закрытых приватных серверов и модифицированных режимов Roblox без гриферов и случайных прохожих.',
+                perks: [
+                    '• Доступ к архиву сборок, шейдеров и IP приватного мира',
+                    '• Закрытый технический чат и голосовая комната Modded+',
+                    '• Голосование за новые моды на следующий сезон'
+                ],
+                obtain: 'Участие в сезонных выживаниях Minecraft/Roblox или заявка у кураторов.'
+            },
+            {
+                id: 'prince',
+                name: 'Принц',
+                category: 'elite',
+                rarity: 'ЭЛИТНЫЙ ТИТУЛ',
+                holders: 'Владельцев: ~4%',
+                dotColor: '#EAB308',
+                desc: 'Аристократия Disfactory. Участники, которых знает каждая собака в голосовых комнатах — заходят в руму, и там сразу начинается движ.',
+                perks: [
+                    '• Премиальное отображение в верхней части списка сервера',
+                    '• Иммунитет к медленному режиму в общих чатах',
+                    '• Возможность включать стрим и саундпад без ограничений'
+                ],
+                obtain: 'За вклад в развитие комьюнити, буст сервера или личный респект от владельца.'
+            },
+            {
+                id: 'candy-hunter',
+                name: 'Candy Hunter',
+                category: 'special',
+                rarity: 'РЕДКАЯ ИВЕНТОВАЯ',
+                holders: 'Владельцев: ~5%',
+                dotColor: '#EC4899',
+                desc: 'Охотники за редкими трофеями, ночными ивентами и секретными раздачами. Если на сервере спрятана пасхалка или проходит ночной розыгрыш — они забирают лут первыми.',
+                perks: [
+                    '• Ранние пинги о секретных ивентах и кастомках',
+                    '• Уникальный коллекционный тег в профиле',
+                    '• Доступ к призовым комнатам во время праздников'
+                ],
+                obtain: 'Участие и победа в сезонных и ночных ивентах Disfactory.'
+            },
+            {
+                id: 'chief-femboy',
+                name: 'главный фембой',
+                category: 'special',
+                rarity: 'ЛЕГЕНДА КОМЬЮНИТИ',
+                holders: 'Эксклюзивный ранг',
+                dotColor: '#F472B6',
+                desc: 'Самая культовая и обсуждаемая мемно-элитная роль сервера. Максимальный уровень самоиронии, комфортного вайба и абсолютной доминации в ночных чатах.',
+                perks: [
+                    '• Мгновенное внимание в любом текстовом и голосовом канале',
+                    '• Полная свобода постить лучшие гифки и мемы в медиа-чат',
+                    '• Неприкосновенный статус любимчика комьюнити'
+                ],
+                obtain: 'Выдаётся путём народного голосования в чате или за легендарный вайб.'
+            },
+            {
+                id: '1000-7',
+                name: '1000-7',
+                category: 'gaming',
+                rarity: 'РАНГ ДЕД ИНСАЙДА',
+                holders: 'Владельцев: ~14%',
+                dotColor: '#A3A3A3',
+                desc: 'Классический гуль-ранг для тех, у кого в наушниках играет спед-ап фонк, в профиле чёрно-белая аватарка, а в истории матчей — бесконечная страница каток после полуночи.',
+                perks: [
+                    '• Доступ к каналу поиска напарников в рейтинг и 1х1 лобби',
+                    '• Свой уголок для ночных разговоров по душам',
+                    '• Переходная ступень к высшему рангу SSS GHOUL'
+                ],
+                obtain: 'Отыграть 10 совместных каток с участниками сервера или пройти проверку в лобби.'
+            },
+            {
+                id: 'doter',
+                name: 'Дотер',
+                category: 'gaming',
+                rarity: 'БАЗА СЕРВЕРА',
+                holders: 'Владельцев: ~38%',
+                dotColor: '#EF4444',
+                desc: 'Фундамент игровых рум Disfactory. Люди, которые в любой момент дня и ночи готовы нажать поиск в пати на пятерых, залететь в Турбо или зарубиться в кастомку.',
+                perks: [
+                    '• Быстрые уведомления о сборе стаков 5х5 и клозов',
+                    '• Доступ ко всем голосовым румам направления Dota 2',
+                    '• Статистика побед во внутренних матчах сервера'
+                ],
+                obtain: 'Выбирается сразу при входе на сервер или в канале выбора ролей.'
+            },
+            {
+                id: 'night-warden',
+                name: 'Ночной Страж',
+                category: 'special',
+                rarity: 'НОЧНОЙ ОРДЕН',
+                holders: 'Владельцев: ~9%',
+                dotColor: '#818CF8',
+                desc: 'Для тех, у кого режим сна давно сбит. Когда город засыпает, Ночные Стражи включают демки, смотрят хорроры и держат голосовые каналы живыми до шести утра.',
+                perks: [
+                    '• Доступ в скрытые ночные комнаты отдыха и кинозалы',
+                    '• Особый статус полуночника в профиле',
+                    '• Право ставить фоновую музыку в ночных ботах'
+                ],
+                obtain: 'Находиться в голосовых каналах сервера после 02:00 ночи.'
+            },
+            {
+                id: 'void-cult',
+                name: 'Культ Пустоты',
+                category: 'elite',
+                rarity: 'ТАЙНЫЙ ОРДЕН',
+                holders: 'Владельцев: ~4%',
+                dotColor: '#C084FC',
+                desc: 'Старожилы и хранители лора Disfactory, которые помнят сервер с самых первых дней. Закрытое братство со своими внутренними шутками и традициями.',
+                perks: [
+                    '• Доступ к архивному чату старожилов',
+                    '• Прямое влияние на новые идеи и правила сервера',
+                    '• Почётное место в истории проекта'
+                ],
+                obtain: 'Быть активным участником сообщества более 3 месяцев.'
+            },
+            {
+                id: 'abyss-lord',
+                name: 'Властелин Бездны',
+                category: 'elite',
+                rarity: 'МЕЦЕНАТ ПРОЕКТА',
+                holders: 'Владельцев: ~3%',
+                dotColor: '#2DD4BF',
+                desc: 'Главные спонсоры движа, благодаря которым на сервере максимальный уровень буста, идеальное качество звука 384 кбит/с и призовые фонды на турнирах.',
+                perks: [
+                    '• Создание собственной кастомной роли с любым цветом и иконкой',
+                    '• Личная приватная комната в войсе с правами управления',
+                    '• Вечный респект от администрации и всего комьюнити'
+                ],
+                obtain: 'Двойной Nitro-буст сервера или поддержка призового фонда ивентов.'
+            },
+            {
+                id: 'voice-of-darkness',
+                name: 'Голос Тьмы',
+                category: 'special',
+                rarity: 'ЛЕГЕНДА МИКРОФОНА',
+                holders: 'Владельцев: ~6%',
+                dotColor: '#E5E5E5',
+                desc: 'Обладатели самых атмосферных микрофонов, стримеры каток и ведущие вечерних посиделок. С ними даже обычный разговор превращается в подкаст.',
+                perks: [
+                    '• Приоритетный режим голоса и стриминга в высоком разрешении',
+                    '• Право проводить вечерние подкасты и просмотры фильмов',
+                    '• Выделенный тег рассказчика'
+                ],
+                obtain: '100+ часов живого общения в голосовых каналах Disfactory.'
+            }
+        ];
+
+        let selectedRoleId = 'hunter-of-souls';
+        let currentRoleCategory = 'all';
+
+        function renderRolesShowcase() {
+            const container = document.getElementById('roles-pills-container');
+            const filtered = ROLES_DATA.filter(r => currentRoleCategory === 'all' || r.category === currentRoleCategory);
+
+            container.innerHTML = filtered.map(role => {
+                const isSelected = role.id === selectedRoleId;
+                const activeClasses = isSelected
+                    ? 'bg-white text-[#0B0B0B] border-white shadow-neon scale-[1.03] font-extrabold'
+                    : 'bg-[#0B0B0B] text-neutral-200 border-white/15 hover:border-white/40 hover:bg-[#181818] font-semibold';
+
+                return `
+                    <button onmouseenter="playHoverSfx()"
+                            onclick="selectRole('${role.id}')"
+                            class="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-xl border font-mono text-xs sm:text-sm transition-all duration-200 ${activeClasses}">
+                        <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: ${isSelected ? '#0B0B0B' : role.dotColor}; box-shadow: 0 0 8px ${role.dotColor};"></span>
+                        <span>${escapeHtml(role.name)}</span>
+                    </button>
+                `;
+            }).join('');
+
+            updateRoleDetailCard();
+            updateRoleProfilePreview();
+        }
+
+        function selectRole(roleId) {
+            playSwitchSfx();
+            selectedRoleId = roleId;
+            renderRolesShowcase();
+        }
+
+        function filterRoles(category) {
+            playSwitchSfx();
+            currentRoleCategory = category;
+
+            document.querySelectorAll('.role-filter-btn').forEach(btn => {
+                if (btn.getAttribute('data-rfilter') === category) {
+                    btn.className = 'role-filter-btn px-3 py-1.5 rounded-lg font-mono text-xs uppercase bg-white text-[#0B0B0B] font-bold transition-all';
+                } else {
+                    btn.className = 'role-filter-btn px-3 py-1.5 rounded-lg font-mono text-xs uppercase text-neutral-400 hover:text-white transition-all';
+                }
+            });
+
+            const visible = ROLES_DATA.filter(r => category === 'all' || r.category === category);
+            if (visible.length > 0 && !visible.some(r => r.id === selectedRoleId)) {
+                selectedRoleId = visible[0].id;
+            }
+            renderRolesShowcase();
+        }
+
+        function updateRoleDetailCard() {
+            const role = ROLES_DATA.find(r => r.id === selectedRoleId) || ROLES_DATA[0];
+            document.getElementById('role-detail-rarity').textContent = role.rarity;
+            document.getElementById('role-detail-holders').textContent = role.holders;
+
+            const titleEl = document.getElementById('role-detail-title');
+            scrambleText(titleEl, role.name, 320);
+
+            document.getElementById('role-detail-desc').textContent = role.desc;
+            document.getElementById('role-detail-obtain').textContent = role.obtain;
+
+            const dotEl = document.getElementById('role-detail-dot');
+            dotEl.style.backgroundColor = role.dotColor;
+            dotEl.style.boxShadow = `0 0 14px ${role.dotColor}`;
+
+            const perksEl = document.getElementById('role-detail-perks');
+            perksEl.innerHTML = role.perks.map(p => `<li class="text-neutral-300">${escapeHtml(p)}</li>`).join('');
+        }
+
+        function updateRoleProfilePreview() {
+            const role = ROLES_DATA.find(r => r.id === selectedRoleId) || ROLES_DATA[0];
+            const inputVal = (document.getElementById('preview-nick-input')?.value || '').trim();
+            const nick = inputVal || 'Твой_Никнейм';
+
+            document.getElementById('preview-nick-display').textContent = nick;
+            document.getElementById('preview-avatar-letter').textContent = nick.slice(0, 2).toUpperCase();
+            document.getElementById('preview-role-name').textContent = role.name;
+
+            const dot = document.getElementById('preview-role-dot');
+            dot.style.backgroundColor = role.dotColor;
+            dot.style.boxShadow = `0 0 8px ${role.dotColor}`;
+        }
+
+        // =========================================================================
+        // 5. ДОСКА ПОЧЁТА (ТОП-3 НЕДЕЛИ)
+        // =========================================================================
+        const LEADERBOARD_DATA = {
+            voice: [
+                {
+                    rank: 1,
+                    name: 'K1llSwitch',
+                    role: 'SSS GHOUL',
+                    roleColor: '#F43F5E',
+                    metricLabel: 'В ГОЛОСОВОМ КАНАЛЕ',
+                    metricValue: '64.5 ч',
+                    subStats: 'Любимая рума: Ночной войс // 1000-7',
+                    progress: 100,
+                    avatarSeed: 'KS'
+                },
+                {
+                    rank: 2,
+                    name: 'Aetherius',
+                    role: 'Hunter of souls',
+                    roleColor: '#FFFFFF',
+                    metricLabel: 'В ГОЛОСОВОМ КАНАЛЕ',
+                    metricValue: '52.0 ч',
+                    subStats: 'Любимая рума: Выживание // Modded+',
+                    progress: 82,
+                    avatarSeed: 'AE'
+                },
+                {
+                    rank: 3,
+                    name: 'Yuki_San',
+                    role: 'главный фембой',
+                    roleColor: '#F472B6',
+                    metricLabel: 'В ГОЛОСОВОМ КАНАЛЕ',
+                    metricValue: '46.8 ч',
+                    subStats: 'Любимая рума: Чилл-зона // Кинозал',
+                    progress: 73,
+                    avatarSeed: 'YS'
+                }
+            ],
+            closes: [
+                {
+                    rank: 1,
+                    name: 'xVortex',
+                    role: 'SSS GHOUL',
+                    roleColor: '#F43F5E',
+                    metricLabel: 'ПОБЕД В КЛОЗАХ 5Х5',
+                    metricValue: '19 ПОБЕД (79% WR)',
+                    subStats: 'Сигнатурка: Shadow Fiend / Invoker',
+                    progress: 100,
+                    avatarSeed: 'XV'
+                },
+                {
+                    rank: 2,
+                    name: 'Moriarty',
+                    role: 'Принц',
+                    roleColor: '#EAB308',
+                    metricLabel: 'ПОБЕД В КЛОЗАХ 5Х5',
+                    metricValue: '16 ПОБЕД (72% WR)',
+                    subStats: 'Сигнатурка: Morphling / Ember Spirit',
+                    progress: 85,
+                    avatarSeed: 'MR'
+                },
+                {
+                    rank: 3,
+                    name: 'Shatter_GG',
+                    role: '1000-7',
+                    roleColor: '#A3A3A3',
+                    metricLabel: 'ПОБЕД В КЛОЗАХ 5Х5',
+                    metricValue: '14 ПОБЕД (68% WR)',
+                    subStats: 'Сигнатурка: Puck / Storm Spirit',
+                    progress: 74,
+                    avatarSeed: 'SG'
+                }
+            ],
+            chat: [
+                {
+                    rank: 1,
+                    name: 'N0cturne',
+                    role: 'Candy Hunter',
+                    roleColor: '#EC4899',
+                    metricLabel: 'СООБЩЕНИЙ ЗА НЕДЕЛЮ',
+                    metricValue: '3 420 СООБЩ.',
+                    subStats: 'Главный поставщик мемов и гифок',
+                    progress: 100,
+                    avatarSeed: 'NC'
+                },
+                {
+                    rank: 2,
+                    name: 'VelvetSky',
+                    role: 'Принц',
+                    roleColor: '#EAB308',
+                    metricLabel: 'СООБЩЕНИЙ ЗА НЕДЕЛЮ',
+                    metricValue: '2 890 СООБЩ.',
+                    subStats: '0% пропущенных обсуждений в общем чате',
+                    progress: 84,
+                    avatarSeed: 'VS'
+                },
+                {
+                    rank: 3,
+                    name: 'Zer0Day',
+                    role: 'Modded+',
+                    roleColor: '#38BDF8',
+                    metricLabel: 'СООБЩЕНИЙ ЗА НЕДЕЛЮ',
+                    metricValue: '2 310 СООБЩ.',
+                    subStats: 'Помощь по сборкам и гайдам',
+                    progress: 68,
+                    avatarSeed: 'ZD'
+                }
+            ]
+        };
+
+        let currentLeaderboardTab = 'voice';
+
+        function switchLeaderboardTab(tabKey) {
+            playSwitchSfx();
+            currentLeaderboardTab = tabKey;
+
+            document.querySelectorAll('.leaderboard-tab-btn').forEach(btn => {
+                if (btn.getAttribute('data-ltab') === tabKey) {
+                    btn.className = 'leaderboard-tab-btn px-3.5 py-1.5 rounded-lg font-mono text-xs uppercase bg-white text-[#0B0B0B] font-bold transition-all';
+                } else {
+                    btn.className = 'leaderboard-tab-btn px-3.5 py-1.5 rounded-lg font-mono text-xs uppercase text-neutral-400 hover:text-white transition-all';
+                }
+            });
+
+            renderLeaderboard();
+        }
+
+        function renderLeaderboard() {
+            const grid = document.getElementById('leaderboard-grid');
+            const items = LEADERBOARD_DATA[currentLeaderboardTab] || LEADERBOARD_DATA.voice;
+
+            grid.innerHTML = items.map(item => {
+                const isFirst = item.rank === 1;
+                const borderClass = isFirst
+                    ? 'border-white/40 shadow-neon'
+                    : 'border-white/15 hover:border-white/35';
+                const badgeBg = isFirst
+                    ? 'bg-white text-[#0B0B0B]'
+                    : 'bg-[#0B0B0B] text-white border border-white/20';
+
+                return `
+                    <div onmouseenter="playHoverSfx()"
+                         class="spotlight-card bg-[#141414] border ${borderClass} rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:scale-[1.02]">
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-5">
+                                <span class="font-mono text-xs font-extrabold uppercase px-3 py-1 rounded-lg ${badgeBg}">
+                                    МЕСТО #${item.rank}
+                                </span>
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#0B0B0B] border border-white/15 font-mono text-[11px] text-white">
+                                    <span class="w-2 h-2 rounded-full" style="background-color: ${item.roleColor}; box-shadow: 0 0 8px ${item.roleColor};"></span>
+                                    <span>${escapeHtml(item.role)}</span>
+                                </span>
+                            </div>
+
+                            <div class="flex items-center gap-4 mb-5">
+                                <img src="${createCyberAvatar(item.avatarSeed, 'TOP ' + item.rank, item.rank)}"
+                                     alt="${escapeHtml(item.name)}"
+                                     class="w-16 h-16 rounded-2xl object-cover border border-white/20 shrink-0" />
+                                <div class="min-w-0">
+                                    <h3 class="text-xl font-black text-white truncate mb-0.5">${escapeHtml(item.name)}</h3>
+                                    <p class="font-mono text-[11px] text-neutral-400 truncate">${escapeHtml(item.subStats)}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-white/10">
+                            <div class="flex items-end justify-between mb-2">
+                                <span class="font-mono text-[10px] uppercase tracking-widest text-neutral-400">${escapeHtml(item.metricLabel)}</span>
+                                <span class="font-mono text-sm sm:text-base font-black text-white">${escapeHtml(item.metricValue)}</span>
+                            </div>
+                            <div class="w-full h-2 rounded-full bg-[#0B0B0B] border border-white/10 overflow-hidden p-0.5">
+                                <div class="h-full bg-white rounded-full transition-all duration-700" style="width: ${item.progress}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // =========================================================================
+        // 6. ПРОФИЛИ РУКОВОДСТВА, ЦИТАТЫ И DISCORD WIDGET API
+        // =========================================================================
         function createCyberAvatar(initials, badgeText, seed = 1) {
             const svg = `
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
@@ -1193,38 +2303,36 @@
             return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg.trim());
         }
 
-        // --- Массив атмосферных цитат для слайдера ---
         const QUOTES_DATA = [
             {
                 tag: 'ЦИТАТА #01 // О ТИММЕЙТАХ',
-                text: '«В одиночку можно выиграть катку, но только со своими людьми хочется возвращаться в игру каждый вечер. Disfactory создан для тех, кто устал от пустых серверов и молчаливых рандомов.»',
+                text: '«В соло можно апнуть рейтинг, но только со своими людьми хочется запускать игру каждый вечер. Disfactory собран для тех, кто устал от мёртвых серверов и немых рандомов.»',
                 sub: '— Здесь каждая катка начинается с хорошего настроения в войсе'
             },
             {
                 tag: 'ЦИТАТА #02 // О НОЧНОМ ВАЙБЕ',
-                text: '«Лучшие моменты происходят в три часа ночи в голосовом канале, когда вы уже даже не помните, с чего начался разговор, но смеётесь всей комнатой до слёз.»',
+                text: '«Лучшие разговоры начинаются в три часа ночи в голосовом канале, когда вы уже не помните, с чего начался спор, но смеётесь всей румой до слёз под Dead Internet Theory.»',
                 sub: '— Голосовые комнаты Disfactory не пустеют даже глубокой ночью'
             },
             {
-                tag: 'ЦИТАТА #03 // О ДОМИНАЦИИ',
-                text: '«Никакого душного надзора и лишнего пафоса. Только чистый кайф от игры, плотные стаки в Dota 2, масштабные миры в Minecraft и безумные режимы в Roblox.»',
+                tag: 'ЦИТАТА #03 // О РАНГАХ И ДВИЖЕ',
+                text: '«Никакого душного надзора и синдрома вахтёра. Только плотные клозы 5х5 в Dota 2, сборки Modded+ в Minecraft, хорроры в Roblox и охота за ролью SSS GHOUL.»',
                 sub: '— Собирай пати за пару минут и забирай победу'
             },
             {
                 tag: 'ЦИТАТА #04 // О СООБЩЕСТВЕ',
-                text: '«Твой микрофон, твоя команда, твоя территория. Заходи на сервер как гость на одну игру — оставайся как часть главной игровой семьи Disfactory.»',
-                sub: '— Открытое и дружелюбное комьюнити без токсичности'
+                text: '«Твой микрофон, твоя команда, твоя территория. Заходи на сервер как гость на одну катку — оставайся как часть главной игровой семьи Disfactory.»',
+                sub: '— Открытое комьюнити со своим характером'
             }
         ];
 
-        // --- Демонстрационные участники (Fallback) ---
         const FALLBACK_MEMBERS = [
             { id: '1', username: 'K1llSwitch', status: 'online', avatar_url: 'https://cdn.discordapp.com/embed/avatars/0.png', game: { name: 'Dota 2' }, channel_name: 'Рейтинг 5х5 #1' },
             { id: '2', username: 'xVortex', status: 'dnd', avatar_url: 'https://cdn.discordapp.com/embed/avatars/1.png', game: { name: 'Dota 2' }, channel_name: 'Рейтинг 5х5 #1' },
-            { id: '3', username: 'Aetherius', status: 'online', avatar_url: 'https://cdn.discordapp.com/embed/avatars/2.png', game: { name: 'Minecraft' }, channel_name: 'Выживание // SMP' },
+            { id: '3', username: 'Aetherius', status: 'online', avatar_url: 'https://cdn.discordapp.com/embed/avatars/2.png', game: { name: 'Minecraft' }, channel_name: 'Выживание // Modded+' },
             { id: '4', username: 'N0cturne', status: 'online', avatar_url: 'https://cdn.discordapp.com/embed/avatars/3.png', game: { name: 'Roblox' }, channel_name: 'Ночной войс' },
-            { id: '5', username: 'Shatter_GG', status: 'idle', avatar_url: 'https://cdn.discordapp.com/embed/avatars/4.png', game: { name: 'Dota 2' }, channel_name: 'Турбо // Катки' },
-            { id: '6', username: 'Yuki_San', status: 'online', avatar_url: 'https://cdn.discordapp.com/embed/avatars/5.png', game: { name: 'Minecraft' }, channel_name: 'Выживание // SMP' },
+            { id: '5', username: 'Shatter_GG', status: 'idle', avatar_url: 'https://cdn.discordapp.com/embed/avatars/4.png', game: { name: 'Dota 2' }, channel_name: 'Лобби 1000-7' },
+            { id: '6', username: 'Yuki_San', status: 'online', avatar_url: 'https://cdn.discordapp.com/embed/avatars/5.png', game: { name: 'Minecraft' }, channel_name: 'Выживание // Modded+' },
             { id: '7', username: 'Reaper', status: 'dnd', avatar_url: 'https://cdn.discordapp.com/embed/avatars/0.png', game: { name: 'Roblox' }, channel_name: 'Ночной войс' },
             { id: '8', username: 'Moriarty', status: 'online', avatar_url: 'https://cdn.discordapp.com/embed/avatars/2.png', game: { name: 'Dota 2' }, channel_name: 'Рейтинг 5х5 #1' },
             { id: '9', username: 'Zer0Day', status: 'online', avatar_url: 'https://cdn.discordapp.com/embed/avatars/1.png', game: { name: 'Minecraft' }, channel_name: 'Тех-сборка' },
@@ -1235,23 +2343,19 @@
 
         const FALLBACK_CHANNELS = [
             { id: 'c1', name: 'Рейтинг 5х5 #1', position: 1 },
-            { id: 'c2', name: 'Выживание // SMP', position: 2 },
+            { id: 'c2', name: 'Выживание // Modded+', position: 2 },
             { id: 'c3', name: 'Ночной войс', position: 3 },
-            { id: 'c4', name: 'Общий голосовой', position: 4 }
+            { id: 'c4', name: 'Лобби 1000-7', position: 4 }
         ];
 
-        // --- Состояние ---
         let currentMembers = [];
         let currentChannels = [];
         let currentFilter = 'all';
         let currentQuoteIndex = 0;
         let quoteProgress = 0;
 
-        // =========================================================================
-        // 1. ЭФФЕКТ КИБЕР-ДЕШИФРОВКИ ТЕКСТА (TEXT SCRAMBLE)
-        // =========================================================================
         const CYBER_CHARS = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ0123456789#/_';
-        function scrambleText(element, finalString, duration = 650) {
+        function scrambleText(element, finalString, duration = 600) {
             if (!element) return;
             let frame = 0;
             const totalFrames = Math.round(duration / 25);
@@ -1274,9 +2378,6 @@
             }, 25);
         }
 
-        // =========================================================================
-        // 2. УМНАЯ ЗАГРУЗКА ПРОФИЛЕЙ ВЛАДЕЛЬЦА И СО-ВЛАДЕЛЬЦА
-        // =========================================================================
         async function loadLeadershipProfiles() {
             const ownerAvatarEl = document.getElementById('owner-avatar');
             const ownerNameEl = document.getElementById('owner-name');
@@ -1288,13 +2389,9 @@
             const coownerStatusText = document.getElementById('coowner-status-text');
             const coownerActivityBadge = document.getElementById('coowner-activity-badge');
 
-            // Устанавливаем стильные стартовые значения мгновенно
             ownerAvatarEl.src = createCyberAvatar('DF', 'OWNER', 1);
-            ownerNameEl.textContent = 'Основатель Disfactory';
             coownerAvatarEl.src = createCyberAvatar('CO', 'ADMIN', 2);
-            coownerNameEl.textContent = 'Со-владелец Disfactory';
 
-            // Попытка получить живые данные Discord через публичный Lanyard API
             await Promise.allSettled([
                 fetchLeaderFromLanyard(OWNER_ID, {
                     avatarEl: ownerAvatarEl,
@@ -1322,9 +2419,7 @@
 
                 const user = json.data.discord_user;
                 const displayName = user.global_name || user.display_name || user.username;
-                if (displayName) {
-                    ui.nameEl.textContent = displayName;
-                }
+                if (displayName) ui.nameEl.textContent = displayName;
 
                 if (user.avatar) {
                     const ext = user.avatar.startsWith('a_') ? 'gif' : 'png';
@@ -1341,20 +2436,14 @@
                     ui.statusEl.textContent = statusMap[json.data.discord_status];
                 }
 
-                // Если запущена игра или активность
                 const activities = json.data.activities || [];
                 const gameAct = activities.find(a => a.type === 0 && a.name);
                 if (gameAct) {
                     ui.activityEl.textContent = `Играет в ${gameAct.name}`;
                 }
-            } catch (e) {
-                // Оставляем стильный кибер-аватар по умолчанию
-            }
+            } catch (e) {}
         }
 
-        // =========================================================================
-        // 3. ИНТЕРАКТИВНЫЙ СЛАЙДЕР ЦИТАТ
-        // =========================================================================
         function selectQuote(index) {
             currentQuoteIndex = index;
             quoteProgress = 0;
@@ -1364,7 +2453,7 @@
             const textEl = document.getElementById('quote-text');
             const subEl = document.getElementById('quote-sub');
 
-            scrambleText(tagEl, item.tag, 400);
+            scrambleText(tagEl, item.tag, 380);
             textEl.style.opacity = '0';
             textEl.style.transform = 'translateY(8px)';
 
@@ -1374,15 +2463,12 @@
                 textEl.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
                 textEl.style.opacity = '1';
                 textEl.style.transform = 'translateY(0)';
-            }, 180);
+            }, 160);
 
-            const dots = document.querySelectorAll('.quote-dot');
-            dots.forEach((dot, idx) => {
-                if (idx === index) {
-                    dot.className = 'quote-dot w-7 h-2 rounded-full bg-white transition-all';
-                } else {
-                    dot.className = 'quote-dot w-2.5 h-2 rounded-full bg-white/25 hover:bg-white/50 transition-all';
-                }
+            document.querySelectorAll('.quote-dot').forEach((dot, idx) => {
+                dot.className = idx === index
+                    ? 'quote-dot w-7 h-2 rounded-full bg-white transition-all'
+                    : 'quote-dot w-2.5 h-2 rounded-full bg-white/25 hover:bg-white/50 transition-all';
             });
         }
 
@@ -1394,19 +2480,13 @@
             selectQuote((currentQuoteIndex - 1 + QUOTES_DATA.length) % QUOTES_DATA.length);
         }
 
-        // Авто-прогресс слайдера цитат
         setInterval(() => {
             quoteProgress += 1.25;
             const bar = document.getElementById('quote-progress');
             if (bar) bar.style.width = `${Math.min(quoteProgress, 100)}%`;
-            if (quoteProgress >= 100) {
-                nextQuote();
-            }
+            if (quoteProgress >= 100) nextQuote();
         }, 100);
 
-        // =========================================================================
-        // 4. УВЕДОМЛЕНИЯ (ТОСТЫ) И БУФЕР ОБМЕНА
-        // =========================================================================
         function showToast(message, subtext = '') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -1416,8 +2496,8 @@
                     ✓
                 </div>
                 <div>
-                    <div class="font-mono text-xs font-bold uppercase tracking-wider">${message}</div>
-                    ${subtext ? `<div class="font-mono text-[10px] text-neutral-400 mt-0.5">${subtext}</div>` : ''}
+                    <div class="font-mono text-xs font-bold uppercase tracking-wider">${escapeHtml(message)}</div>
+                    ${subtext ? `<div class="font-mono text-[10px] text-neutral-400 mt-0.5">${escapeHtml(subtext)}</div>` : ''}
                 </div>
             `;
             container.appendChild(toast);
@@ -1429,7 +2509,7 @@
             setTimeout(() => {
                 toast.classList.add('translate-y-2', 'opacity-0');
                 setTimeout(() => toast.remove(), 300);
-            }, 3200);
+            }, 3000);
         }
 
         function copyToClipboard(text, label) {
@@ -1456,20 +2536,16 @@
             copyToClipboard(SERVER_ID, 'ID сервера скопирован');
         }
 
-        // =========================================================================
-        // 5. РАБОТА С DISCORD WIDGET API (БЕЗ CORS-ОШИБОК)
-        // =========================================================================
         function animateCounter(el, targetValue) {
             if (!el) return;
             const startValue = parseInt(el.textContent, 10) || 0;
-            const duration = 700;
+            const duration = 650;
             const startTime = performance.now();
 
             function step(now) {
                 const progress = Math.min((now - startTime) / duration, 1);
                 const eased = 1 - Math.pow(1 - progress, 3);
-                const current = Math.round(startValue + (targetValue - startValue) * eased);
-                el.textContent = current;
+                el.textContent = Math.round(startValue + (targetValue - startValue) * eased);
                 if (progress < 1) requestAnimationFrame(step);
             }
             requestAnimationFrame(step);
@@ -1479,10 +2555,7 @@
             const refreshIcon = document.getElementById('refresh-icon');
             const statusText = document.getElementById('api-status-text');
 
-            if (manualRefresh && refreshIcon) {
-                refreshIcon.classList.add('animate-spin');
-            }
-
+            if (manualRefresh && refreshIcon) refreshIcon.classList.add('animate-spin');
             statusText.textContent = 'ЗАПРОС К DISCORD API...';
 
             try {
@@ -1492,20 +2565,17 @@
                     cache: 'no-store'
                 });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
                 applyLiveWidgetData(data);
 
                 if (manualRefresh) {
-                    showToast('Мониторинг обновлён', `Игроков в сети: ${data.presence_count ?? currentMembers.length}`);
+                    showToast('Онлайн обновлён', `Игроков в сети: ${data.presence_count ?? currentMembers.length}`);
                 }
             } catch (error) {
                 applyFallbackWidgetData();
                 if (manualRefresh) {
-                    showToast('Включен предпросмотр онлайна', 'Виджет Discord временно скрыт настройками сервера');
+                    showToast('Активен режим предпросмотра', 'Прямой JSON-виджет сервера сейчас скрыт');
                 }
             } finally {
                 if (manualRefresh && refreshIcon) {
@@ -1518,21 +2588,16 @@
         function applyLiveWidgetData(data) {
             const serverNameEl = document.getElementById('widget-server-name');
             const presenceCountEl = document.getElementById('presence-count');
-            const heroPillEl = document.getElementById('hero-online-pill');
             const statusText = document.getElementById('api-status-text');
             const statusDot = document.getElementById('api-status-dot');
             const fallbackBanner = document.getElementById('fallback-banner');
 
-            if (data.name) {
-                serverNameEl.textContent = data.name.toUpperCase();
-            }
+            if (data.name) serverNameEl.textContent = data.name.toUpperCase();
 
             const channelsMap = {};
             if (Array.isArray(data.channels)) {
                 currentChannels = data.channels;
-                data.channels.forEach(ch => {
-                    channelsMap[ch.id] = ch.name;
-                });
+                data.channels.forEach(ch => { channelsMap[ch.id] = ch.name; });
             } else {
                 currentChannels = [];
             }
@@ -1545,7 +2610,6 @@
 
             const onlineCount = typeof data.presence_count === 'number' ? data.presence_count : currentMembers.length;
             animateCounter(presenceCountEl, onlineCount);
-            heroPillEl.textContent = `${onlineCount} В СЕТИ`;
 
             statusText.textContent = 'ПРЯМОЕ ПОДКЛЮЧЕНИЕ // АКТИВНО';
             statusDot.className = 'w-2 h-2 rounded-full bg-white shadow-[0_0_8px_#FFFFFF]';
@@ -1558,7 +2622,6 @@
 
         function applyFallbackWidgetData() {
             const presenceCountEl = document.getElementById('presence-count');
-            const heroPillEl = document.getElementById('hero-online-pill');
             const statusText = document.getElementById('api-status-text');
             const statusDot = document.getElementById('api-status-dot');
             const fallbackBanner = document.getElementById('fallback-banner');
@@ -1566,10 +2629,7 @@
             currentMembers = [...FALLBACK_MEMBERS];
             currentChannels = [...FALLBACK_CHANNELS];
 
-            const simulatedOnlineCount = 48;
-            animateCounter(presenceCountEl, simulatedOnlineCount);
-            heroPillEl.textContent = `${simulatedOnlineCount} В СЕТИ`;
-
+            animateCounter(presenceCountEl, 48);
             statusText.textContent = 'ДЕМО-РЕЖИМ // СИНХРОНИЗАЦИЯ';
             statusDot.className = 'w-2 h-2 rounded-full bg-neutral-300 animate-pulse';
             fallbackBanner.classList.remove('hidden');
@@ -1605,7 +2665,7 @@
             const inGameMembers = currentMembers.filter(m => m.game && m.game.name);
             animateCounter(document.getElementById('in-game-count'), inGameMembers.length);
 
-            const countGame = (keyword) => currentMembers.filter(m => 
+            const countGame = (keyword) => currentMembers.filter(m =>
                 m.game && m.game.name && m.game.name.toLowerCase().includes(keyword.toLowerCase())
             ).length;
 
@@ -1620,8 +2680,7 @@
 
         function setActivityFilter(filterValue) {
             currentFilter = filterValue;
-            const buttons = document.querySelectorAll('.filter-tab');
-            buttons.forEach(btn => {
+            document.querySelectorAll('.filter-tab').forEach(btn => {
                 if (btn.getAttribute('data-filter') === filterValue) {
                     btn.className = 'filter-tab px-3 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider bg-white text-[#0B0B0B] font-bold transition-all whitespace-nowrap';
                 } else {
@@ -1634,9 +2693,7 @@
         function filterByGameFromCard(gameName) {
             setActivityFilter(gameName);
             const activitySection = document.getElementById('activity');
-            if (activitySection) {
-                activitySection.scrollIntoView({ behavior: 'smooth' });
-            }
+            if (activitySection) activitySection.scrollIntoView({ behavior: 'smooth' });
         }
 
         function renderMembers() {
@@ -1651,30 +2708,23 @@
                 if (currentFilter !== 'all' && currentFilter !== 'playing') {
                     if (!gameName.includes(currentFilter.toLowerCase())) return false;
                 }
-
                 if (searchQuery) {
                     return username.includes(searchQuery) || gameName.includes(searchQuery);
                 }
-
                 return true;
             });
 
-            filtered.sort((a, b) => {
-                const aHasGame = a.game && a.game.name ? 1 : 0;
-                const bHasGame = b.game && b.game.name ? 1 : 0;
-                return bHasGame - aHasGame;
-            });
-
+            filtered.sort((a, b) => ((b.game && b.game.name) ? 1 : 0) - ((a.game && a.game.name) ? 1 : 0));
             document.getElementById('displayed-members-count').textContent = filtered.length;
 
             if (filtered.length === 0) {
                 grid.innerHTML = `
                     <div class="col-span-full bg-[#0B0B0B] border border-white/10 rounded-xl p-10 text-center">
-                        <div class="font-mono text-sm uppercase tracking-wider text-white mb-1">Игроки по запросу не найдены</div>
-                        <p class="text-xs text-neutral-500 font-mono mb-4">Попробуйте сбросить фильтр или изменить поисковый запрос.</p>
-                        <button onclick="setActivityFilter('all'); document.getElementById('member-search').value=''; renderMembers();" 
+                        <div class="font-mono text-sm uppercase tracking-wider text-white mb-1">Никого не найдено по этому фильтру</div>
+                        <p class="text-xs text-neutral-500 font-mono mb-4">Сбрось фильтр, чтобы увидеть всех участников в сети.</p>
+                        <button onclick="playClickSfx(); setActivityFilter('all'); document.getElementById('member-search').value=''; renderMembers();"
                                 class="px-4 py-2 rounded-lg bg-white text-[#0B0B0B] font-mono text-xs font-bold uppercase tracking-wider hover:scale-[1.02] transition-all">
-                            Показать всех участников
+                            Показать всех
                         </button>
                     </div>
                 `;
@@ -1687,7 +2737,6 @@
                 const channelName = member.channel_name ? escapeHtml(member.channel_name) : null;
                 const avatarUrl = member.avatar_url || 'https://cdn.discordapp.com/embed/avatars/0.png';
 
-                // Статусы полностью на русском языке
                 let statusDotClass = 'bg-white shadow-[0_0_8px_#FFFFFF]';
                 let statusLabel = 'В СЕТИ';
                 if (member.status === 'idle') {
@@ -1700,23 +2749,19 @@
 
                 const gameBadgeHtml = gameName ? `
                     <div class="mt-1 inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-white/10 border border-white/15 text-[11px] font-mono text-white max-w-full truncate">
-                        <svg class="w-3 h-3 shrink-0 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <rect x="2" y="6" width="20" height="12" rx="2"/>
-                            <path d="M6 12h4m-2-2v4m7-1h.01m2.99-2h.01"/>
-                        </svg>
                         <span class="truncate font-semibold">${gameName}</span>
                     </div>
                 ` : `
                     <div class="mt-1 inline-flex items-center gap-1.5 text-[11px] font-mono text-neutral-400 truncate">
-                        <span>${channelName ? `Канал: ${channelName}` : 'В голосовом лобби'}</span>
+                        <span>${channelName ? `Рума: ${channelName}` : 'В голосовом лобби'}</span>
                     </div>
                 `;
 
                 return `
-                    <div class="spotlight-card group bg-[#0B0B0B] hover:bg-[#181818] border border-white/10 hover:border-white/30 rounded-xl p-3.5 flex items-center gap-3.5 transition-all duration-300 hover:scale-[1.02]">
+                    <div onmouseenter="playHoverSfx()" class="spotlight-card group bg-[#0B0B0B] hover:bg-[#181818] border border-white/10 hover:border-white/30 rounded-xl p-3.5 flex items-center gap-3.5 transition-all duration-300 hover:scale-[1.02]">
                         <div class="relative shrink-0">
-                            <img src="${avatarUrl}" 
-                                 alt="${safeName}" 
+                            <img src="${avatarUrl}"
+                                 alt="${safeName}"
                                  onerror="this.onerror=null;this.src='https://placehold.co/80x80/141414/FFFFFF?text=DF';"
                                  class="w-11 h-11 rounded-full object-cover border border-white/15 group-hover:border-white/40 transition-colors bg-[#141414]" />
                             <span title="${statusLabel}" class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-[#0B0B0B] ${statusDotClass}"></span>
@@ -1747,15 +2792,13 @@
             const el = document.getElementById('last-updated-time');
             if (!el) return;
             const now = new Date();
-            const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            el.textContent = `ОБНОВЛЕНО: ${timeStr}`;
+            el.textContent = `ОБНОВЛЕНО: ${now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
         }
 
         // =========================================================================
-        // 6. УЛЬТРА-АНИМАЦИИ: 3D-НАКЛОН КАРТОЧЕК, СВЕЧЕНИЕ КУРСОРА, МАГНИТНЫЕ КНОПКИ, CANVAS
+        // 7. ИНТЕРАКТИВНЫЕ ЭФФЕКТЫ (3D TILT, SPOTLIGHT, МАГНИТНЫЕ КНОПКИ, CANVAS)
         // =========================================================================
         function initInteractiveEffects() {
-            // 1. Глобальное отслеживание мыши и подсветка карточек
             window.addEventListener('mousemove', (e) => {
                 document.documentElement.style.setProperty('--cursor-x', `${e.clientX}px`);
                 document.documentElement.style.setProperty('--cursor-y', `${e.clientY}px`);
@@ -1767,16 +2810,13 @@
                 });
             });
 
-            // 2. Плавный 3D-Tilt (наклон карточек в пространстве)
             document.querySelectorAll('.tilt-card').forEach(card => {
                 card.addEventListener('mousemove', (e) => {
                     const rect = card.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    const rotateX = ((y - centerY) / centerY) * -5;
-                    const rotateY = ((x - centerX) / centerX) * 5;
+                    const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -4.5;
+                    const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 4.5;
                     card.style.transform = `perspective(900px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.015, 1.015, 1.015)`;
                 });
 
@@ -1785,7 +2825,6 @@
                 });
             });
 
-            // 3. Магнитные кнопки
             document.querySelectorAll('.magnetic-btn').forEach(btn => {
                 btn.addEventListener('mousemove', (e) => {
                     const rect = btn.getBoundingClientRect();
@@ -1798,19 +2837,15 @@
                 });
             });
 
-            // 4. Появление блоков при скролле (IntersectionObserver)
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
                 });
-            }, { threshold: 0.12 });
+            }, { threshold: 0.1 });
 
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         }
 
-        // 5. Фоновый нейросетевой HTML5 Canvas с частицами
         function initParticleCanvas() {
             const canvas = document.getElementById('particle-canvas');
             if (!canvas) return;
@@ -1853,18 +2888,14 @@
                     if (p.x < 0 || p.x > width) p.vx *= -1;
                     if (p.y < 0 || p.y > height) p.vy *= -1;
 
-                    // Рисуем точку
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                     ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
                     ctx.fill();
 
-                    // Соединяем близкие частицы тонкими линиями
                     for (let j = i + 1; j < particles.length; j++) {
                         const p2 = particles[j];
-                        const dx = p.x - p2.x;
-                        const dy = p.y - p2.y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
                         if (dist < 130) {
                             ctx.beginPath();
                             ctx.moveTo(p.x, p.y);
@@ -1875,10 +2906,7 @@
                         }
                     }
 
-                    // Реакция на курсор мыши
-                    const mdx = p.x - mouse.x;
-                    const mdy = p.y - mouse.y;
-                    const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+                    const mDist = Math.hypot(p.x - mouse.x, p.y - mouse.y);
                     if (mDist < 170) {
                         ctx.beginPath();
                         ctx.moveTo(p.x, p.y);
@@ -1893,17 +2921,17 @@
             draw();
         }
 
-        // --- Инициализация при загрузке страницы ---
+        // --- Запуск всех систем при загрузке ---
         window.addEventListener('DOMContentLoaded', () => {
-            const titleEl = document.getElementById('scramble-title');
-            scrambleText(titleEl, 'DISFACTORY', 800);
-
+            runPreloaderAnimation();
+            initTrackSource();
+            renderRolesShowcase();
+            renderLeaderboard();
             initParticleCanvas();
             initInteractiveEffects();
             loadLeadershipProfiles();
             fetchDiscordWidget(false);
 
-            // Авто-обновление онлайна каждые 60 секунд
             setInterval(() => fetchDiscordWidget(false), 60000);
         });
     </script>
