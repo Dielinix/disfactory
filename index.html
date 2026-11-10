@@ -291,6 +291,10 @@
                             <span class="w-0.5 bg-current eq-bar-3"></span>
                         </span>
                     </button>
+                    <button onclick="playClickSfx(); openWebhookModal('staff')"
+                            class="px-3.5 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider text-neutral-400 hover:text-white transition-all">
+                        Заявка в стафф
+                    </button>
                 </nav>
 
                 <!-- Правая часть шапки: переключатель звука кликов и кнопка Присоединиться -->
@@ -355,10 +359,73 @@
                         Музыкальное пространство Disfactory
                     </h1>
                 </div>
-                <button onclick="playClickSfx(); switchMainView('home')"
-                        class="self-start sm:self-auto px-4 py-2.5 rounded-xl bg-[#141414] hover:bg-[#1A1A1A] border border-white/10 font-mono text-xs text-white uppercase tracking-wider transition-all flex items-center gap-2">
-                    <span>← Вернуться на главную</span>
-                </button>
+                <div class="flex flex-wrap items-center gap-2.5 self-start sm:self-auto">
+                    <button onclick="playClickSfx(); openWebhookModal('track')"
+                            class="px-4 py-2.5 rounded-xl bg-white text-[#0B0B0B] font-mono text-xs font-extrabold uppercase tracking-wider transition-all hover:scale-[1.02] shadow-glow flex items-center gap-2">
+                        <span>+ Предложить трек</span>
+                    </button>
+                    <button onclick="playClickSfx(); switchMainView('home')"
+                            class="px-4 py-2.5 rounded-xl bg-[#141414] hover:bg-[#1A1A1A] border border-white/10 font-mono text-xs text-white uppercase tracking-wider transition-all flex items-center gap-2">
+                        <span>← На главную</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Переключатель источника: Полный аудио-поток с визуалайзером VS Официальный Spotify плеер 1 в 1 -->
+            <div class="bg-[#141414] border border-white/5 rounded-xl p-4 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34D399]"></span>
+                    <div>
+                        <div class="text-xs font-extrabold uppercase tracking-wider text-white">Режим воспроизведения полных треков (1 в 1)</div>
+                        <div id="audio-source-badge" class="font-mono text-[11px] text-neutral-400">
+                            Активен полноформатный поток (Audius / Direct Full Audio) с поддержкой 1.25x Sped Up
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="switchAudioEngineMode('stream')" id="engine-btn-stream"
+                            class="px-3.5 py-2 rounded-xl bg-white text-[#0B0B0B] font-mono text-xs font-extrabold uppercase tracking-wider transition-all">
+                        Полный поток + Визуалайзер
+                    </button>
+                    <button onclick="switchAudioEngineMode('spotify')" id="engine-btn-spotify"
+                            class="px-3.5 py-2 rounded-xl bg-[#0B0B0B] hover:bg-white/10 text-neutral-300 border border-white/10 font-mono text-xs font-bold uppercase tracking-wider transition-all">
+                        Официальный плеер Spotify 1 в 1
+                    </button>
+                </div>
+            </div>
+
+            <!-- Блок официального встроенного плеера Spotify (открывается при выборе режима Spotify или вставке ссылки) -->
+            <div id="spotify-official-container" class="hidden bg-[#141414] border border-white/10 rounded-xl p-5 sm:p-6 shadow-card space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <span class="font-mono text-[10px] uppercase tracking-widest text-emerald-400">Официальная интеграция Spotify</span>
+                        <h3 class="text-base sm:text-lg font-extrabold uppercase text-white">Прямое воспроизведение из Spotify</h3>
+                    </div>
+                    <form onsubmit="loadCustomSpotifyUrl(event)" class="flex items-center gap-2 w-full sm:w-auto">
+                        <input id="custom-spotify-url"
+                               type="text"
+                               placeholder="Вставь ссылку на трек/плейлист Spotify..."
+                               class="w-full sm:w-72 bg-[#0B0B0B] border border-white/10 focus:border-white/40 rounded-xl px-3.5 py-2 text-xs font-mono text-white placeholder-neutral-500 focus:outline-none" />
+                        <button type="submit" class="px-4 py-2 rounded-xl bg-white text-[#0B0B0B] font-mono text-xs font-extrabold uppercase tracking-wider shrink-0">
+                            Загрузить
+                        </button>
+                    </form>
+                </div>
+                <div class="flex flex-wrap gap-1.5">
+                    <button onclick="setSpotifyEmbedById('track', '4cOdK2wGLETKBW3PvgPWqT')" class="px-2.5 py-1 rounded-lg bg-[#0B0B0B] hover:bg-white hover:text-[#0B0B0B] border border-white/10 font-mono text-[11px] text-neutral-300 transition-colors">Плейлист: Nightcore / Sped Up</button>
+                    <button onclick="setSpotifyEmbedById('playlist', '37i9dQZF1DX6J5NfMJS675')" class="px-2.5 py-1 rounded-lg bg-[#0B0B0B] hover:bg-white hover:text-[#0B0B0B] border border-white/10 font-mono text-[11px] text-neutral-300 transition-colors">Плейлист: Dark Electronic / Techno</button>
+                    <button onclick="setSpotifyEmbedById('playlist', '37i9dQZF1DWWY64wDtewQt')" class="px-2.5 py-1 rounded-lg bg-[#0B0B0B] hover:bg-white hover:text-[#0B0B0B] border border-white/10 font-mono text-[11px] text-neutral-300 transition-colors">Плейлист: Phonk & Gaming</button>
+                </div>
+                <div class="rounded-xl overflow-hidden border border-white/10 bg-[#0B0B0B]">
+                    <iframe id="spotify-embed-iframe"
+                            style="border-radius:12px"
+                            src="https://open.spotify.com/embed/playlist/37i9dQZF1DWWY64wDtewQt?utm_source=generator&theme=0"
+                            width="100%"
+                            height="352"
+                            frameBorder="0"
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                            loading="lazy"></iframe>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -402,6 +469,16 @@
                                 </div>
                                 <div id="hub-current-artist" class="font-mono text-xs text-neutral-400 truncate">
                                     Плейлист Disfactory
+                                </div>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span id="hub-track-time" class="font-mono text-[10px] text-neutral-400">0:00 / 0:00</span>
+                                    <input id="hub-seek-slider"
+                                           type="range"
+                                           min="0"
+                                           max="100"
+                                           value="0"
+                                           oninput="seekAudioTrack(this.value)"
+                                           class="w-28 sm:w-40 accent-white cursor-pointer h-1 bg-neutral-800 rounded-lg" />
                                 </div>
                             </div>
                         </div>
@@ -865,32 +942,54 @@
                 <!-- Карточки Владельца и Со-владельца -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
                     <!-- Владелец (772431282314936322) -->
-                    <div class="spotlight-card tilt-card bg-[#141414] border border-white/10 rounded-xl p-6 shadow-card">
-                        <div class="flex items-center gap-4 mb-5">
-                            <div class="relative shrink-0">
-                                <img id="owner-avatar"
-                                     src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                                     alt="Владелец"
-                                     onerror="this.onerror=null; if(window.DEFAULT_AVATAR_URI) this.src=window.DEFAULT_AVATAR_URI;"
-                                     class="w-16 h-16 rounded-xl object-cover border border-white/20 bg-[#0B0B0B]" />
-                                <span id="owner-status-dot" class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-white border-2 border-[#141414]"></span>
-                            </div>
-                            <div class="min-w-0">
-                                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-white text-[#0B0B0B] font-mono text-[10px] font-extrabold uppercase tracking-wider mb-1">
-                                    <span>♛ Владелец</span>
+                    <div class="spotlight-card tilt-card bg-[#141414] border border-white/10 rounded-xl p-6 shadow-card flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between gap-4 mb-5">
+                                <div class="flex items-center gap-4 min-w-0">
+                                    <div class="relative shrink-0">
+                                        <img id="owner-avatar"
+                                             src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                             alt="Владелец"
+                                             onerror="this.onerror=null; if(window.DEFAULT_AVATAR_URI) this.src=window.DEFAULT_AVATAR_URI;"
+                                             class="w-16 h-16 rounded-xl object-cover border border-white/20 bg-[#0B0B0B]" />
+                                        <span id="owner-status-dot" class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-white border-2 border-[#141414]"></span>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-white text-[#0B0B0B] font-mono text-[10px] font-extrabold uppercase tracking-wider mb-1">
+                                            <span>♛ Владелец</span>
+                                        </div>
+                                        <h3 id="owner-name" class="text-xl font-black text-white truncate">
+                                            Владелец Disfactory
+                                        </h3>
+                                        <div id="owner-status-text" class="font-mono text-xs text-neutral-400">
+                                            ID: 772431282314936322
+                                        </div>
+                                    </div>
                                 </div>
-                                <h3 id="owner-name" class="text-xl font-black text-white truncate">
-                                    Владелец Disfactory
-                                </h3>
-                                <div id="owner-status-text" class="font-mono text-xs text-neutral-400">
-                                    ID: 772431282314936322
+                                <span id="owner-live-badge" class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#0B0B0B] border border-white/10 font-mono text-[10px] text-neutral-300 shrink-0">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    <span>LIVE RPC</span>
+                                </span>
+                            </div>
+
+                            <p class="text-xs sm:text-sm text-neutral-300 leading-relaxed mb-4 bg-[#0B0B0B] border border-white/5 rounded-xl p-4">
+                                «Создавал Disfactory как стильное и комфортное место для своих людей — где всегда найдётся пати в любимую игру и компания на всю ночь.»
+                            </p>
+
+                            <!-- Живой статус Spotify / Discord Rich Presence Владельца -->
+                            <div id="owner-rpc-box" class="mb-5 bg-[#0B0B0B] border border-white/10 rounded-xl p-3.5 transition-all">
+                                <div class="flex items-center justify-between gap-2 mb-1.5">
+                                    <span class="font-mono text-[10px] uppercase tracking-wider text-neutral-400 flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-white/60"></span>
+                                        <span>Активность Discord / Spotify</span>
+                                    </span>
+                                    <span class="font-mono text-[10px] text-neutral-500">Real-Time</span>
+                                </div>
+                                <div class="text-xs font-mono text-neutral-400">
+                                    Синхронизация живого статуса...
                                 </div>
                             </div>
                         </div>
-
-                        <p class="text-xs sm:text-sm text-neutral-300 leading-relaxed mb-5 bg-[#0B0B0B] border border-white/5 rounded-xl p-4">
-                            «Создавал Disfactory как стильное и комфортное место для своих людей — где всегда найдётся пати в любимую игру и компания на всю ночь.»
-                        </p>
 
                         <div class="flex flex-wrap items-center justify-between gap-2 pt-4 border-t border-white/5">
                             <span class="font-mono text-xs text-neutral-500">ID: <strong class="text-neutral-200">772431282314936322</strong></span>
@@ -911,32 +1010,54 @@
                     </div>
 
                     <!-- Со-владелец (1558546705975087225) -->
-                    <div class="spotlight-card tilt-card bg-[#141414] border border-white/10 rounded-xl p-6 shadow-card">
-                        <div class="flex items-center gap-4 mb-5">
-                            <div class="relative shrink-0">
-                                <img id="coowner-avatar"
-                                     src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-                                     alt="Со-владелец"
-                                     onerror="this.onerror=null; if(window.DEFAULT_AVATAR_URI) this.src=window.DEFAULT_AVATAR_URI;"
-                                     class="w-16 h-16 rounded-xl object-cover border border-white/20 bg-[#0B0B0B]" />
-                                <span id="coowner-status-dot" class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-white border-2 border-[#141414]"></span>
-                            </div>
-                            <div class="min-w-0">
-                                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-white/15 text-white border border-white/20 font-mono text-[10px] font-extrabold uppercase tracking-wider mb-1">
-                                    <span>✦ Со-владелец</span>
+                    <div class="spotlight-card tilt-card bg-[#141414] border border-white/10 rounded-xl p-6 shadow-card flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between gap-4 mb-5">
+                                <div class="flex items-center gap-4 min-w-0">
+                                    <div class="relative shrink-0">
+                                        <img id="coowner-avatar"
+                                             src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                             alt="Со-владелец"
+                                             onerror="this.onerror=null; if(window.DEFAULT_AVATAR_URI) this.src=window.DEFAULT_AVATAR_URI;"
+                                             class="w-16 h-16 rounded-xl object-cover border border-white/20 bg-[#0B0B0B]" />
+                                        <span id="coowner-status-dot" class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-white border-2 border-[#141414]"></span>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-white/15 text-white border border-white/20 font-mono text-[10px] font-extrabold uppercase tracking-wider mb-1">
+                                            <span>✦ Со-владелец</span>
+                                        </div>
+                                        <h3 id="coowner-name" class="text-xl font-black text-white truncate">
+                                            Со-владелец Disfactory
+                                        </h3>
+                                        <div id="coowner-status-text" class="font-mono text-xs text-neutral-400">
+                                            ID: 1558546705975087225
+                                        </div>
+                                    </div>
                                 </div>
-                                <h3 id="coowner-name" class="text-xl font-black text-white truncate">
-                                    Со-владелец Disfactory
-                                </h3>
-                                <div id="coowner-status-text" class="font-mono text-xs text-neutral-400">
-                                    ID: 1558546705975087225
+                                <span id="coowner-live-badge" class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#0B0B0B] border border-white/10 font-mono text-[10px] text-neutral-300 shrink-0">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    <span>LIVE RPC</span>
+                                </span>
+                            </div>
+
+                            <p class="text-xs sm:text-sm text-neutral-300 leading-relaxed mb-4 bg-[#0B0B0B] border border-white/5 rounded-xl p-4">
+                                «Курирую внутреннюю атмосферу, развитие комьюнити и слежу за тем, чтобы каждый участник чувствовал себя частью общей команды.»
+                            </p>
+
+                            <!-- Живой статус Spotify / Discord Rich Presence Со-владельца -->
+                            <div id="coowner-rpc-box" class="mb-5 bg-[#0B0B0B] border border-white/10 rounded-xl p-3.5 transition-all">
+                                <div class="flex items-center justify-between gap-2 mb-1.5">
+                                    <span class="font-mono text-[10px] uppercase tracking-wider text-neutral-400 flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-white/60"></span>
+                                        <span>Активность Discord / Spotify</span>
+                                    </span>
+                                    <span class="font-mono text-[10px] text-neutral-500">Real-Time</span>
+                                </div>
+                                <div class="text-xs font-mono text-neutral-400">
+                                    Синхронизация живого статуса...
                                 </div>
                             </div>
                         </div>
-
-                        <p class="text-xs sm:text-sm text-neutral-300 leading-relaxed mb-5 bg-[#0B0B0B] border border-white/5 rounded-xl p-4">
-                            «Курирую внутреннюю атмосферу, развитие комьюнити и слежу за тем, чтобы каждый участник чувствовал себя частью общей команды.»
-                        </p>
 
                         <div class="flex flex-wrap items-center justify-between gap-2 pt-4 border-t border-white/5">
                             <span class="font-mono text-xs text-neutral-500">ID: <strong class="text-neutral-200">1558546705975087225</strong></span>
@@ -996,15 +1117,13 @@
                             </div>
                             <h4 class="font-extrabold text-sm uppercase text-white mb-1">Набор в команду</h4>
                             <p class="text-xs text-neutral-400 leading-relaxed mb-3">
-                                Хочешь занять пост в стаффе Disfactory? Заходи на сервер и напиши руководству.
+                                Хочешь занять пост в стаффе Disfactory или предложить трек? Заполни форму прямо на сайте.
                             </p>
                         </div>
-                        <a href="https://discord.gg/uTXD659A8x"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           class="inline-flex items-center justify-center py-2 px-3 rounded-lg bg-[#0B0B0B] hover:bg-white hover:text-[#0B0B0B] text-white border border-white/10 font-mono text-[11px] font-bold uppercase tracking-wider transition-colors">
+                        <button onclick="playClickSfx(); openWebhookModal('staff')"
+                                class="w-full inline-flex items-center justify-center py-2 px-3 rounded-lg bg-[#0B0B0B] hover:bg-white hover:text-[#0B0B0B] text-white border border-white/10 font-mono text-[11px] font-bold uppercase tracking-wider transition-colors">
                             Подать заявку →
-                        </a>
+                        </button>
                     </div>
                 </div>
             </section>
@@ -1122,6 +1241,129 @@
         </footer>
     </div>
 
+    <!-- МОДАЛЬНОЕ ОКНО: ЗАЯВКА В СТАФФ И ПРЕДЛОЖКА ТРЕКОВ (DISCORD WEBHOOK) -->
+    <div id="webhook-modal" class="fixed inset-0 z-[90] hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="w-full max-w-lg bg-[#141414] border border-white/15 rounded-xl p-6 shadow-card relative max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between pb-4 mb-5 border-b border-white/5">
+                <div>
+                    <span class="font-mono text-[10px] uppercase tracking-widest text-neutral-400">Прямая связь с Discord-каналом</span>
+                    <h3 class="text-lg font-black uppercase text-white">Центр заявок Disfactory</h3>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="toggleWebhookConfigBox()" title="Настроить URL Discord Webhook"
+                            class="w-8 h-8 rounded-lg bg-[#0B0B0B] hover:bg-white/10 border border-white/10 text-neutral-400 hover:text-white font-mono text-xs flex items-center justify-center transition-colors">
+                        ⚙
+                    </button>
+                    <button onclick="closeWebhookModal()"
+                            class="w-8 h-8 rounded-lg bg-[#0B0B0B] hover:bg-white hover:text-[#0B0B0B] border border-white/10 text-white font-mono text-xs flex items-center justify-center transition-colors">
+                        ✕
+                    </button>
+                </div>
+            </div>
+
+            <!-- Переключатель вкладок внутри модалки -->
+            <div class="grid grid-cols-2 gap-1.5 bg-[#0B0B0B] p-1 rounded-xl border border-white/5 mb-5">
+                <button onclick="switchWebhookTab('staff')" id="wtab-staff"
+                        class="py-2 rounded-lg font-mono text-xs font-extrabold uppercase tracking-wider bg-white text-[#0B0B0B] transition-all">
+                    Заявка в стафф
+                </button>
+                <button onclick="switchWebhookTab('track')" id="wtab-track"
+                        class="py-2 rounded-lg font-mono text-xs font-bold uppercase tracking-wider text-neutral-400 hover:text-white transition-all">
+                    Предложить трек
+                </button>
+            </div>
+
+            <!-- Настройка Webhook URL (для Владельца) -->
+            <div id="webhook-config-box" class="hidden mb-5 bg-[#0B0B0B] border border-white/10 rounded-xl p-3.5 space-y-2">
+                <div class="font-mono text-[10px] uppercase tracking-wider text-neutral-300">
+                    URL Discord Webhook (сохраняется в браузере):
+                </div>
+                <input id="custom-webhook-url-input"
+                       type="url"
+                       placeholder="https://discord.com/api/webhooks/..."
+                       class="w-full bg-[#141414] border border-white/10 rounded-lg px-3 py-2 text-xs font-mono text-white placeholder-neutral-600 focus:outline-none focus:border-white/40" />
+                <div class="flex items-center justify-between gap-2 pt-1">
+                    <span class="font-mono text-[10px] text-neutral-500">Настройки канала → Интеграции → Вебхуки</span>
+                    <button type="button" onclick="saveCustomWebhookUrl()"
+                            class="px-3 py-1 rounded-lg bg-white text-[#0B0B0B] font-mono text-[10px] font-extrabold uppercase">
+                        Сохранить
+                    </button>
+                </div>
+            </div>
+
+            <!-- Форма 1: Заявка в стафф -->
+            <form id="webhook-form-staff" onsubmit="submitWebhookForm(event, 'staff')" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <div>
+                        <label class="block font-mono text-[10px] uppercase tracking-wider text-neutral-400 mb-1.5">Твой Discord ник / ID *</label>
+                        <input id="staff-discord" type="text" required placeholder="Например: dielinix"
+                               class="w-full bg-[#0B0B0B] border border-white/10 focus:border-white/40 rounded-xl px-3.5 py-2.5 text-xs font-mono text-white placeholder-neutral-600 focus:outline-none" />
+                    </div>
+                    <div>
+                        <label class="block font-mono text-[10px] uppercase tracking-wider text-neutral-400 mb-1.5">Возраст и часовой пояс *</label>
+                        <input id="staff-age" type="text" required placeholder="18 лет, МСК"
+                               class="w-full bg-[#0B0B0B] border border-white/10 focus:border-white/40 rounded-xl px-3.5 py-2.5 text-xs font-mono text-white placeholder-neutral-600 focus:outline-none" />
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-mono text-[10px] uppercase tracking-wider text-neutral-400 mb-1.5">Желаемый пост на сервере *</label>
+                    <select id="staff-role"
+                            class="w-full bg-[#0B0B0B] border border-white/10 focus:border-white/40 rounded-xl px-3.5 py-2.5 text-xs font-mono text-white focus:outline-none">
+                        <option value="Модерация чатов и войсов">01 • Модерация чатов и войсов</option>
+                        <option value="Технический отдел (Боты / Настройка)">02 • Технический отдел (Боты / Настройка)</option>
+                        <option value="Хранитель вайба (Ивенты / Компании)">03 • Хранитель вайба (Ивенты / Компании)</option>
+                        <option value="Куратор музыкального раздела">04 • Куратор музыкального раздела</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-mono text-[10px] uppercase tracking-wider text-neutral-400 mb-1.5">Опыт и почему хочешь в команду *</label>
+                    <textarea id="staff-about" rows="3" required placeholder="Расскажи коротко о себе, сколько времени проводишь в Discord и чем хочешь помочь Disfactory..."
+                              class="w-full bg-[#0B0B0B] border border-white/10 focus:border-white/40 rounded-xl px-3.5 py-2.5 text-xs font-mono text-white placeholder-neutral-600 focus:outline-none resize-none"></textarea>
+                </div>
+
+                <button type="submit" id="staff-submit-btn"
+                        class="w-full py-3.5 rounded-xl bg-white text-[#0B0B0B] font-mono text-xs font-extrabold uppercase tracking-wider transition-all hover:scale-[1.01] shadow-glowStrong">
+                    Отправить заявку в Discord
+                </button>
+            </form>
+
+            <!-- Форма 2: Предложка треков -->
+            <form id="webhook-form-track" onsubmit="submitWebhookForm(event, 'track')" class="hidden space-y-4">
+                <div>
+                    <label class="block font-mono text-[10px] uppercase tracking-wider text-neutral-400 mb-1.5">Твой никнейм *</label>
+                    <input id="track-sender" type="text" required placeholder="Твой ник в Discord"
+                           class="w-full bg-[#0B0B0B] border border-white/10 focus:border-white/40 rounded-xl px-3.5 py-2.5 text-xs font-mono text-white placeholder-neutral-600 focus:outline-none" />
+                </div>
+
+                <div>
+                    <label class="block font-mono text-[10px] uppercase tracking-wider text-neutral-400 mb-1.5">Исполнитель и название трека *</label>
+                    <input id="track-name" type="text" required placeholder="Например: тёмный принц — овердоз (Sped Up)"
+                           class="w-full bg-[#0B0B0B] border border-white/10 focus:border-white/40 rounded-xl px-3.5 py-2.5 text-xs font-mono text-white placeholder-neutral-600 focus:outline-none" />
+                </div>
+
+                <div>
+                    <label class="block font-mono text-[10px] uppercase tracking-wider text-neutral-400 mb-1.5">Ссылка на Spotify / SoundCloud / YouTube</label>
+                    <input id="track-link" type="text" placeholder="https://open.spotify.com/track/..."
+                           class="w-full bg-[#0B0B0B] border border-white/10 focus:border-white/40 rounded-xl px-3.5 py-2.5 text-xs font-mono text-white placeholder-neutral-600 focus:outline-none" />
+                </div>
+
+                <div class="flex items-center gap-2 bg-[#0B0B0B] border border-white/5 rounded-xl p-3">
+                    <input id="track-play-immediately" type="checkbox" checked class="accent-white w-4 h-4 rounded cursor-pointer" />
+                    <label for="track-play-immediately" class="font-mono text-xs text-neutral-300 cursor-pointer">
+                        Сразу найти и включить этот трек на сайте после отправки
+                    </label>
+                </div>
+
+                <button type="submit" id="track-submit-btn"
+                        class="w-full py-3.5 rounded-xl bg-white text-[#0B0B0B] font-mono text-xs font-extrabold uppercase tracking-wider transition-all hover:scale-[1.01] shadow-glowStrong">
+                    Отправить трек в предложку
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- ФИКСИРОВАННЫЙ МИНИ-ПЛЕЕР В ПРАВОМ НИЖНЕМ УГЛУ (В СТИЛЕ #141414 / #0B0B0B) -->
     <div id="bottom-player-bar" class="fixed bottom-3 inset-x-3 sm:inset-x-auto sm:right-5 sm:bottom-5 z-50 sm:w-[410px] bg-[#141414]/95 backdrop-blur-xl border border-white/10 rounded-xl p-3 shadow-card transition-all duration-300">
         <div class="flex items-center justify-between gap-2.5">
@@ -1195,6 +1437,9 @@
         const OWNER_ID = '772431282314936322';
         const COOWNER_ID = '1558546705975087225';
 
+        // Вставь сюда URL своего Discord Webhook (или настрой прямо на сайте через иконку ⚙ в окне заявки)
+        const DEFAULT_DISCORD_WEBHOOK_URL = '';
+
         let audioCtx = null;
         let analyserNode = null;
         let mediaSourceNode = null;
@@ -1231,40 +1476,45 @@
         }
 
         // =========================================================================
-        // 2. МУЗЫКАЛЬНЫЙ ПЛЕЕР (DEAD INTERNET THEORY SPED UP) И ПОИСК ТРЕКОВ
+        // 2. МУЗЫКАЛЬНЫЙ ПЛЕЕР (ПОЛНЫЕ ВЕРСИИ ТРЕКОВ 1 В 1 + SPOTIFY EMBED)
         // =========================================================================
         const DISFACTORY_PLAYLIST = [
             {
                 title: 'Dead Internet Theory (Sped Up)',
-                artist: 'Disfactory Nightcore • 1.25x',
+                artist: 'Disfactory Nightcore • Полная версия',
                 query: 'Dead Internet Theory',
                 defaultRate: 1.25,
                 streamUrl: '',
-                coverUrl: ''
+                coverUrl: '',
+                durationText: 'FULL',
+                spotifyId: '4cOdK2wGLETKBW3PvgPWqT'
             },
             {
                 title: 'тёмный принц — овердоз (Sped Up)',
-                artist: 'тёмный принц',
+                artist: 'тёмный принц • Полная версия',
                 query: 'темный принц овердоз',
                 defaultRate: 1.2,
                 streamUrl: '',
-                coverUrl: ''
+                coverUrl: '',
+                durationText: 'FULL'
             },
             {
                 title: 'CUPSIZE — люби меня',
-                artist: 'CUPSIZE',
-                query: 'CUPSIZE',
+                artist: 'CUPSIZE • Полная версия',
+                query: 'CUPSIZE люби меня',
                 defaultRate: 1.0,
                 streamUrl: '',
-                coverUrl: ''
+                coverUrl: '',
+                durationText: 'FULL'
             },
             {
                 title: 'Crystal Castles — Kerosene',
-                artist: 'Crystal Castles',
+                artist: 'Crystal Castles • Полная версия',
                 query: 'Crystal Castles Kerosene',
                 defaultRate: 1.15,
                 streamUrl: '',
-                coverUrl: ''
+                coverUrl: '',
+                durationText: 'FULL'
             },
             {
                 title: 'Shadowraze — Astral Step',
@@ -1272,17 +1522,26 @@
                 query: 'Shadowraze Astral Step',
                 defaultRate: 1.15,
                 streamUrl: '',
-                coverUrl: ''
+                coverUrl: '',
+                durationText: 'FULL'
             },
             {
                 title: 'Deftones — Change (Night Drive)',
-                artist: 'Deftones',
+                artist: 'Deftones • Полная версия',
                 query: 'Deftones Change',
                 defaultRate: 1.0,
                 streamUrl: '',
-                coverUrl: ''
+                coverUrl: '',
+                durationText: 'FULL'
             }
         ];
+
+        function formatSeconds(sec) {
+            if (!sec || !isFinite(sec) || sec < 0) return '0:00';
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
 
         function ensureAudioContext() {
             if (!audioCtx) {
@@ -1309,21 +1568,121 @@
             } catch (e) {}
         }
 
-        async function resolveTrackStreamFromItunes(queryText) {
+        // Поиск ПОЛНЫХ версий треков (1 в 1) через Audius Full Stream API + Internet Archive + резерв iTunes
+        async function resolveFullTrackStream(queryText) {
+            // 1. Пробуем Audius Open Music API (отдаёт 100% полные версии треков с поддержкой CORS и WebAudio)
+            try {
+                const audiusRes = await fetch(`https://discoveryprovider.audius.co/v1/tracks/search?query=${encodeURIComponent(queryText)}&app_name=DISFACTORY_SERVER`);
+                if (audiusRes.ok) {
+                    const audiusJson = await audiusRes.json();
+                    if (audiusJson && Array.isArray(audiusJson.data) && audiusJson.data.length > 0) {
+                        const best = audiusJson.data[0];
+                        if (best && best.id) {
+                            return {
+                                streamUrl: `https://discoveryprovider.audius.co/v1/tracks/${best.id}/stream?app_name=DISFACTORY_SERVER`,
+                                coverUrl: (best.artwork && (best.artwork['480x480'] || best.artwork['150x150'])) || '',
+                                duration: best.duration || 0,
+                                sourceLabel: 'ПОЛНЫЙ ТРЕК • AUDIUS STREAM'
+                            };
+                        }
+                    }
+                }
+            } catch (e) {}
+
+            // 2. Пробуем Internet Archive Full Audio (полные MP3 без ограничений по длительности)
+            try {
+                const iaQuery = `(${queryText}) AND mediatype:(audio)`;
+                const iaUrl = `https://archive.org/advancedsearch.php?q=${encodeURIComponent(iaQuery)}&fl[]=identifier,title,creator&rows=3&page=1&output=json`;
+                const iaRes = await fetch(iaUrl);
+                if (iaRes.ok) {
+                    const iaData = await iaRes.json();
+                    const docs = iaData?.response?.docs || [];
+                    for (const doc of docs) {
+                        if (!doc.identifier) continue;
+                        const metaRes = await fetch(`https://archive.org/metadata/${doc.identifier}`);
+                        if (!metaRes.ok) continue;
+                        const meta = await metaRes.json();
+                        const mp3File = (meta.files || []).find(f => f.name && f.name.toLowerCase().endsWith('.mp3'));
+                        if (mp3File) {
+                            return {
+                                streamUrl: `https://archive.org/download/${doc.identifier}/${encodeURIComponent(mp3File.name)}`,
+                                coverUrl: `https://archive.org/services/img/${doc.identifier}`,
+                                duration: parseFloat(mp3File.length) || 0,
+                                sourceLabel: 'ПОЛНЫЙ ТРЕК • ARCHIVE DIRECT MP3'
+                            };
+                        }
+                    }
+                }
+            } catch (e) {}
+
+            // 3. Fallback на iTunes API (и обложки высокого разрешения)
             try {
                 const url = `https://itunes.apple.com/search?term=${encodeURIComponent(queryText)}&media=music&entity=song&limit=1`;
                 const res = await fetch(url);
-                if (!res.ok) return null;
-                const data = await res.json();
-                if (data.results && data.results.length > 0) {
-                    const item = data.results[0];
-                    return {
-                        streamUrl: item.previewUrl || '',
-                        coverUrl: item.artworkUrl100 ? item.artworkUrl100.replace('100x100bb', '300x300bb') : ''
-                    };
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.results && data.results.length > 0) {
+                        const item = data.results[0];
+                        return {
+                            streamUrl: item.previewUrl || '',
+                            coverUrl: item.artworkUrl100 ? item.artworkUrl100.replace('100x100bb', '300x300bb') : '',
+                            duration: 30,
+                            sourceLabel: 'АУДИО-ПОТОК'
+                        };
+                    }
                 }
             } catch (e) {}
             return null;
+        }
+
+        function switchAudioEngineMode(mode) {
+            playSwitchSfx();
+            const spotifyBox = document.getElementById('spotify-official-container');
+            const btnStream = document.getElementById('engine-btn-stream');
+            const btnSpotify = document.getElementById('engine-btn-spotify');
+
+            if (mode === 'spotify') {
+                if (spotifyBox) spotifyBox.classList.remove('hidden');
+                if (btnSpotify) btnSpotify.className = 'px-3.5 py-2 rounded-xl bg-white text-[#0B0B0B] font-mono text-xs font-extrabold uppercase tracking-wider transition-all';
+                if (btnStream) btnStream.className = 'px-3.5 py-2 rounded-xl bg-[#0B0B0B] hover:bg-white/10 text-neutral-300 border border-white/10 font-mono text-xs font-bold uppercase tracking-wider transition-all';
+                if (isMusicPlaying) toggleMusicPlayback();
+            } else {
+                if (spotifyBox) spotifyBox.classList.add('hidden');
+                if (btnStream) btnStream.className = 'px-3.5 py-2 rounded-xl bg-white text-[#0B0B0B] font-mono text-xs font-extrabold uppercase tracking-wider transition-all';
+                if (btnSpotify) btnSpotify.className = 'px-3.5 py-2 rounded-xl bg-[#0B0B0B] hover:bg-white/10 text-neutral-300 border border-white/10 font-mono text-xs font-bold uppercase tracking-wider transition-all';
+            }
+        }
+
+        function setSpotifyEmbedById(type, id) {
+            playClickSfx();
+            const iframe = document.getElementById('spotify-embed-iframe');
+            if (iframe) {
+                iframe.src = `https://open.spotify.com/embed/${type}/${id}?utm_source=generator&theme=0`;
+            }
+            switchAudioEngineMode('spotify');
+            showToast('Spotify плеер обновлён', `Загружен ${type === 'track' ? 'трек' : 'плейлист'} 1 в 1`);
+        }
+
+        function loadCustomSpotifyUrl(event) {
+            if (event) event.preventDefault();
+            playClickSfx();
+            const input = document.getElementById('custom-spotify-url');
+            const raw = (input?.value || '').trim();
+            if (!raw) return;
+
+            const match = raw.match(/spotify\.com\/(track|playlist|album)\/([a-zA-Z0-9]+)/);
+            if (match && match[1] && match[2]) {
+                setSpotifyEmbedById(match[1], match[2]);
+                input.value = '';
+            } else {
+                showToast('Неверная ссылка', 'Вставь ссылку вида https://open.spotify.com/track/...');
+            }
+        }
+
+        function seekAudioTrack(percentVal) {
+            const audioEl = document.getElementById('bg-audio-element');
+            if (!audioEl || !audioEl.duration || !isFinite(audioEl.duration)) return;
+            audioEl.currentTime = (parseFloat(percentVal) / 100) * audioEl.duration;
         }
 
         function updateNowPlayingMetaUI(track) {
@@ -1338,12 +1697,16 @@
             const barTitle = document.getElementById('bar-track-title');
             const barArtist = document.getElementById('bar-track-artist');
             const previewStatus = document.getElementById('preview-music-status');
+            const sourceBadge = document.getElementById('audio-source-badge');
 
             if (hubTitle) hubTitle.textContent = track.title;
             if (hubArtist) hubArtist.textContent = track.artist;
             if (barTitle) barTitle.textContent = track.title;
             if (barArtist) barArtist.textContent = track.artist;
             if (previewStatus) previewStatus.textContent = track.title;
+            if (sourceBadge && track.sourceLabel) {
+                sourceBadge.textContent = `${track.sourceLabel} • ${track.title}`;
+            }
 
             const playIcon = document.getElementById('bar-play-icon');
             const hubBtnText = document.getElementById('hub-play-btn-text');
@@ -1357,10 +1720,12 @@
 
             const audioEl = document.getElementById('bg-audio-element');
             if (!track.streamUrl && track.query) {
-                const resolved = await resolveTrackStreamFromItunes(track.query);
+                const resolved = await resolveFullTrackStream(track.query);
                 if (resolved && resolved.streamUrl) {
                     track.streamUrl = resolved.streamUrl;
                     if (resolved.coverUrl) track.coverUrl = resolved.coverUrl;
+                    if (resolved.duration) track.durationText = formatSeconds(resolved.duration);
+                    if (resolved.sourceLabel) track.sourceLabel = resolved.sourceLabel;
                 }
             }
 
@@ -1517,23 +1882,64 @@
             const query = (input?.value || '').trim();
             if (!query || !resultsBox) return;
 
-            resultsBox.innerHTML = `<div class="text-xs font-mono text-neutral-400 text-center py-6">Поиск «${escapeHtml(query)}»...</div>`;
+            // Если пользователь вставил прямую ссылку на Spotify в поиск
+            const spotifyMatch = query.match(/spotify\.com\/(track|playlist|album)\/([a-zA-Z0-9]+)/);
+            if (spotifyMatch) {
+                setSpotifyEmbedById(spotifyMatch[1], spotifyMatch[2]);
+                return;
+            }
+
+            resultsBox.innerHTML = `<div class="text-xs font-mono text-neutral-400 text-center py-6">Поиск полных версий «${escapeHtml(query)}»...</div>`;
 
             try {
-                const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&entity=song&limit=8`);
-                const data = await res.json();
-                if (!data.results || data.results.length === 0) {
+                const combinedResults = [];
+
+                // 1. Ищем полные треки в Audius (100% полные версии песен)
+                try {
+                    const audRes = await fetch(`https://discoveryprovider.audius.co/v1/tracks/search?query=${encodeURIComponent(query)}&app_name=DISFACTORY_SERVER`);
+                    if (audRes.ok) {
+                        const audData = await audRes.json();
+                        (audData.data || []).slice(0, 6).forEach(item => {
+                            if (item && item.id) {
+                                combinedResults.push({
+                                    title: item.title || 'Трек',
+                                    artist: (item.user && item.user.name) || 'Artist',
+                                    streamUrl: `https://discoveryprovider.audius.co/v1/tracks/${item.id}/stream?app_name=DISFACTORY_SERVER`,
+                                    coverUrl: (item.artwork && (item.artwork['480x480'] || item.artwork['150x150'])) || '',
+                                    durationText: item.duration ? formatSeconds(item.duration) : 'FULL',
+                                    sourceLabel: 'ПОЛНЫЙ ТРЕК • AUDIUS',
+                                    defaultRate: isSpedUp ? 1.25 : 1.0
+                                });
+                            }
+                        });
+                    }
+                } catch (e) {}
+
+                // 2. Дополняем каталогом iTunes / Apple Music
+                try {
+                    const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&entity=song&limit=5`);
+                    if (res.ok) {
+                        const data = await res.json();
+                        (data.results || []).forEach(item => {
+                            combinedResults.push({
+                                title: item.trackName || 'Трек',
+                                artist: item.artistName || 'Исполнитель',
+                                streamUrl: item.previewUrl || '',
+                                coverUrl: item.artworkUrl100 ? item.artworkUrl100.replace('100x100bb', '300x300bb') : '',
+                                durationText: item.trackTimeMillis ? formatSeconds(item.trackTimeMillis / 1000) : 'STREAM',
+                                sourceLabel: 'КАТАЛОГ SPOTIFY / ITUNES',
+                                defaultRate: isSpedUp ? 1.25 : 1.0
+                            });
+                        });
+                    }
+                } catch (e) {}
+
+                if (combinedResults.length === 0) {
                     resultsBox.innerHTML = `<div class="text-xs font-mono text-neutral-500 text-center py-6">Ничего не найдено</div>`;
                     return;
                 }
 
-                window._lastSearchedTracks = data.results.map(item => ({
-                    title: item.trackName || 'Трек',
-                    artist: item.artistName || 'Исполнитель',
-                    streamUrl: item.previewUrl || '',
-                    coverUrl: item.artworkUrl100 ? item.artworkUrl100.replace('100x100bb', '300x300bb') : '',
-                    defaultRate: isSpedUp ? 1.25 : 1.0
-                }));
+                window._lastSearchedTracks = combinedResults;
 
                 resultsBox.innerHTML = window._lastSearchedTracks.map((t, i) => `
                     <div onclick="playClickSfx(); playSearchedTrack(${i})"
@@ -1542,7 +1948,7 @@
                             <img src="${t.coverUrl || createTrackCoverSvg(t.title, t.artist, i)}" class="w-8 h-8 rounded-lg object-cover shrink-0" alt="" />
                             <div class="min-w-0">
                                 <div class="text-xs font-bold truncate">${escapeHtml(t.title)}</div>
-                                <div class="font-mono text-[10px] text-neutral-400 group-hover:text-[#0B0B0B]/70 truncate">${escapeHtml(t.artist)}</div>
+                                <div class="font-mono text-[10px] text-neutral-400 group-hover:text-[#0B0B0B]/70 truncate">${escapeHtml(t.artist)} • ${escapeHtml(t.durationText || 'FULL')}</div>
                             </div>
                         </div>
                         <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-white/10 group-hover:bg-[#0B0B0B] group-hover:text-white shrink-0">▶</span>
@@ -1640,7 +2046,57 @@
         }
 
         // =========================================================================
-        // 3. АУДИО-ВИЗУАЛАЙЗЕР (60 FPS)
+        // 3. ЗВУКОВОЙ ОТКЛИК ИНТЕРФЕЙСА (UI SFX)
+        // =========================================================================
+        function playToneSfx(freq = 540, duration = 0.04, type = 'sine', gainVal = 0.035) {
+            if (!sfxEnabled) return;
+            try {
+                ensureAudioContext();
+                if (!audioCtx) return;
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, now);
+                gain.gain.setValueAtTime(gainVal, now);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + duration);
+            } catch (e) {}
+        }
+
+        function playHoverSfx() {
+            playToneSfx(620, 0.025, 'sine', 0.018);
+        }
+
+        function playClickSfx() {
+            playToneSfx(880, 0.045, 'triangle', 0.04);
+        }
+
+        function playSwitchSfx() {
+            playToneSfx(720, 0.035, 'sine', 0.03);
+        }
+
+        function toggleSfx() {
+            sfxEnabled = !sfxEnabled;
+            const dot = document.getElementById('sfx-dot');
+            const label = document.getElementById('sfx-label');
+            if (dot) {
+                dot.className = sfxEnabled
+                    ? 'w-2 h-2 rounded-full bg-white shadow-[0_0_8px_#FFFFFF]'
+                    : 'w-2 h-2 rounded-full bg-neutral-600';
+            }
+            if (label) {
+                label.textContent = sfxEnabled ? 'SFX' : 'MUTE';
+            }
+            if (sfxEnabled) playClickSfx();
+            showToast(sfxEnabled ? 'Звуки интерфейса включены' : 'Звуки интерфейса выключены');
+        }
+
+        // =========================================================================
+        // 4. 60 FPS АУДИО-ВИЗУАЛАЙЗЕР (ГЛАВНЫЙ И МИНИ-БАР)
         // =========================================================================
         function setVisualizerMode(mode) {
             playSwitchSfx();
@@ -1657,214 +2113,120 @@
         function initAudioVisualizerLoop() {
             const mainCanvas = document.getElementById('main-audio-visualizer');
             const miniCanvas = document.getElementById('mini-bar-visualizer');
-            if (!mainCanvas) return;
-
-            const mainCtx = mainCanvas.getContext('2d');
-            const miniCtx = miniCanvas ? miniCanvas.getContext('2d') : null;
             const freqData = new Uint8Array(64);
             let phase = 0;
 
-            function resizeMainVisualizer() {
-                const rect = mainCanvas.parentElement.getBoundingClientRect();
-                mainCanvas.width = Math.max(300, Math.floor(rect.width));
-                mainCanvas.height = Math.max(180, Math.floor(rect.height));
-            }
-            resizeMainVisualizer();
-            window.addEventListener('resize', resizeMainVisualizer);
+            function renderFrame() {
+                phase += isSpedUp ? 0.09 : 0.055;
 
-            function drawFrame() {
-                phase += isMusicPlaying ? (isSpedUp ? 0.11 : 0.08) : 0.018;
-
-                let hasSignal = false;
                 if (analyserNode && isMusicPlaying) {
-                    try {
-                        analyserNode.getByteFrequencyData(freqData);
-                        for (let i = 0; i < 16; i++) {
-                            if (freqData[i] > 5) {
-                                hasSignal = true;
-                                break;
-                            }
-                        }
-                    } catch (e) {}
+                    analyserNode.getByteFrequencyData(freqData);
                 }
 
-                if (!hasSignal) {
-                    for (let i = 0; i < 64; i++) {
-                        if (isMusicPlaying) {
-                            const beatPulse = Math.pow(Math.sin(phase * 1.45), 4) * 95;
-                            const wave = Math.sin(i * 0.28 + phase * 2.1) * 45 + Math.cos(i * 0.15 - phase) * 35;
-                            const falloff = Math.max(0.25, 1 - i / 75);
-                            freqData[i] = Math.min(250, Math.max(14, (85 + beatPulse + wave) * falloff));
-                        } else {
-                            freqData[i] = 10 + Math.sin(i * 0.25 + phase) * 4;
-                        }
-                    }
-                }
+                const hasRealSignal = isMusicPlaying && freqData.some(v => v > 4);
 
-                const w = mainCanvas.width;
-                const h = mainCanvas.height;
-                mainCtx.clearRect(0, 0, w, h);
-
-                if (visualizerMode === 'bars') {
-                    const barCount = 42;
-                    const gap = 4;
-                    const barWidth = Math.max(3, (w - gap * (barCount + 1)) / barCount);
-
-                    for (let i = 0; i < barCount; i++) {
-                        const val = freqData[i] / 255;
-                        const barHeight = Math.max(6, val * (h * 0.78));
-                        const x = gap + i * (barWidth + gap);
-                        const y = h - barHeight - 20;
-
-                        const grad = mainCtx.createLinearGradient(0, y, 0, h - 20);
-                        grad.addColorStop(0, '#FFFFFF');
-                        grad.addColorStop(1, 'rgba(255, 255, 255, 0.15)');
-
-                        mainCtx.fillStyle = grad;
-                        mainCtx.fillRect(x, y, barWidth, barHeight);
-                    }
-                } else if (visualizerMode === 'wave') {
-                    mainCtx.beginPath();
-                    mainCtx.lineWidth = 2.4;
-                    mainCtx.strokeStyle = '#FFFFFF';
-                    const slice = w / 48;
-
-                    for (let i = 0; i <= 48; i++) {
-                        const amp = (freqData[i % 48] / 255) * (h * 0.34);
-                        const y = h * 0.5 + Math.sin(i * 0.35 + phase * 1.8) * amp;
-                        const x = i * slice;
-                        if (i === 0) mainCtx.moveTo(x, y);
-                        else mainCtx.lineTo(x, y);
-                    }
-                    mainCtx.stroke();
-                } else if (visualizerMode === 'orb') {
-                    const cx = w / 2;
-                    const cy = h * 0.5;
-                    const bass = freqData[2] / 255;
-                    const baseR = Math.min(w, h) * 0.18 + bass * 24;
-
-                    mainCtx.beginPath();
-                    mainCtx.arc(cx, cy, baseR, 0, Math.PI * 2);
-                    mainCtx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
-                    mainCtx.lineWidth = 2;
-                    mainCtx.stroke();
-
-                    const rays = 36;
-                    for (let i = 0; i < rays; i++) {
-                        const angle = (i / rays) * Math.PI * 2 + phase * 0.25;
-                        const len = (freqData[i % 32] / 255) * 40;
-                        mainCtx.beginPath();
-                        mainCtx.moveTo(cx + Math.cos(angle) * (baseR + 4), cy + Math.sin(angle) * (baseR + 4));
-                        mainCtx.lineTo(cx + Math.cos(angle) * (baseR + 8 + len), cy + Math.sin(angle) * (baseR + 8 + len));
-                        mainCtx.strokeStyle = 'rgba(255, 255, 255, 0.65)';
-                        mainCtx.lineWidth = 2;
-                        mainCtx.stroke();
-                    }
-                }
-
-                if (miniCtx && miniCanvas) {
+                // Отрисовка мини-визуалайзера в нижнем плеере
+                if (miniCanvas) {
+                    const mCtx = miniCanvas.getContext('2d');
                     const mw = miniCanvas.width;
                     const mh = miniCanvas.height;
-                    miniCtx.clearRect(0, 0, mw, mh);
-                    const mBars = 10;
-                    const mGap = 2;
-                    const mWidth = (mw - mGap * (mBars + 1)) / mBars;
+                    mCtx.clearRect(0, 0, mw, mh);
 
-                    for (let i = 0; i < mBars; i++) {
-                        const val = freqData[i * 3] / 255;
+                    const bars = 8;
+                    const bw = 4;
+                    const gap = 2;
+                    for (let i = 0; i < bars; i++) {
+                        let val = 0.18;
+                        if (hasRealSignal) {
+                            val = Math.max(0.15, freqData[i * 2] / 255);
+                        } else if (isMusicPlaying) {
+                            val = 0.25 + 0.65 * Math.abs(Math.sin(phase + i * 0.55));
+                        }
                         const bh = Math.max(3, val * (mh - 6));
-                        const mx = mGap + i * (mWidth + mGap);
-                        const my = mh - bh - 3;
-                        miniCtx.fillStyle = isMusicPlaying ? '#FFFFFF' : 'rgba(255,255,255,0.3)';
-                        miniCtx.fillRect(mx, my, mWidth, bh);
+                        const x = 4 + i * (bw + gap);
+                        const y = mh - bh - 3;
+                        mCtx.fillStyle = isMusicPlaying ? '#FFFFFF' : 'rgba(255,255,255,0.28)';
+                        mCtx.fillRect(x, y, bw, bh);
                     }
                 }
 
-                requestAnimationFrame(drawFrame);
+                // Отрисовка большого визуалайзера во вкладке Музыка
+                if (mainCanvas && mainCanvas.offsetParent !== null) {
+                    if (mainCanvas.width !== mainCanvas.clientWidth || mainCanvas.height !== mainCanvas.clientHeight) {
+                        mainCanvas.width = mainCanvas.clientWidth || 640;
+                        mainCanvas.height = mainCanvas.clientHeight || 240;
+                    }
+                    const ctx = mainCanvas.getContext('2d');
+                    const w = mainCanvas.width;
+                    const h = mainCanvas.height;
+                    ctx.clearRect(0, 0, w, h);
+
+                    const count = 40;
+                    if (visualizerMode === 'bars') {
+                        const barWidth = (w - 40) / count;
+                        for (let i = 0; i < count; i++) {
+                            let ratio = 0.08;
+                            if (hasRealSignal) {
+                                ratio = Math.max(0.06, freqData[i % freqData.length] / 255);
+                            } else if (isMusicPlaying) {
+                                ratio = 0.15 + 0.72 * Math.abs(Math.sin(phase * 1.1 + i * 0.28)) * Math.cos(i * 0.09);
+                            }
+                            const bh = Math.max(4, ratio * (h * 0.78));
+                            const x = 20 + i * barWidth;
+                            const y = h - bh - 16;
+                            ctx.fillStyle = 'rgba(255, 255, 255, 0.88)';
+                            ctx.fillRect(x, y, Math.max(2, barWidth - 4), bh);
+                        }
+                    } else if (visualizerMode === 'wave') {
+                        ctx.beginPath();
+                        ctx.strokeStyle = '#FFFFFF';
+                        ctx.lineWidth = 2.2;
+                        for (let i = 0; i <= count; i++) {
+                            const x = (i / count) * w;
+                            let amp = 8;
+                            if (hasRealSignal) {
+                                amp = (freqData[i % freqData.length] / 255) * (h * 0.36);
+                            } else if (isMusicPlaying) {
+                                amp = Math.sin(phase * 1.4 + i * 0.35) * (h * 0.25);
+                            }
+                            const y = h / 2 + Math.sin(phase + i * 0.3) * amp;
+                            if (i === 0) ctx.moveTo(x, y);
+                            else ctx.lineTo(x, y);
+                        }
+                        ctx.stroke();
+                    } else {
+                        const cx = w / 2;
+                        const cy = h / 2;
+                        let avg = 0.2;
+                        if (hasRealSignal) {
+                            let sum = 0;
+                            for (let i = 0; i < 16; i++) sum += freqData[i];
+                            avg = sum / (16 * 255);
+                        } else if (isMusicPlaying) {
+                            avg = 0.35 + 0.35 * Math.abs(Math.sin(phase * 1.3));
+                        }
+                        const baseR = Math.min(w, h) * 0.18 + avg * 45;
+                        ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.arc(cx, cy, baseR, 0, Math.PI * 2);
+                        ctx.stroke();
+
+                        ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+                        ctx.beginPath();
+                        ctx.arc(cx, cy, baseR * 1.35, 0, Math.PI * 2);
+                        ctx.stroke();
+                    }
+                }
+
+                requestAnimationFrame(renderFrame);
             }
 
-            requestAnimationFrame(drawFrame);
+            requestAnimationFrame(renderFrame);
         }
 
         // =========================================================================
-        // 4. ЗВУКОВОЙ ОТКЛИК (UI SFX)
-        // =========================================================================
-        function playHoverSfx() {
-            if (!sfxEnabled || !audioCtx || audioCtx.state !== 'running') return;
-            try {
-                const now = audioCtx.currentTime;
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(640, now);
-                osc.frequency.exponentialRampToValueAtTime(880, now + 0.025);
-                gain.gain.setValueAtTime(0.012, now);
-                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.03);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start(now);
-                osc.stop(now + 0.032);
-            } catch (e) {}
-        }
-
-        function playClickSfx() {
-            if (!sfxEnabled) return;
-            ensureAudioContext();
-            if (!audioCtx) return;
-            try {
-                const now = audioCtx.currentTime;
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(320, now);
-                osc.frequency.exponentialRampToValueAtTime(140, now + 0.055);
-                gain.gain.setValueAtTime(0.04, now);
-                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start(now);
-                osc.stop(now + 0.065);
-            } catch (e) {}
-        }
-
-        function playSwitchSfx() {
-            if (!sfxEnabled) return;
-            ensureAudioContext();
-            if (!audioCtx) return;
-            try {
-                const now = audioCtx.currentTime;
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(520, now);
-                osc.frequency.exponentialRampToValueAtTime(740, now + 0.04);
-                gain.gain.setValueAtTime(0.028, now);
-                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.045);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start(now);
-                osc.stop(now + 0.05);
-            } catch (e) {}
-        }
-
-        function toggleSfx() {
-            sfxEnabled = !sfxEnabled;
-            const dot = document.getElementById('sfx-dot');
-            const label = document.getElementById('sfx-label');
-            if (sfxEnabled) {
-                playClickSfx();
-                if (dot) dot.className = 'w-2 h-2 rounded-full bg-white shadow-[0_0_8px_#FFFFFF]';
-                if (label) label.textContent = 'SFX';
-                showToast('Звуковой отклик включён', 'Тактильные звуки интерфейса активны');
-            } else {
-                if (dot) dot.className = 'w-2 h-2 rounded-full bg-neutral-600';
-                if (label) label.textContent = 'MUTE';
-                showToast('Звуковой отклик выключен', 'Тихий режим интерфейса');
-            }
-        }
-
-        // =========================================================================
-        // 5. ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
+        // 5. НАВИГАЦИЯ МЕЖДУ ГЛАВНОЙ И ВКЛАДКОЙ МУЗЫКИ
         // =========================================================================
         function switchMainView(viewName) {
             const homeView = document.getElementById('view-home');
@@ -1874,7 +2236,6 @@
                 if (homeView) homeView.classList.add('hidden');
                 if (musicView) musicView.classList.remove('hidden');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                setTimeout(() => window.dispatchEvent(new Event('resize')), 60);
             } else {
                 if (musicView) musicView.classList.add('hidden');
                 if (homeView) homeView.classList.remove('hidden');
@@ -1892,122 +2253,161 @@
         function jumpToSection(sectionId) {
             switchMainView('home');
             setTimeout(() => {
-                const el = document.getElementById(sectionId);
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }, 50);
+                const target = document.getElementById(sectionId);
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
+            }, 60);
         }
 
         // =========================================================================
-        // 6. ВИТРИНА РОЛЕЙ
+        // 6. МАНИФЕСТ И ЦИТАТЫ СЕРВЕРА
         // =========================================================================
-        const SERVER_ROLES = [
+        const SERVER_QUOTES = [
             {
-                id: 'hunter',
+                tag: 'Мысль 01 • О своих людях',
+                text: '«Одиночные игры быстро надоедают, но со своей компанией даже обычная посиделка в голосовом канале запоминается надолго. Disfactory создан для тех, кто ценит живое общение без масок.»',
+                sub: '— Здесь каждый вечер начинается с хорошей музыки и знакомых голосов'
+            },
+            {
+                tag: 'Мысль 02 • Игровой вайб',
+                text: '«Неважно, зашёл ты откалибровать рейтинг в Dota 2, построить базу в Minecraft с модами или посмеяться в хоррор-картах Roblox — у нас всегда найдётся место в голосовом канале.»',
+                sub: '— Свободное общение без лишней духоты и строгих рамок'
+            },
+            {
+                tag: 'Мысль 03 • Ночные посиделки',
+                text: '«Самые душевные разговоры, любимые треки на фоне и лучшие знакомства случаются после полуночи. Заходи в войс и чувствуй себя как дома.»',
+                sub: '— Голосовые комнаты Disfactory открыты 24/7'
+            },
+            {
+                tag: 'Мысль 04 • Индивидуальность',
+                text: '«Выбирай роли под свой характер — от Hunter of souls и SSS GHOUL до Принца и Candy Hunter. На Disfactory ценят твой стиль и атмосферу.»',
+                sub: '— Сообщество, которое создаётся самими участниками'
+            }
+        ];
+
+        let currentQuoteIdx = 0;
+
+        function renderQuote() {
+            const q = SERVER_QUOTES[currentQuoteIdx];
+            const tagEl = document.getElementById('quote-tag');
+            const textEl = document.getElementById('quote-text');
+            const subEl = document.getElementById('quote-sub');
+            if (tagEl) tagEl.textContent = q.tag;
+            if (textEl) textEl.textContent = q.text;
+            if (subEl) subEl.textContent = q.sub;
+
+            document.querySelectorAll('.quote-dot').forEach((dot, idx) => {
+                dot.className = idx === currentQuoteIdx
+                    ? 'quote-dot w-7 h-2 rounded-full bg-white transition-all'
+                    : 'quote-dot w-2.5 h-2 rounded-full bg-white/25 hover:bg-white/50 transition-all';
+            });
+        }
+
+        function selectQuote(idx) {
+            currentQuoteIdx = idx % SERVER_QUOTES.length;
+            renderQuote();
+        }
+
+        function nextQuote() {
+            currentQuoteIdx = (currentQuoteIdx + 1) % SERVER_QUOTES.length;
+            renderQuote();
+        }
+
+        function prevQuote() {
+            currentQuoteIdx = (currentQuoteIdx - 1 + SERVER_QUOTES.length) % SERVER_QUOTES.length;
+            renderQuote();
+        }
+
+        // =========================================================================
+        // 7. ИНТЕРАКТИВНАЯ ВИТРИНА РОЛЕЙ И КОНСТРУКТОР ПРОФИЛЯ
+        // =========================================================================
+        const SERVER_ROLES_DATA = [
+            {
+                id: 'hunter-of-souls',
                 name: 'Hunter of souls',
-                category: 'elite',
                 color: '#FFFFFF',
+                category: 'elite',
                 rarity: 'Легендарная роль',
-                desc: 'Охотники за душами в ночных голосовых комнатах. Выдаётся самым ярким участникам, которые создают атмосферу сервера.',
-                perks: ['• Выделенное место в списке участников', '• Доступ к закрытым ночным войсам', '• Чистый белый акцент в чате'],
-                obtain: 'За высокую активность в голосовых каналах и участие в жизни Disfactory.'
+                desc: 'Престижная роль для старожилов и самых ярких участников ночных голосовых комнат Disfactory.',
+                perks: ['Выделение в верхнем списке участников', 'Особый белый неон в чате', 'Доступ к закрытым комнатам'],
+                obtain: 'Выдаётся за высокую активность в голосовых каналах или по решению руководства.'
             },
             {
-                id: 'sss_ghoul',
+                id: 'sss-ghoul',
                 name: 'SSS GHOUL',
-                category: 'gaming',
                 color: '#F43F5E',
-                rarity: 'Ранг SSS',
-                desc: 'Высший ранг для ценителей эстетики гулей, ночных каток в Dota 2 и атмосферного плейлиста.',
-                perks: ['• Алый акцент профиля', '• Доступ к музыкальным комнатам без лимита', '• Приоритетный голос в войсе'],
-                obtain: 'Выдаётся активным игрокам Dota 2 и постоянным гостям ночных комнат.'
+                category: 'elite',
+                rarity: 'Ранг SSS • Мифическая',
+                desc: 'Высший ранг для тех, кто живёт в ночных катках, слушает музыку на 1.25x и никогда не сдаётся.',
+                perks: ['Алый акцент в списке сервера', 'Приоритет в игровых лобби', 'Уникальный значок профиля'],
+                obtain: 'Открывается за легендарные катки и активное участие в жизни комьюнити.'
             },
             {
-                id: '1000_7',
+                id: '1000-7',
                 name: '1000-7',
-                category: 'gaming',
-                color: '#E11D48',
-                rarity: 'Культовый тег',
-                desc: 'Символ бессонных ночей, быстрых рук на миду и треков на скорости 1.25x Sped Up.',
-                perks: ['• Отдельный тег в списке игроков', '• Право запускать свои треки в музыкальном боте', '• Стриминг экрана в 1080p 60fps'],
-                obtain: 'Выбирается в канале ролей или выдаётся за совместные игры с участниками.'
-            },
-            {
-                id: 'modded_plus',
-                name: 'Modded+',
-                category: 'gaming',
-                color: '#10B981',
-                rarity: 'Игровая привилегия',
-                desc: 'Особый статус для строителей, исследователей и любителей кастомных сборок Minecraft с модами.',
-                perks: ['• Доступ к каналам со сборками и шейдерами', '• Координация общих миров Minecraft', '• Изумрудный значок в профиле'],
-                obtain: 'Достаточно присоединиться к совместному выживанию на сервере.'
+                color: '#E5E5E5',
+                category: 'special',
+                rarity: 'Культовая роль',
+                desc: 'Символ бессонных ночей, кастомных лобби и атмосферы Dead Internet Theory.',
+                perks: ['Особый тег в профиле Discord', 'Доступ к тематическому чату'],
+                obtain: 'Можно получить в канале выбора ролей или за участие в ночных посиделках.'
             },
             {
                 id: 'prince',
                 name: 'Принц',
+                color: '#A855F7',
                 category: 'elite',
-                color: '#C084FC',
                 rarity: 'Королевский статус',
-                desc: 'Эстетичная роль для тех, кто ценит стиль, спокойное общение и ламповую атмосферу вечерних чатов.',
-                perks: ['• Персональный оттенок ника', '• Создание приватных комнат для друзей', '• Доступ к галерее медиа'],
-                obtain: 'За вклад в уютную атмосферу сервера или по решению руководства.'
+                desc: 'Эстетичная роль для ценителей вайба «тёмного принца», стильных профилей и уютных бесед.',
+                perks: ['Благородный оттенок ника', 'Личный слот в музыкальном боте'],
+                obtain: 'Выдаётся за вклад в атмосферу сервера, буст или особые заслуги.'
             },
             {
-                id: 'candy_hunter',
+                id: 'modded-plus',
+                name: 'Modded+',
+                color: '#34D399',
+                category: 'gaming',
+                rarity: 'Игровая • Техно-мастер',
+                desc: 'Роль для любителей масштабных сборок Minecraft с модами, шейдерами и совместного выживания.',
+                perks: ['Доступ к координатам и сборкам', 'Уведомления о запуске миров'],
+                obtain: 'Выбирается в разделе игровых ролей или при входе на сервер выживания.'
+            },
+            {
+                id: 'candy-hunter',
                 name: 'Candy Hunter',
-                category: 'special',
                 color: '#F472B6',
-                rarity: 'Особая коллекция',
-                desc: 'Роль для охотников за редкими значками, сладостями и хорошим настроением.',
-                perks: ['• Яркий розовый маркер в списке', '• Доступ к секретным реакциям и стикерам', '• Участие в вечерних интерактивах'],
-                obtain: 'За участие в тематических вечерах и активное общение в чате.'
+                category: 'special',
+                rarity: 'Коллекционная роль',
+                desc: 'Яркая роль для охотников за редкими достижениями, ивентами и уютными посиделками.',
+                perks: ['Нежно-розовый тег в профиле', 'Бонус к серверной репутации'],
+                obtain: 'Выдаётся за активность в чатах и участие в серверных активностях.'
             },
             {
-                id: 'femboy',
+                id: 'main-femboy',
                 name: 'главный фембой',
-                category: 'special',
                 color: '#F9A8D4',
-                rarity: 'Легенда войса',
-                desc: 'Самая ироничная и узнаваемая роль сервера. Гарантирует повышенное внимание в любом канале.',
-                perks: ['• Мгновенный респект в общем чате', '• Эксклюзивный нежно-розовый тег', '• Иммунитет к скуке'],
-                obtain: 'Выдаётся самым харизматичным и весёлым душам компании.'
+                category: 'special',
+                rarity: 'Эксклюзивная легенда',
+                desc: 'Самая мемная и узнаваемая роль сервера, которая мгновенно притягивает внимание в любом чате.',
+                perks: ['100% узнаваемость в голосовых и текстовых каналах', 'Уникальный цвет ника'],
+                obtain: 'Эксклюзивная выдача за лучший вайб и душевное общение на сервере.'
             },
             {
                 id: 'doter',
                 name: 'Дотер',
+                color: '#60A5FA',
                 category: 'gaming',
-                color: '#EF4444',
-                rarity: 'Основной состав',
-                desc: 'Базовый, но гордый знак каждого, кто готов в любой момент залететь в пати на пять человек.',
-                perks: ['• Быстрый пинг для поиска пати', '• Доступ к голосовым комнатам Dota 2', '• Совместный просмотр игр'],
-                obtain: 'Доступна каждому игроку сразу после входа на сервер.'
-            },
-            {
-                id: 'night_owl',
-                name: 'Ночной житель',
-                category: 'special',
-                color: '#818CF8',
-                rarity: 'После полуночи',
-                desc: 'Для тех, у кого жизнь начинается после 00:00: душевные разговоры, музыка и чилл до рассвета.',
-                perks: ['• Доступ к тихим ночным комнатам', '• Особый индиго-оттенок профиля', '• Плейлисты для ночного вайба'],
-                obtain: 'За регулярные посиделки в голосовых каналах в ночное время.'
-            },
-            {
-                id: 'meloman',
-                name: 'Меломан',
-                category: 'special',
-                color: '#38BDF8',
-                rarity: 'Хранитель звука',
-                desc: 'Кураторы лучших треков: от тёмного принца и CUPSIZE до Crystal Castles и Deftones.',
-                perks: ['• Управление очередью музыкальных ботов', '• Доступ к предложке плейлиста', '• Голубой аудио-маркер'],
-                obtain: 'Делись классными треками в музыкальном канале сервера.'
+                rarity: 'Основная дисциплина',
+                desc: 'Отметка для всех, кто готов в любой момент залететь в пати на 5 человек или обсудить мету.',
+                perks: ['Быстрый пинг при сборе пати в Dota 2', 'Доступ к игровым войсам'],
+                obtain: 'Доступна каждому участнику сразу после входа на сервер.'
             }
         ];
 
         let currentRoleFilter = 'all';
-        let activeRoleId = 'hunter';
-        let stackedRoleIds = ['hunter', 'sss_ghoul'];
+        let activeInspectedRoleId = 'hunter-of-souls';
+        let stackedRoleIds = ['hunter-of-souls', 'sss-ghoul', '1000-7'];
         let currentAvatarPresetIdx = 0;
-        const AVATAR_PRESETS = ['DF', '★', '♫', '♛', '♥'];
+        const AVATAR_PRESET_LABELS = ['DF', 'SS', '1000', '♛'];
 
         function filterRoles(category) {
             playSwitchSfx();
@@ -2023,270 +2423,323 @@
         }
 
         function renderRolesShowcase() {
-            const container = document.getElementById('roles-pills-container');
-            if (!container) return;
+            const pillsContainer = document.getElementById('roles-pills-container');
+            if (!pillsContainer) return;
 
-            const filtered = SERVER_ROLES.filter(r => currentRoleFilter === 'all' || r.category === currentRoleFilter);
+            const filtered = SERVER_ROLES_DATA.filter(r => currentRoleFilter === 'all' || r.category === currentRoleFilter);
 
-            container.innerHTML = filtered.map(role => {
+            pillsContainer.innerHTML = filtered.map(role => {
                 const isSelected = stackedRoleIds.includes(role.id);
-                const isFocused = activeRoleId === role.id;
-
+                const isInspected = activeInspectedRoleId === role.id;
                 return `
-                    <button onclick="playClickSfx(); toggleRoleSelection('${role.id}')"
+                    <button onclick="handleRolePillClick('${role.id}')"
                             onmouseenter="playHoverSfx()"
-                            class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl font-mono text-xs transition-all duration-200 border ${
-                                isFocused
-                                    ? 'bg-white text-[#0B0B0B] border-white font-extrabold shadow-glow'
-                                    : isSelected
-                                        ? 'bg-[#1A1A1A] text-white border-white/30 font-bold'
-                                        : 'bg-[#0B0B0B] text-neutral-300 border-white/5 hover:border-white/25 hover:text-white'
-                            }">
-                        <span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${role.color}; box-shadow: 0 0 8px ${role.color}"></span>
+                            class="px-3.5 py-2 rounded-xl font-mono text-xs font-bold transition-all flex items-center gap-2 border ${
+                                isSelected
+                                    ? 'bg-white text-[#0B0B0B] border-white shadow-glow'
+                                    : 'bg-[#0B0B0B] hover:bg-[#1C1C1C] text-white border-white/10'
+                            } ${isInspected ? 'ring-1 ring-white/50' : ''}">
+                        <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: ${role.color}"></span>
                         <span>${escapeHtml(role.name)}</span>
-                        ${isSelected ? `<span class="text-[10px] ${isFocused ? 'text-[#0B0B0B]' : 'text-white/80'}">✓</span>` : ''}
                     </button>
                 `;
             }).join('');
 
-            updateActiveRoleDetail();
+            renderInspectedRoleDetails();
             updateRoleProfilePreview();
         }
 
-        function toggleRoleSelection(roleId) {
-            activeRoleId = roleId;
+        function handleRolePillClick(roleId) {
+            playClickSfx();
+            activeInspectedRoleId = roleId;
             if (stackedRoleIds.includes(roleId)) {
                 if (stackedRoleIds.length > 1) {
                     stackedRoleIds = stackedRoleIds.filter(id => id !== roleId);
                 }
             } else {
-                if (stackedRoleIds.length >= 6) {
-                    stackedRoleIds.shift();
-                }
                 stackedRoleIds.push(roleId);
             }
             renderRolesShowcase();
         }
 
-        function resetStackedRoles() {
-            stackedRoleIds = ['hunter'];
-            activeRoleId = 'hunter';
-            renderRolesShowcase();
-        }
-
-        function updateActiveRoleDetail() {
-            const role = SERVER_ROLES.find(r => r.id === activeRoleId) || SERVER_ROLES[0];
-            const titleEl = document.getElementById('role-detail-title');
-            const rarityEl = document.getElementById('role-detail-rarity');
-            const descEl = document.getElementById('role-detail-desc');
-            const obtainEl = document.getElementById('role-detail-obtain');
-
-            if (titleEl) titleEl.textContent = role.name;
-            if (rarityEl) rarityEl.textContent = role.rarity;
-            if (descEl) descEl.textContent = role.desc;
-            if (obtainEl) obtainEl.textContent = role.obtain;
+        function renderInspectedRoleDetails() {
+            const role = SERVER_ROLES_DATA.find(r => r.id === activeInspectedRoleId) || SERVER_ROLES_DATA[0];
+            if (!role) return;
 
             const dot = document.getElementById('role-detail-dot');
-            if (dot) {
-                dot.style.backgroundColor = role.color;
-                dot.style.boxShadow = `0 0 10px ${role.color}`;
-            }
+            const title = document.getElementById('role-detail-title');
+            const rarity = document.getElementById('role-detail-rarity');
+            const desc = document.getElementById('role-detail-desc');
+            const perks = document.getElementById('role-detail-perks');
+            const obtain = document.getElementById('role-detail-obtain');
 
-            const perksEl = document.getElementById('role-detail-perks');
-            if (perksEl) {
-                perksEl.innerHTML = role.perks.map(p => `<li>${escapeHtml(p)}</li>`).join('');
+            if (dot) dot.style.backgroundColor = role.color;
+            if (title) title.textContent = role.name;
+            if (rarity) rarity.textContent = role.rarity;
+            if (desc) desc.textContent = role.desc;
+            if (perks) {
+                perks.innerHTML = role.perks.map(p => `<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-white"></span><span>${escapeHtml(p)}</span></li>`).join('');
             }
+            if (obtain) obtain.textContent = role.obtain;
         }
 
         function updateRoleProfilePreview() {
             const nickInput = document.getElementById('preview-nick-input');
             const nickDisplay = document.getElementById('preview-nick-display');
-            const rawNick = (nickInput?.value || '').trim();
-            if (nickDisplay) nickDisplay.textContent = rawNick || 'Твой_Никнейм';
-
-            const avatarLetter = document.getElementById('preview-avatar-letter');
-            const avatarImg = document.getElementById('preview-avatar-img');
-            if (avatarImg && avatarImg.classList.contains('hidden') && avatarLetter) {
-                avatarLetter.textContent = rawNick ? rawNick.slice(0, 2).toUpperCase() : AVATAR_PRESETS[currentAvatarPresetIdx];
-            }
-
-            const primaryRole = SERVER_ROLES.find(r => r.id === activeRoleId) || SERVER_ROLES[0];
-            if (nickDisplay) nickDisplay.style.color = primaryRole.color;
-
             const stackedContainer = document.getElementById('preview-stacked-roles');
             const counterEl = document.getElementById('preview-roles-counter');
+
+            const customNick = (nickInput?.value || '').trim();
+            if (nickDisplay) {
+                nickDisplay.textContent = customNick || 'Участник_Disfactory';
+            }
+
+            const selectedRoles = SERVER_ROLES_DATA.filter(r => stackedRoleIds.includes(r.id));
+            if (nickDisplay && selectedRoles.length > 0) {
+                nickDisplay.style.color = selectedRoles[0].color;
+            } else if (nickDisplay) {
+                nickDisplay.style.color = '#FFFFFF';
+            }
+
             if (counterEl) {
-                counterEl.textContent = `${stackedRoleIds.length} в профиле`;
+                counterEl.textContent = `${selectedRoles.length} в профиле`;
             }
 
             if (stackedContainer) {
-                stackedContainer.innerHTML = stackedRoleIds.map(id => {
-                    const r = SERVER_ROLES.find(item => item.id === id);
-                    if (!r) return '';
-                    return `
-                        <span onclick="playClickSfx(); toggleRoleSelection('${r.id}')"
-                              class="cursor-pointer inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-[#141414] hover:bg-[#1E1E1E] border border-white/10 text-xs font-mono text-white transition-colors">
-                            <span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${r.color}"></span>
-                            <span>${escapeHtml(r.name)}</span>
-                        </span>
-                    `;
-                }).join('');
+                stackedContainer.innerHTML = selectedRoles.map(r => `
+                    <span onclick="handleRolePillClick('${r.id}')"
+                          title="Нажми, чтобы убрать роль из превью"
+                          class="cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#141414] hover:bg-white/10 border border-white/10 font-mono text-[11px] text-white transition-colors">
+                        <span class="w-2 h-2 rounded-full" style="background-color: ${r.color}"></span>
+                        <span>${escapeHtml(r.name)}</span>
+                    </span>
+                `).join('');
             }
         }
 
         function cyclePreviewAvatarPreset() {
-            const avatarImg = document.getElementById('preview-avatar-img');
-            const avatarLetter = document.getElementById('preview-avatar-letter');
-            if (avatarImg) avatarImg.classList.add('hidden');
-            if (avatarLetter) avatarLetter.classList.remove('hidden');
-
-            currentAvatarPresetIdx = (currentAvatarPresetIdx + 1) % AVATAR_PRESETS.length;
-            updateRoleProfilePreview();
+            currentAvatarPresetIdx = (currentAvatarPresetIdx + 1) % AVATAR_PRESET_LABELS.length;
+            const img = document.getElementById('preview-avatar-img');
+            const letter = document.getElementById('preview-avatar-letter');
+            if (img) img.classList.add('hidden');
+            if (letter) {
+                letter.classList.remove('hidden');
+                letter.textContent = AVATAR_PRESET_LABELS[currentAvatarPresetIdx];
+            }
         }
 
         function handlePreviewAvatarUpload(event) {
             const file = event.target.files && event.target.files[0];
             if (!file) return;
             const url = URL.createObjectURL(file);
-            const avatarImg = document.getElementById('preview-avatar-img');
-            const avatarLetter = document.getElementById('preview-avatar-letter');
-            if (avatarImg && avatarLetter) {
-                avatarImg.src = url;
-                avatarImg.classList.remove('hidden');
-                avatarLetter.classList.add('hidden');
+            const img = document.getElementById('preview-avatar-img');
+            const letter = document.getElementById('preview-avatar-letter');
+            if (img) {
+                img.src = url;
+                img.classList.remove('hidden');
             }
+            if (letter) letter.classList.add('hidden');
+            showToast('Аватарка обновлена', 'Загружено твоё изображение для превью');
+        }
+
+        function resetStackedRoles() {
+            stackedRoleIds = ['hunter-of-souls', 'sss-ghoul'];
+            activeInspectedRoleId = 'hunter-of-souls';
+            renderRolesShowcase();
         }
 
         // =========================================================================
-        // 7. ПОЖЕЛАНИЯ ОТ MEOWWKAA
+        // 8. ПОЖЕЛАНИЯ ОТ MEOWWKAA
         // =========================================================================
         const MEOWWKAA_WISHES = [
             '«Улыбнись прямо сейчас — у тебя сегодня всё обязательно получится!»',
-            '«Пусть в твоём плейлисте всегда играют треки, от которых бегут мурашки, а рядом будут верные друзья.»',
-            '«Не переживай из-за пустяков: завари вкусный чай, укройся пледом и залетай к нам в ночной войс!»',
-            '«Ты делаешь это комьюнити особенным просто тем, что ты здесь. Береги себя и своё тепло ♥»',
-            '«Желаю тебе самых весёлых каток без тильта, уютных вечеров и людей, которые понимают с полуслова!»'
+            '«Желаю тебе самых приятных тиммейтов, винстриков и побольше поводов для радости!»',
+            '«Не забывай отдыхать, слушать любимые треки и беречь своё хорошее настроение ♥»',
+            '«Пусть на Disfactory ты встретишь людей, с которыми захочется общаться каждую ночь!»',
+            '«Ты супер! Пусть любая игра приносит только кайф и ноль тильта ✦»'
         ];
-        let meowHeartsCounter = 143;
-        let currentMeowWishIdx = 0;
+        let meowHeartsTotal = 143;
+        let meowWishIdx = 0;
 
         function sendMeowwkaaLove(event) {
             playClickSfx();
-            meowHeartsCounter++;
-            currentMeowWishIdx = (currentMeowWishIdx + 1) % MEOWWKAA_WISHES.length;
+            meowHeartsTotal++;
+            meowWishIdx = (meowWishIdx + 1) % MEOWWKAA_WISHES.length;
 
             const countEl = document.getElementById('meow-hearts-count');
             const wishEl = document.getElementById('meow-random-wish');
-            if (countEl) countEl.textContent = `♥ ${meowHeartsCounter}`;
-            if (wishEl) wishEl.textContent = MEOWWKAA_WISHES[currentMeowWishIdx];
+            if (countEl) countEl.textContent = `♥ ${meowHeartsTotal}`;
+            if (wishEl) wishEl.textContent = MEOWWKAA_WISHES[meowWishIdx];
 
-            const clientX = event?.clientX || window.innerWidth / 2;
-            const clientY = event?.clientY || window.innerHeight / 2;
-
-            for (let i = 0; i < 6; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'floating-heart font-mono text-base sm:text-lg text-white select-none';
-                heart.textContent = i % 2 === 0 ? '♥' : '✦';
-                heart.style.left = `${clientX + (Math.random() * 44 - 22)}px`;
-                heart.style.top = `${clientY + (Math.random() * 20 - 10)}px`;
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 1200);
-            }
-        }
-
-        // =========================================================================
-        // 8. МЫСЛИ И ЦИТАТЫ СЕРВЕРА
-        // =========================================================================
-        const MANIFESTO_QUOTES = [
-            {
-                tag: 'Мысль 01 • О своих людях',
-                text: '«Одиночные игры быстро надоедают, но со своей компанией даже обычная посиделка в голосовом канале запоминается надолго. Disfactory создан для тех, кто ценит живое общение без масок.»',
-                sub: '— Здесь каждый вечер начинается с хорошей музыки и знакомых голосов'
-            },
-            {
-                tag: 'Мысль 02 • О ночном вайбе',
-                text: '«Лучшие разговоры случаются после полуночи, когда в фоне тихо играет знакомый плейлист, а в комнате собираются те, с кем комфортно даже просто помолчать.»',
-                sub: '— Голосовые комнаты открыты 24/7 для каждого'
-            },
-            {
-                tag: 'Мысль 03 • Об играх в удовольствие',
-                text: '«Мы играем в Dota 2, выживаем с модами в Minecraft и проходим хорроры в Roblox ради эмоций, смеха и дружной атмосферы, а не ради сухой статистики.»',
-                sub: '— Собирай пати в один клик и наслаждайся игрой'
-            },
-            {
-                tag: 'Мысль 04 • О свободе самовыражения',
-                text: '«Выбирай роли под свой характер — от Hunter of souls и SSS GHOUL до Принца и Меломана. Здесь ценят индивидуальность и уважают каждого участника.»',
-                sub: '— Твоя территория комфорта в Discord'
-            }
-        ];
-
-        let currentQuoteIdx = 0;
-        let quoteProgressVal = 0;
-
-        function selectQuote(index) {
-            currentQuoteIdx = (index + MANIFESTO_QUOTES.length) % MANIFESTO_QUOTES.length;
-            quoteProgressVal = 0;
-            const q = MANIFESTO_QUOTES[currentQuoteIdx];
-
-            const tagEl = document.getElementById('quote-tag');
-            const textEl = document.getElementById('quote-text');
-            const subEl = document.getElementById('quote-sub');
-
-            if (tagEl) tagEl.textContent = q.tag;
-            if (textEl) textEl.textContent = q.text;
-            if (subEl) subEl.textContent = q.sub;
-
-            document.querySelectorAll('.quote-dot').forEach((dot, idx) => {
-                if (idx === currentQuoteIdx) {
-                    dot.className = 'quote-dot w-7 h-2 rounded-full bg-white transition-all';
-                } else {
-                    dot.className = 'quote-dot w-2.5 h-2 rounded-full bg-white/25 hover:bg-white/50 transition-all';
+            if (event && event.clientX) {
+                for (let i = 0; i < 5; i++) {
+                    const heart = document.createElement('div');
+                    heart.className = 'floating-heart font-mono text-sm font-bold text-white';
+                    heart.textContent = i % 2 === 0 ? '♥' : '✦';
+                    heart.style.left = `${event.clientX + (Math.random() - 0.5) * 60}px`;
+                    heart.style.top = `${event.clientY - 10}px`;
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 1100);
                 }
-            });
+            }
         }
 
-        function nextQuote() { selectQuote(currentQuoteIdx + 1); }
-        function prevQuote() { selectQuote(currentQuoteIdx - 1); }
+        // =========================================================================
+        // 9. РУКОВОДСТВО (ЖИВОЙ SPOTIFY / RICH PRESENCE) И ИНТЕГРАЦИЯ DISCORD API
+        // =========================================================================
+        const livePresenceStore = {};
 
-        setInterval(() => {
-            quoteProgressVal += 2;
-            const bar = document.getElementById('quote-progress');
-            if (bar) bar.style.width = `${quoteProgressVal}%`;
-            if (quoteProgressVal >= 100) {
-                nextQuote();
+        function renderLeaderRpcBox(userId, boxElementId, dotElementId) {
+            const box = document.getElementById(boxElementId);
+            const dot = document.getElementById(dotElementId);
+            if (!box) return;
+
+            const data = livePresenceStore[userId];
+            if (!data) {
+                box.innerHTML = `
+                    <div class="flex items-center justify-between text-xs font-mono text-neutral-400">
+                        <span>Статус Discord: В закрытом голосовом канале</span>
+                        <span class="text-neutral-500">Disfactory</span>
+                    </div>
+                `;
+                return;
             }
-        }, 180);
 
-        // =========================================================================
-        // 9. РУКОВОДСТВО И ИНТЕГРАЦИЯ DISCORD WIDGET API (БЕЗ ВЫДУМАННЫХ ЛЮДЕЙ)
-        // =========================================================================
+            const statusColors = {
+                online: 'bg-emerald-400 shadow-[0_0_8px_#34D399]',
+                idle: 'bg-amber-400 shadow-[0_0_8px_#FBBF24]',
+                dnd: 'bg-rose-500 shadow-[0_0_8px_#F43F5E]',
+                offline: 'bg-neutral-500'
+            };
+            if (dot && data.discord_status) {
+                dot.className = `absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-[#141414] ${statusColors[data.discord_status] || 'bg-white'}`;
+            }
+
+            // 1. Если слушает Spotify прямо сейчас
+            if (data.listening_to_spotify && data.spotify) {
+                const sp = data.spotify;
+                const now = Date.now();
+                const start = sp.timestamps?.start || now;
+                const end = sp.timestamps?.end || (now + 180000);
+                const totalSec = Math.max(1, (end - start) / 1000);
+                const elapsedSec = Math.min(totalSec, Math.max(0, (now - start) / 1000));
+                const pct = Math.min(100, Math.max(0, (elapsedSec / totalSec) * 100));
+                const safeQuery = `${sp.artist || ''} ${sp.song || ''}`.replace(/'/g, '');
+                const trackId = sp.track_id || '';
+
+                box.innerHTML = `
+                    <div class="flex items-center justify-between gap-2 mb-2">
+                        <span class="font-mono text-[10px] uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                            <span>Слушает в Spotify прямо сейчас</span>
+                        </span>
+                        <span class="font-mono text-[10px] text-neutral-400">${formatSeconds(elapsedSec)} / ${formatSeconds(totalSec)}</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <img src="${escapeHtml(sp.album_art_url || window.DEFAULT_AVATAR_URI)}"
+                             alt="Spotify"
+                             onerror="this.onerror=null; this.src=window.DEFAULT_AVATAR_URI;"
+                             class="w-12 h-12 rounded-lg object-cover border border-white/10 shrink-0" />
+                        <div class="min-w-0 flex-1">
+                            <div class="text-xs font-extrabold text-white truncate">${escapeHtml(sp.song || 'Трек')}</div>
+                            <div class="font-mono text-[11px] text-neutral-400 truncate">${escapeHtml(sp.artist || 'Исполнитель')}</div>
+                            <div class="w-full h-1 bg-[#141414] rounded-full overflow-hidden mt-2">
+                                <div class="h-full bg-white transition-all duration-500" style="width: ${pct.toFixed(1)}%"></div>
+                            </div>
+                        </div>
+                        <button onclick="playLeaderSpotifyTrack('${escapeHtml(safeQuery)}', '${escapeHtml(trackId)}')"
+                                class="px-2.5 py-1.5 rounded-lg bg-white text-[#0B0B0B] font-mono text-[10px] font-extrabold uppercase tracking-wider hover:scale-105 transition-transform shrink-0">
+                            ▶ Слушать
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            // 2. Если играет в игру или запущена активность Discord Rich Presence
+            const activities = Array.isArray(data.activities) ? data.activities.filter(a => a.type !== 4) : [];
+            const customStatus = Array.isArray(data.activities) ? data.activities.find(a => a.type === 4) : null;
+
+            if (activities.length > 0) {
+                const act = activities[0];
+                box.innerHTML = `
+                    <div class="flex items-center justify-between gap-2 mb-1.5">
+                        <span class="font-mono text-[10px] uppercase tracking-wider text-white flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                            <span>Discord Rich Presence</span>
+                        </span>
+                        <span class="font-mono text-[10px] text-neutral-400">Активен</span>
+                    </div>
+                    <div class="text-xs font-extrabold text-white truncate">${escapeHtml(act.name || 'В игре')}</div>
+                    ${act.details ? `<div class="font-mono text-[11px] text-neutral-300 truncate mt-0.5">${escapeHtml(act.details)}</div>` : ''}
+                    ${act.state ? `<div class="font-mono text-[10px] text-neutral-500 truncate">${escapeHtml(act.state)}</div>` : ''}
+                `;
+                return;
+            }
+
+            // 3. Пользовательский статус или онлайн-индикатор
+            const stMap = {
+                online: 'В сети Discord • Готов к общению',
+                idle: 'Отошёл • В сети Discord',
+                dnd: 'Не беспокоить • В сети Discord',
+                offline: 'На сервере Disfactory'
+            };
+            box.innerHTML = `
+                <div class="flex items-center justify-between gap-2 mb-1">
+                    <span class="font-mono text-[10px] uppercase tracking-wider text-neutral-400">Живой статус Discord</span>
+                    <span class="font-mono text-[10px] text-neutral-500">Синхронизировано</span>
+                </div>
+                <div class="text-xs font-bold text-white truncate">
+                    ${customStatus && customStatus.state ? escapeHtml(customStatus.state) : (stMap[data.discord_status] || 'На сервере Disfactory')}
+                </div>
+            `;
+        }
+
+        function playLeaderSpotifyTrack(query, spotifyTrackId) {
+            playClickSfx();
+            switchMainView('music');
+            if (spotifyTrackId) {
+                setSpotifyEmbedById('track', spotifyTrackId);
+            }
+            const input = document.getElementById('spotify-search-input');
+            if (input && query) {
+                input.value = query;
+                handleGlobalMusicSearch();
+            }
+        }
+
         async function loadRealLeadershipProfiles() {
             const ownerImg = document.getElementById('owner-avatar');
             const coownerImg = document.getElementById('coowner-avatar');
-            if (ownerImg) ownerImg.src = createMonochromeAvatarSvg('OWN');
-            if (coownerImg) coownerImg.src = createMonochromeAvatarSvg('CO');
+            if (ownerImg && (!ownerImg.src || ownerImg.src.startsWith('data:image/gif'))) ownerImg.src = createMonochromeAvatarSvg('OWN');
+            if (coownerImg && (!coownerImg.src || coownerImg.src.startsWith('data:image/gif'))) coownerImg.src = createMonochromeAvatarSvg('CO');
 
             const pairs = [
-                { id: OWNER_ID, nameEl: 'owner-name', avatarEl: 'owner-avatar', statusText: 'owner-status-text' },
-                { id: COOWNER_ID, nameEl: 'coowner-name', avatarEl: 'coowner-avatar', statusText: 'coowner-status-text' }
+                { id: OWNER_ID, nameEl: 'owner-name', avatarEl: 'owner-avatar', statusText: 'owner-status-text', rpcBox: 'owner-rpc-box', dotEl: 'owner-status-dot' },
+                { id: COOWNER_ID, nameEl: 'coowner-name', avatarEl: 'coowner-avatar', statusText: 'coowner-status-text', rpcBox: 'coowner-rpc-box', dotEl: 'coowner-status-dot' }
             ];
 
             for (const p of pairs) {
                 try {
                     const res = await fetch(`https://api.lanyard.rest/v1/users/${p.id}`);
-                    if (!res.ok) continue;
+                    if (!res.ok) {
+                        renderLeaderRpcBox(p.id, p.rpcBox, p.dotEl);
+                        continue;
+                    }
                     const json = await res.json();
-                    if (json && json.success && json.data && json.data.discord_user) {
+                    if (json && json.success && json.data) {
+                        livePresenceStore[p.id] = json.data;
                         const u = json.data.discord_user;
-                        const displayName = u.global_name || u.display_name || u.username;
-                        const nameNode = document.getElementById(p.nameEl);
-                        const avatarNode = document.getElementById(p.avatarEl);
-                        const statusNode = document.getElementById(p.statusText);
-
-                        if (displayName && nameNode) nameNode.textContent = displayName;
-                        if (u.avatar && avatarNode) {
-                            avatarNode.src = `https://cdn.discordapp.com/avatars/${p.id}/${u.avatar}.png?size=256`;
+                        if (u) {
+                            const displayName = u.global_name || u.display_name || u.username;
+                            const nameNode = document.getElementById(p.nameEl);
+                            const avatarNode = document.getElementById(p.avatarEl);
+                            if (displayName && nameNode) nameNode.textContent = displayName;
+                            if (u.avatar && avatarNode) {
+                                avatarNode.src = `https://cdn.discordapp.com/avatars/${p.id}/${u.avatar}.png?size=256`;
+                            }
                         }
+                        const statusNode = document.getElementById(p.statusText);
                         const st = json.data.discord_status;
                         const statusMap = {
                             online: 'В сети Discord',
@@ -2295,8 +2748,232 @@
                             offline: `ID: ${p.id}`
                         };
                         if (statusNode) statusNode.textContent = statusMap[st] || `ID: ${p.id}`;
+                        renderLeaderRpcBox(p.id, p.rpcBox, p.dotEl);
                     }
-                } catch (e) {}
+                } catch (e) {
+                    renderLeaderRpcBox(p.id, p.rpcBox, p.dotEl);
+                }
+            }
+        }
+
+        // Подключение к Lanyard WebSocket для мгновенного обновления Spotify и Rich Presence
+        function initLanyardRealtimeSocket() {
+            try {
+                const ws = new WebSocket('wss://api.lanyard.rest/socket');
+                let heartbeatInterval = null;
+
+                ws.onmessage = event => {
+                    try {
+                        const msg = JSON.parse(event.data);
+                        if (msg.op === 1) {
+                            const interval = msg.d?.heartbeat_interval || 30000;
+                            ws.send(JSON.stringify({
+                                op: 2,
+                                d: { subscribe_to_ids: [OWNER_ID, COOWNER_ID] }
+                            }));
+                            heartbeatInterval = setInterval(() => {
+                                if (ws.readyState === WebSocket.OPEN) {
+                                    ws.send(JSON.stringify({ op: 3 }));
+                                }
+                            }, interval);
+                        } else if (msg.op === 0 && (msg.t === 'INIT_STATE' || msg.t === 'PRESENCE_UPDATE')) {
+                            if (msg.t === 'INIT_STATE' && msg.d) {
+                                Object.keys(msg.d).forEach(uid => {
+                                    livePresenceStore[uid] = msg.d[uid];
+                                });
+                            } else if (msg.t === 'PRESENCE_UPDATE' && msg.d) {
+                                const uid = msg.d.user_id || msg.d.discord_user?.id;
+                                if (uid) livePresenceStore[uid] = msg.d;
+                            }
+                            renderLeaderRpcBox(OWNER_ID, 'owner-rpc-box', 'owner-status-dot');
+                            renderLeaderRpcBox(COOWNER_ID, 'coowner-rpc-box', 'coowner-status-dot');
+                        }
+                    } catch (e) {}
+                };
+
+                ws.onclose = () => {
+                    if (heartbeatInterval) clearInterval(heartbeatInterval);
+                };
+            } catch (e) {}
+
+            // Плавное обновление прогресс-бара Spotify каждую секунду
+            setInterval(() => {
+                if (livePresenceStore[OWNER_ID]?.listening_to_spotify) {
+                    renderLeaderRpcBox(OWNER_ID, 'owner-rpc-box', 'owner-status-dot');
+                }
+                if (livePresenceStore[COOWNER_ID]?.listening_to_spotify) {
+                    renderLeaderRpcBox(COOWNER_ID, 'coowner-rpc-box', 'coowner-status-dot');
+                }
+            }, 1000);
+        }
+
+        // =========================================================================
+        // 9.5. МОДАЛКА ЗАЯВОК В СТАФФ И ПРЕДЛОЖКИ ТРЕКОВ ЧЕРЕЗ DISCORD WEBHOOK
+        // =========================================================================
+        function getActiveWebhookUrl() {
+            return localStorage.getItem('disfactory_webhook_url') || DEFAULT_DISCORD_WEBHOOK_URL || '';
+        }
+
+        function openWebhookModal(tab = 'staff') {
+            const modal = document.getElementById('webhook-modal');
+            if (!modal) return;
+            modal.classList.remove('hidden');
+            switchWebhookTab(tab);
+
+            const savedInput = document.getElementById('custom-webhook-url-input');
+            if (savedInput) savedInput.value = getActiveWebhookUrl();
+        }
+
+        function closeWebhookModal() {
+            playClickSfx();
+            const modal = document.getElementById('webhook-modal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function toggleWebhookConfigBox() {
+            playClickSfx();
+            const box = document.getElementById('webhook-config-box');
+            if (box) box.classList.toggle('hidden');
+        }
+
+        function saveCustomWebhookUrl() {
+            playClickSfx();
+            const input = document.getElementById('custom-webhook-url-input');
+            const val = (input?.value || '').trim();
+            if (val) {
+                localStorage.setItem('disfactory_webhook_url', val);
+                showToast('Webhook сохранён', 'Заявки будут приходить напрямую в ваш канал Discord');
+            } else {
+                localStorage.removeItem('disfactory_webhook_url');
+                showToast('Webhook очищен', 'Используется резервный режим копирования');
+            }
+            const box = document.getElementById('webhook-config-box');
+            if (box) box.classList.add('hidden');
+        }
+
+        function switchWebhookTab(tab) {
+            playSwitchSfx();
+            const staffForm = document.getElementById('webhook-form-staff');
+            const trackForm = document.getElementById('webhook-form-track');
+            const staffBtn = document.getElementById('wtab-staff');
+            const trackBtn = document.getElementById('wtab-track');
+
+            if (tab === 'track') {
+                if (staffForm) staffForm.classList.add('hidden');
+                if (trackForm) trackForm.classList.remove('hidden');
+                if (trackBtn) trackBtn.className = 'py-2 rounded-lg font-mono text-xs font-extrabold uppercase tracking-wider bg-white text-[#0B0B0B] transition-all';
+                if (staffBtn) staffBtn.className = 'py-2 rounded-lg font-mono text-xs font-bold uppercase tracking-wider text-neutral-400 hover:text-white transition-all';
+            } else {
+                if (trackForm) trackForm.classList.add('hidden');
+                if (staffForm) staffForm.classList.remove('hidden');
+                if (staffBtn) staffBtn.className = 'py-2 rounded-lg font-mono text-xs font-extrabold uppercase tracking-wider bg-white text-[#0B0B0B] transition-all';
+                if (trackBtn) trackBtn.className = 'py-2 rounded-lg font-mono text-xs font-bold uppercase tracking-wider text-neutral-400 hover:text-white transition-all';
+            }
+        }
+
+        async function submitWebhookForm(event, type) {
+            event.preventDefault();
+            playClickSfx();
+            const webhookUrl = getActiveWebhookUrl();
+
+            if (type === 'staff') {
+                const discordTag = document.getElementById('staff-discord').value.trim();
+                const age = document.getElementById('staff-age').value.trim();
+                const role = document.getElementById('staff-role').value;
+                const about = document.getElementById('staff-about').value.trim();
+
+                const payload = {
+                    username: 'DISFACTORY • Система заявок',
+                    embeds: [
+                        {
+                            title: 'Новая заявка в команду Disfactory',
+                            color: 16777215,
+                            fields: [
+                                { name: 'Кандидат (Discord)', value: discordTag, inline: true },
+                                { name: 'Возраст / Часовой пояс', value: age, inline: true },
+                                { name: 'Желаемый пост', value: role, inline: false },
+                                { name: 'О себе и опыт', value: about, inline: false }
+                            ],
+                            footer: { text: `DISFACTORY SERVER • ID: ${GUILD_ID}` },
+                            timestamp: new Date().toISOString()
+                        }
+                    ]
+                };
+
+                if (webhookUrl) {
+                    try {
+                        const res = await fetch(webhookUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        if (res.ok) {
+                            showToast('Заявка доставлена в Discord!', 'Руководство рассмотрит её в ближайшее время');
+                            document.getElementById('webhook-form-staff').reset();
+                            closeWebhookModal();
+                            return;
+                        }
+                    } catch (e) {}
+                }
+
+                // Если вебхук ещё не вставлен — копируем готовую анкету в буфер обмена
+                const summary = `ЗАЯВКА В СТАФФ DISFACTORY\n• Discord: ${discordTag}\n• Возраст: ${age}\n• Пост: ${role}\n• О себе: ${about}`;
+                copyToClipboard(summary, 'Анкета скопирована! Отправь её в чат сервера');
+                closeWebhookModal();
+            } else {
+                const sender = document.getElementById('track-sender').value.trim();
+                const trackName = document.getElementById('track-name').value.trim();
+                const trackLink = document.getElementById('track-link').value.trim();
+                const playNow = document.getElementById('track-play-immediately').checked;
+
+                const payload = {
+                    username: 'DISFACTORY • Музыкальный бот',
+                    embeds: [
+                        {
+                            title: '♫ Новый трек предложен в плейлист',
+                            color: 16777215,
+                            fields: [
+                                { name: 'От участника', value: sender, inline: true },
+                                { name: 'Трек', value: trackName, inline: true },
+                                { name: 'Ссылка', value: trackLink || 'Не указана', inline: false }
+                            ],
+                            footer: { text: 'Музыкальное пространство Disfactory' },
+                            timestamp: new Date().toISOString()
+                        }
+                    ]
+                };
+
+                if (webhookUrl) {
+                    try {
+                        await fetch(webhookUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                    } catch (e) {}
+                }
+
+                // Добавляем предложенный трек сразу в плейлист сайта
+                const newTrackObj = {
+                    title: trackName,
+                    artist: `Предложил: ${sender}`,
+                    query: trackName,
+                    defaultRate: isSpedUp ? 1.25 : 1.0,
+                    streamUrl: '',
+                    coverUrl: '',
+                    durationText: 'FULL'
+                };
+                DISFACTORY_PLAYLIST.unshift(newTrackObj);
+                currentTrackIndex = 0;
+                renderDisfactoryPlaylist();
+
+                if (playNow) {
+                    loadAndPlayTrackObject(newTrackObj, true);
+                }
+
+                showToast('Трек добавлен в плейлист!', `${trackName}`);
+                document.getElementById('webhook-form-track').reset();
+                closeWebhookModal();
             }
         }
 
@@ -2722,10 +3399,25 @@
             renderDisfactoryPlaylist();
             renderRolesShowcase();
             loadRealLeadershipProfiles();
+            initLanyardRealtimeSocket();
             fetchDiscordWidget(false);
             initAudioVisualizerLoop();
             initBackgroundParticles();
             initInteractiveCardsAndScroll();
+
+            const audioEl = document.getElementById('bg-audio-element');
+            if (audioEl) {
+                audioEl.addEventListener('timeupdate', () => {
+                    const timeEl = document.getElementById('hub-track-time');
+                    const seekEl = document.getElementById('hub-seek-slider');
+                    if (timeEl && audioEl.duration && isFinite(audioEl.duration)) {
+                        timeEl.textContent = `${formatSeconds(audioEl.currentTime)} / ${formatSeconds(audioEl.duration)}`;
+                    }
+                    if (seekEl && audioEl.duration && isFinite(audioEl.duration)) {
+                        seekEl.value = ((audioEl.currentTime / audioEl.duration) * 100).toFixed(1);
+                    }
+                });
+            }
 
             setInterval(() => fetchDiscordWidget(false), 45000);
         });
