@@ -172,61 +172,6 @@
 </head>
 <body class="min-h-screen font-sans antialiased selection:bg-white selection:text-[#0B0B0B] pb-28">
 
-    <!-- ИНТРО-ЭКРАН (PRELOADER) В СТРОГОМ СТИЛЕ #0B0B0B -->
-    <div id="preloader" class="fixed inset-0 z-[100] bg-[#0B0B0B] flex flex-col items-center justify-center px-4 transition-opacity duration-500">
-        <div class="w-full max-w-md bg-[#141414] border border-white/10 rounded-xl p-6 sm:p-8 shadow-card relative overflow-hidden">
-            <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/5">
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-lg bg-white text-[#0B0B0B] font-mono font-black text-base flex items-center justify-center shadow-glow">
-                        DF
-                    </div>
-                    <div>
-                        <div class="font-black text-sm tracking-widest uppercase text-white">DISFACTORY</div>
-                        <div class="font-mono text-[11px] text-neutral-400">Игровое пространство</div>
-                    </div>
-                </div>
-                <span id="preloader-percent" class="font-mono text-xs font-bold text-white px-2.5 py-1 rounded bg-[#0B0B0B] border border-white/10">
-                    0%
-                </span>
-            </div>
-
-            <div class="space-y-2 mb-6">
-                <div class="flex items-center justify-between font-mono text-xs text-neutral-300">
-                    <span id="preloader-status">Инициализация интерфейса...</span>
-                    <span class="text-neutral-500">ID: 1559945706020540538</span>
-                </div>
-                <div class="w-full h-1.5 bg-[#0B0B0B] rounded-full overflow-hidden border border-white/5">
-                    <div id="preloader-bar" class="h-full bg-white w-0 transition-all duration-300 shadow-[0_0_12px_#FFFFFF]"></div>
-                </div>
-            </div>
-
-            <div class="bg-[#0B0B0B] border border-white/5 rounded-xl p-3.5 mb-6 flex items-center justify-between gap-3">
-                <div class="flex items-center gap-3 min-w-0">
-                    <div class="w-8 h-8 rounded-lg bg-[#141414] border border-white/10 flex items-center justify-center font-mono text-xs text-white shrink-0">
-                        ♫
-                    </div>
-                    <div class="min-w-0">
-                        <div class="font-mono text-[10px] uppercase tracking-wider text-neutral-500">Фоновый трек готов</div>
-                        <div class="text-xs font-bold text-white truncate">Dead Internet Theory (Sped Up)</div>
-                    </div>
-                </div>
-                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-white/10 text-white shrink-0">1.25x</span>
-            </div>
-
-            <button onclick="enterDisfactory(true)"
-                    class="w-full py-3.5 px-5 rounded-xl bg-white text-[#0B0B0B] font-mono text-xs font-extrabold uppercase tracking-wider transition-all duration-300 hover:scale-[1.02] shadow-glowStrong flex items-center justify-center gap-2">
-                <span>Войти на сайт со звуком</span>
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                </svg>
-            </button>
-            <button onclick="enterDisfactory(false)"
-                    class="mt-2.5 w-full py-2 rounded-xl bg-transparent hover:bg-white/5 text-neutral-400 hover:text-white font-mono text-[11px] uppercase tracking-wider transition-colors">
-                Продолжить без музыки
-            </button>
-        </div>
-    </div>
-
     <!-- ФОНОВЫЕ СЛОИ: ЧАСТИЦЫ, КИБЕР-СЕТКА, СВЕЧЕНИЕ КУРСОРА И СКАНЛАЙН -->
     <canvas id="particle-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-55"></canvas>
     <div class="fixed inset-0 cyber-grid pointer-events-none z-0"></div>
@@ -1437,8 +1382,8 @@
         const OWNER_ID = '772431282314936322';
         const COOWNER_ID = '1558546705975087225';
 
-        // Вставь сюда URL своего Discord Webhook (или настрой прямо на сайте через иконку ⚙ в окне заявки)
-        const DEFAULT_DISCORD_WEBHOOK_URL = '';
+        // Основной Discord Webhook по умолчанию для заявок в стафф и предложки треков
+        const DEFAULT_DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1569775368381145138/GBFlBmzaMSQpuKdIOvD9Lig7P-jjniVXLn1az38ltIHImNQRJ9LZ7o7uPToIgmwCNqMA';
 
         let audioCtx = null;
         let analyserNode = null;
@@ -2811,7 +2756,7 @@
         // 9.5. МОДАЛКА ЗАЯВОК В СТАФФ И ПРЕДЛОЖКИ ТРЕКОВ ЧЕРЕЗ DISCORD WEBHOOK
         // =========================================================================
         function getActiveWebhookUrl() {
-            return localStorage.getItem('disfactory_webhook_url') || DEFAULT_DISCORD_WEBHOOK_URL || '';
+            return localStorage.getItem('disfactory_webhook_url') || DEFAULT_DISCORD_WEBHOOK_URL;
         }
 
         function openWebhookModal(tab = 'staff') {
@@ -3199,52 +3144,8 @@
         }
 
         // =========================================================================
-        // 10. PRELOADER, ЧАСТИЦЫ, 3D-TILT И КОПИРОВАНИЕ В БУФЕР
+        // 10. ЧАСТИЦЫ, 3D-TILT И КОПИРОВАНИЕ В БУФЕР
         // =========================================================================
-        function initPreloader() {
-            const bar = document.getElementById('preloader-bar');
-            const percentEl = document.getElementById('preloader-percent');
-            const statusEl = document.getElementById('preloader-status');
-
-            const steps = [
-                { p: 30, text: 'Загрузка интерфейса Disfactory...' },
-                { p: 65, text: 'Подключение к виджету Discord...' },
-                { p: 90, text: 'Подготовка Dead Internet Theory (Sped Up)...' },
-                { p: 100, text: 'Готово к входу' }
-            ];
-
-            let idx = 0;
-            const timer = setInterval(() => {
-                if (idx >= steps.length) {
-                    clearInterval(timer);
-                    return;
-                }
-                if (bar) bar.style.width = `${steps[idx].p}%`;
-                if (percentEl) percentEl.textContent = `${steps[idx].p}%`;
-                if (statusEl) statusEl.textContent = steps[idx].text;
-                idx++;
-            }, 240);
-        }
-
-        async function enterDisfactory(withMusic = true) {
-            ensureAudioContext();
-            playClickSfx();
-
-            const preloader = document.getElementById('preloader');
-            if (preloader) {
-                preloader.classList.add('opacity-0', 'pointer-events-none');
-                setTimeout(() => preloader.remove(), 550);
-            }
-
-            runTitleScramble();
-
-            if (withMusic) {
-                await loadAndPlayTrackObject(DISFACTORY_PLAYLIST[0], true);
-            } else {
-                updateNowPlayingMetaUI(DISFACTORY_PLAYLIST[0]);
-            }
-        }
-
         function runTitleScramble() {
             const el = document.getElementById('scramble-title');
             if (!el) return;
@@ -3394,7 +3295,7 @@
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            initPreloader();
+            runTitleScramble();
             updateNowPlayingMetaUI(DISFACTORY_PLAYLIST[0]);
             renderDisfactoryPlaylist();
             renderRolesShowcase();
@@ -3404,6 +3305,19 @@
             initAudioVisualizerLoop();
             initBackgroundParticles();
             initInteractiveCardsAndScroll();
+
+            // Пробуем сразу запустить фоновый трек; если браузер ждёт первого клика — включим при первом касании
+            loadAndPlayTrackObject(DISFACTORY_PLAYLIST[0], true);
+            const unlockAudioOnFirstInteraction = () => {
+                ensureAudioContext();
+                if (!isMusicPlaying) {
+                    loadAndPlayTrackObject(DISFACTORY_PLAYLIST[currentTrackIndex] || DISFACTORY_PLAYLIST[0], true);
+                }
+                document.removeEventListener('click', unlockAudioOnFirstInteraction);
+                document.removeEventListener('keydown', unlockAudioOnFirstInteraction);
+            };
+            document.addEventListener('click', unlockAudioOnFirstInteraction, { once: true });
+            document.addEventListener('keydown', unlockAudioOnFirstInteraction, { once: true });
 
             const audioEl = document.getElementById('bg-audio-element');
             if (audioEl) {
