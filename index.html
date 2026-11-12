@@ -178,6 +178,11 @@
     <div id="cursor-spotlight" class="fixed inset-0 pointer-events-none z-0"></div>
     <div class="fixed inset-x-0 top-0 h-32 scanline pointer-events-none z-0"></div>
 
+    <!-- СКРЫТЫЙ КОНТЕЙНЕР YOUTUBE IFRAME API ДЛЯ АУДИО МИНИ-ИГРЫ -->
+    <div id="yt-hidden-mount" class="fixed -left-[9999px] -top-[9999px] w-1 h-1 overflow-hidden pointer-events-none opacity-0">
+        <div id="yt-audio-player"></div>
+    </div>
+
     <!-- КОНТЕЙНЕР УВЕДОМЛЕНИЙ -->
     <div id="toast-container" class="fixed top-20 right-4 z-50 flex flex-col gap-2.5 pointer-events-none"></div>
 
@@ -1372,6 +1377,241 @@
     <!-- Скрытый аудио-элемент -->
     <audio id="bg-audio-element" crossorigin="anonymous" loop preload="auto"></audio>
 
+    <!-- СПРЯТАННАЯ МИНИАТЮРНАЯ КНОПКА С МАСКОЙ (БЕЗ ЗАДНЕГО ФОНА, ПОЛУПРОЗРАЧНАЯ У КРАЯ ЭКРАНА) -->
+    <button id="horror-trigger-btn"
+            onclick="openHorrorGameOverlay()"
+            title="..."
+            class="fixed bottom-2 left-2 z-40 w-7 h-7 sm:w-8 sm:h-8 opacity-20 hover:opacity-100 bg-transparent border-0 p-0 flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-125 active:scale-95 group focus:outline-none"
+            style="background: transparent !important; box-shadow: none !important; border: none !important;">
+        <svg viewBox="0 0 200 200" class="w-full h-full block overflow-visible" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#FFFFFF" d="M98 18 C61 19 36 48 33 92 C30 135 54 176 96 182 C137 180 164 140 166 95 C167 50 139 19 98 18 Z"/>
+            <path fill="#000000" d="M94 18 C112 18 128 24 139 36 C126 31 114 29 101 33 C95 26 91 22 94 18 Z M144 43 C162 65 168 104 159 138 C149 167 125 181 95 182 C104 173 116 169 124 157 C134 142 130 124 141 108 C149 95 142 74 148 59 C146 52 142 47 144 43 Z"/>
+            <path fill="#000000" d="M56 84 C65 77 82 79 87 89 C90 99 81 110 68 109 C55 108 49 93 56 84 Z"/>
+            <path fill="#000000" d="M111 82 C123 76 141 81 144 95 C146 111 131 124 117 121 C108 119 104 94 111 82 Z"/>
+            <path fill="#000000" d="M88 68 L115 69 L102 78 Z"/>
+            <circle cx="81" cy="49" r="3.5" fill="#000000"/>
+            <circle cx="98" cy="45" r="3.5" fill="#000000"/>
+            <circle cx="114" cy="51" r="3.5" fill="#000000"/>
+            <circle cx="74" cy="61" r="3.2" fill="#000000"/>
+            <circle cx="121" cy="63" r="3.2" fill="#000000"/>
+            <path fill="#000000" d="M62 126 L75 113 L79 118 L67 132 Z"/>
+            <path fill="#000000" d="M111 127 L129 149 L123 154 L108 132 Z"/>
+            <circle cx="84" cy="133" r="3.3" fill="#000000"/>
+            <circle cx="97" cy="135" r="3.3" fill="#000000"/>
+            <circle cx="83" cy="147" r="3.3" fill="#000000"/>
+            <circle cx="96" cy="149" r="3.5" fill="#000000"/>
+            <circle cx="85" cy="161" r="3.3" fill="#000000"/>
+        </svg>
+    </button>
+
+    <!-- ПОЛНОЭКРАННЫЙ ОВЕРЛЕЙ ХОРРОР-МИНИ-ИГРЫ (СТРОГО ЧЁРНО-БЕЛЫЙ СТИЛЬ БЕЗ ГЛОУ И ТЕНЕЙ) -->
+    <div id="horror-game-overlay" class="fixed inset-0 z-50 hidden flex-col bg-black text-white font-mono select-none overflow-hidden" style="box-shadow: none !important; text-shadow: none !important;">
+        <!-- ВЕРХНЯЯ ПАНЕЛЬ СТАТУСА -->
+        <div class="w-full border-b-2 border-white bg-black px-3 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2 z-20">
+            <div class="flex flex-wrap items-center gap-2">
+                <div class="border-2 border-white px-2.5 py-1 text-xs font-black uppercase bg-white text-black">
+                    СЕКТОР: <span id="horror-sector-num">1</span> / 10
+                </div>
+                <div class="border-2 border-white px-2.5 py-1 text-xs font-black uppercase">
+                    ПЕЧАТИ [✚]: <span id="horror-seals-num">0 / 3</span>
+                </div>
+                <div class="border-2 border-white px-2.5 py-1 text-xs font-black uppercase">
+                    ФОНАРИК: <span id="horror-battery-num">100%</span>
+                </div>
+                <div class="border-2 border-white px-2.5 py-1 text-xs font-black uppercase">
+                    ДЫХАНИЕ / БЕГ: <span id="horror-stamina-num">100%</span>
+                </div>
+                <div class="border-2 border-white px-2.5 py-1 text-xs font-black uppercase bg-white text-black">
+                    СУЩНОСТИ: <span id="horror-entities-num">2</span> (НОВАЯ: <span id="horror-spawn-timer">22С</span>)
+                </div>
+                <div class="border-2 border-white px-2.5 py-1 text-xs font-black uppercase">
+                    ВРЕМЯ: <span id="horror-timer-num">00:00</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <canvas id="horror-ekg-canvas" width="90" height="22" class="border border-white bg-black hidden sm:block"></canvas>
+                <button onclick="openHorrorBestiaryModal()" class="border-2 border-white bg-black text-white px-3 py-1 text-xs font-black uppercase hover:bg-white hover:text-black">
+                    БЕСТИАРИЙ (20)
+                </button>
+                <button onclick="closeHorrorGameOverlay()" class="border-2 border-white bg-white text-black px-3 py-1 text-xs font-black uppercase hover:bg-black hover:text-white">
+                    ВЫЙТИ [✕]
+                </button>
+            </div>
+        </div>
+
+        <!-- ИГРОВОЙ ЭКРАН -->
+        <div id="horror-play-screen" class="relative flex-1 w-full h-full flex flex-col items-center justify-center bg-black overflow-hidden">
+            <!-- Инфо-строка над холстом -->
+            <div class="w-full max-w-[1100px] px-3 py-1.5 flex flex-wrap items-center justify-between gap-2 border-b border-white bg-black text-[11px]">
+                <div id="horror-log-box" class="font-bold uppercase tracking-wider text-white truncate">
+                    НАЙДИ 3 ПЕЧАТИ [✚] И ОТКРОЙ ШЛЮЗ [🚪]. WASD — ХОДЬБА, SHIFT — БЕГ, ПРОБЕЛ / ПКМ — ЗАДЕРЖАТЬ ДЫХАНИЕ И ПОГАСИТЬ СВЕТ.
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="horror-noise-indicator" class="font-black uppercase px-2 py-0.5 border border-white">УРОВЕНЬ ШУМА: 0%</span>
+                    <span id="horror-danger-state" class="text-xs font-black uppercase px-2 py-0.5 bg-black text-white border border-white">ОХОТА</span>
+                </div>
+            </div>
+
+            <!-- Предупреждение проверки слуха -->
+            <div id="horror-freeze-warning" class="hidden absolute top-14 left-1/2 -translate-x-1/2 z-30 border-4 border-white bg-black text-white px-6 py-3 text-sm sm:text-base font-black uppercase tracking-widest text-center">
+                ОНО СЛУШАЕТ! НЕ ДВИГАЙСЯ!
+            </div>
+
+            <!-- ГЛАВНЫЙ ХОЛСТ ЛАБИРИНТА -->
+            <div class="relative flex-1 w-full flex items-center justify-center bg-black overflow-hidden p-1 sm:p-2">
+                <canvas id="horror-maze-canvas" width="1060" height="620" class="w-full h-full max-w-[1180px] max-h-[720px] border-2 border-white bg-black block cursor-crosshair"></canvas>
+
+                <!-- СТАРТОВЫЙ ЭКРАН С КНОПКОЙ НАЧАТЬ -->
+                <div id="horror-start-screen" class="absolute inset-0 z-30 bg-black flex flex-col items-center justify-center p-6 text-center">
+                    <svg viewBox="0 0 200 200" class="w-28 h-28 sm:w-36 sm:h-36 mb-4" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="#FFFFFF" d="M98 18 C61 19 36 48 33 92 C30 135 54 176 96 182 C137 180 164 140 166 95 C167 50 139 19 98 18 Z"/>
+                        <path fill="#000000" d="M94 18 C112 18 128 24 139 36 C126 31 114 29 101 33 C95 26 91 22 94 18 Z M144 43 C162 65 168 104 159 138 C149 167 125 181 95 182 C104 173 116 169 124 157 C134 142 130 124 141 108 C149 95 142 74 148 59 C146 52 142 47 144 43 Z"/>
+                        <path fill="#000000" d="M56 84 C65 77 82 79 87 89 C90 99 81 110 68 109 C55 108 49 93 56 84 Z"/>
+                        <path fill="#000000" d="M111 82 C123 76 141 81 144 95 C146 111 131 124 117 121 C108 119 104 94 111 82 Z"/>
+                        <path fill="#000000" d="M88 68 L115 69 L102 78 Z"/>
+                        <path fill="#000000" d="M62 126 L75 113 L79 118 L67 132 Z"/>
+                        <path fill="#000000" d="M111 127 L129 149 L123 154 L108 132 Z"/>
+                    </svg>
+                    <h1 class="text-2xl sm:text-5xl font-black uppercase tracking-widest text-white mb-2">
+                        ПРОТОКОЛ: БЕЗДНА
+                    </h1>
+                    <p class="text-xs sm:text-sm uppercase text-white mb-6 max-w-xl tracking-wider">
+                        ОГРОМНЫЙ КОМПЛЕКС (КАРТА Х5). ЧЕМ ДОЛЬШЕ ТЫ НА УРОВНЕ И ЧЕМ ВЫШЕ СЕКТОР — ТЕМ БОЛЬШЕ СУЩНОСТЕЙ ВЫХОДИТ ИЗ ТЕМНОТЫ.
+                    </p>
+                    <button onclick="beginHorrorNightmareNow()"
+                            class="border-4 border-white bg-white text-black px-12 py-4 text-lg sm:text-2xl font-black uppercase tracking-widest hover:bg-black hover:text-white active:scale-95">
+                        НАЧАТЬ
+                    </button>
+                </div>
+
+                <!-- МОДАЛКА БЫСТРОГО ВЗЛОМА ПЕЧАТИ [✚] -->
+                <div id="horror-hack-modal" class="hidden absolute inset-0 z-30 bg-black/95 flex items-center justify-center p-4">
+                    <div class="w-full max-w-md border-4 border-white bg-black p-6 text-center">
+                        <div class="text-xs font-black uppercase border-b-2 border-white pb-2 mb-4">
+                            ДЕШИФРОВКА ПЕЧАТИ [✚] — ВЫБЕРИ СЛЕДУЮЩЕЕ ЧИСЛО
+                        </div>
+                        <div class="w-full h-3 border-2 border-white bg-black mb-5">
+                            <div id="horror-hack-timer-bar" class="h-full bg-white" style="width: 100%;"></div>
+                        </div>
+                        <div id="horror-hack-sequence" class="text-xl sm:text-2xl font-black text-white tracking-widest mb-6">
+                            2 :: 4 :: 6 :: 8 :: [ ? ]
+                        </div>
+                        <div id="horror-hack-options" class="grid grid-cols-2 gap-3"></div>
+                    </div>
+                </div>
+
+                <!-- КАТСЦЕНА СМЕРТИ + ДОСЬЕ И ПОДСКАЗКА КАК КОНТРИТЬ СУЩНОСТЬ -->
+                <div id="horror-screamer-screen" class="hidden absolute inset-0 z-40 bg-black flex flex-col items-center justify-center p-4 text-center">
+                    <div id="horror-cutscene-phase-flash" class="w-full h-full flex flex-col items-center justify-center relative">
+                        <canvas id="horror-jumpscare-canvas" width="680" height="440" class="w-full max-w-2xl h-64 sm:h-80 border-4 border-white bg-black mb-4"></canvas>
+                        <div class="text-3xl sm:text-5xl font-black uppercase tracking-widest text-white mb-2">
+                            ТЫ ПОГИБ
+                        </div>
+                        <div id="horror-cutscene-flash-name" class="text-base sm:text-2xl font-black uppercase bg-white text-black px-5 py-1.5 border-2 border-white">
+                            СУЩНОСТЬ #01: ПАЛАЧ
+                        </div>
+                    </div>
+
+                    <div id="horror-cutscene-phase-dossier" class="hidden w-full max-w-2xl border-4 border-white bg-black p-5 sm:p-6 text-left">
+                        <div class="flex flex-col sm:flex-row items-center gap-5 border-b-2 border-white pb-4 mb-4">
+                            <canvas id="horror-cutscene-portrait-canvas" width="220" height="220" class="w-36 h-36 sm:w-44 sm:h-44 border-2 border-white bg-black shrink-0"></canvas>
+                            <div class="flex-1">
+                                <span id="horror-cutscene-entity-tag" class="inline-block bg-white text-black px-2 py-0.5 text-[10px] font-black uppercase mb-1">
+                                    КЛАСС УГРОЗЫ
+                                </span>
+                                <h3 id="horror-cutscene-entity-title" class="text-xl sm:text-2xl font-black uppercase text-white mb-2">
+                                    СУЩНОСТЬ #01
+                                </h3>
+                                <p id="horror-death-reason" class="text-xs text-white uppercase mb-3 border-l-2 border-white pl-2.5"></p>
+                                <p id="horror-cutscene-mechanic" class="text-xs text-white uppercase leading-relaxed"></p>
+                            </div>
+                        </div>
+
+                        <div class="border-2 border-white bg-white text-black p-3.5 mb-5">
+                            <div class="text-[11px] font-black uppercase underline mb-1">★ ПОДСКАЗКА — КАК КОНТРИТЬ ЭТУ СУЩНОСТЬ:</div>
+                            <div id="horror-cutscene-hint" class="text-xs sm:text-sm font-black uppercase leading-snug"></div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <button onclick="openHorrorBestiaryModal()" class="border-2 border-white bg-black text-white px-4 py-3 text-xs font-black uppercase hover:bg-white hover:text-black">
+                                ОТКРЫТЬ БЕСТИАРИЙ ВСЕХ 20 СУЩНОСТЕЙ
+                            </button>
+                            <button onclick="retryHorrorAfterCutscene()" class="border-4 border-white bg-white text-black px-8 py-3 text-sm font-black uppercase hover:bg-black hover:text-white">
+                                ПОПРОБОВАТЬ СНОВА (СЕКТОР 1) →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- МОДАЛКА ПОЛНОГО БЕСТИАРИЯ 20 МОНСТРОВ -->
+                <div id="horror-bestiary-modal" class="hidden absolute inset-0 z-50 bg-black/95 flex flex-col p-4 sm:p-6 overflow-y-auto">
+                    <div class="max-w-6xl w-full mx-auto">
+                        <div class="flex items-center justify-between border-b-2 border-white pb-3 mb-4">
+                            <h3 class="text-lg sm:text-2xl font-black uppercase text-white">БЕСТИАРИЙ: 20 СУЩНОСТЕЙ И ИХ КОНТРИГРА</h3>
+                            <button onclick="closeHorrorBestiaryModal()" class="border-2 border-white bg-white text-black px-4 py-1 text-xs font-black uppercase">
+                                ЗАКРЫТЬ [✕]
+                            </button>
+                        </div>
+                        <div id="horror-bestiary-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ФИНАЛЬНЫЙ ЭКРАН ПОБЕДЫ (ПОСЛЕ ПРОХОЖДЕНИЯ ВСЕХ 10 СЕКТОРОВ) -->
+        <div id="horror-victory-screen" class="hidden flex-1 w-full h-full flex-col items-center justify-center bg-black p-4 sm:p-8 text-center overflow-y-auto">
+            <div class="max-w-xl w-full border-4 border-white bg-black p-6 sm:p-8">
+                <div class="inline-block bg-white text-black px-3 py-1 text-xs font-black uppercase mb-3">
+                    ВСЕ 10 СЕКТОРОВ ПРОЙДЕНЫ
+                </div>
+                <h2 class="text-2xl sm:text-4xl font-black uppercase text-white mb-4">
+                    ТЫ ВЫЖИЛ В БЕЗДНЕ DISFACTORY
+                </h2>
+                <p class="text-xs sm:text-sm uppercase text-white leading-relaxed mb-6 border-y-2 border-white py-3">
+                    ВВЕДИ СВОЙ НИКНЕЙМ НА СЕРВЕРЕ И ОТПРАВЬ СКРИНШОТ ПРОХОЖДЕНИЯ ИГРЫ В ЛС К СОЗДАТЕЛЮ!
+                </p>
+
+                <div class="mb-5 text-left">
+                    <label class="block text-xs font-black uppercase text-white mb-2">ТВОЙ НИКНЕЙМ НА СЕРВЕРЕ:</label>
+                    <input type="text" id="horror-winner-nickname" oninput="generateSurvivorProofCode()" placeholder="ВВЕДИ СВОЙ НИКНЕЙМ..."
+                           class="w-full border-2 border-white bg-black text-white px-4 py-3 text-sm font-black uppercase focus:outline-none">
+                </div>
+
+                <!-- Сертификат для скриншота -->
+                <div class="border-2 border-white bg-black p-4 mb-6 text-left space-y-2">
+                    <div class="flex justify-between text-xs uppercase">
+                        <span>ВЫЖИВШИЙ ИГРОК:</span>
+                        <strong id="horror-cert-nick-display" class="underline">БЕЗ_НИКА</strong>
+                    </div>
+                    <div class="flex justify-between text-xs uppercase">
+                        <span>ИТОГОВОЕ ВРЕМЯ:</span>
+                        <strong id="horror-final-time">00:00</strong>
+                    </div>
+                    <div class="flex justify-between text-xs uppercase">
+                        <span>КОЛИЧЕСТВО СМЕРТЕЙ:</span>
+                        <strong id="horror-final-deaths">0</strong>
+                    </div>
+                    <div class="flex justify-between text-xs uppercase border-t border-white pt-2">
+                        <span>КОД ПОДЛИННОСТИ:</span>
+                        <strong id="horror-cert-hash" class="bg-white text-black px-1.5">DF-X10-00000000</strong>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <a href="https://discord.com/users/772431282314936322" target="_blank" rel="noopener noreferrer"
+                       class="flex-1 border-2 border-white bg-white text-black py-3 text-xs font-black uppercase hover:bg-black hover:text-white">
+                        ОТПРАВИТЬ СКРИН В ЛС СОЗДАТЕЛЮ →
+                    </a>
+                    <button onclick="closeHorrorGameOverlay()" class="border-2 border-white bg-black text-white px-5 py-3 text-xs font-black uppercase hover:bg-white hover:text-black">
+                        ЗАКРЫТЬ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ГЛАВНЫЙ СКРИПТ САЙТА И ИГРЫ -->
     <script>
         // =========================================================================
         // 1. КОНСТАНТЫ СЕРВЕРА И БАЗОВЫЕ УТИЛИТЫ
@@ -1486,6 +1726,13 @@
             const m = Math.floor(sec / 60);
             const s = Math.floor(sec % 60);
             return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        function formatSec(sec) {
+            if (!sec || !isFinite(sec) || sec < 0) return '00:00';
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
         }
 
         function ensureAudioContext() {
@@ -1688,7 +1935,7 @@
                 audioEl.preservesPitch = false;
                 audioEl.playbackRate = rate;
 
-                if (autoPlay) {
+                if (autoPlay && !isHorrorOverlayActive) {
                     try {
                         connectAudioElementToAnalyser();
                         await audioEl.play();
@@ -1701,7 +1948,7 @@
                         updateNowPlayingMetaUI(track);
                     }
                 }
-            } else if (autoPlay) {
+            } else if (autoPlay && !isHorrorOverlayActive) {
                 isMusicPlaying = true;
                 startProceduralDarkSynth();
                 updateNowPlayingMetaUI(track);
@@ -1923,14 +2170,14 @@
         function startProceduralDarkSynth() {
             stopProceduralDarkSynth();
             ensureAudioContext();
-            if (!audioCtx) return;
+            if (!audioCtx || isHorrorOverlayActive) return;
 
             const bpm = isSpedUp ? 162 : 132;
             const stepMs = (60 / bpm / 2) * 1000;
             const scale = [110, 130.81, 146.83, 164.81, 196.0, 220.0, 261.63, 146.83];
 
             synthIntervalId = setInterval(() => {
-                if (!isMusicPlaying || !audioCtx) return;
+                if (!isMusicPlaying || !audioCtx || isHorrorOverlayActive) return;
                 try {
                     const now = audioCtx.currentTime;
                     const osc = audioCtx.createOscillator();
@@ -1994,7 +2241,7 @@
         // 3. ЗВУКОВОЙ ОТКЛИК ИНТЕРФЕЙСА (UI SFX)
         // =========================================================================
         function playToneSfx(freq = 540, duration = 0.04, type = 'sine', gainVal = 0.035) {
-            if (!sfxEnabled) return;
+            if (!sfxEnabled || isHorrorOverlayActive) return;
             try {
                 ensureAudioContext();
                 if (!audioCtx) return;
@@ -3294,6 +3541,1749 @@
             }, 3000);
         }
 
+        // YouTube IFrame API для фонового трека 5d20ihHg7GU внутри хоррор-мини-игры
+        let ytPlayerInstance = null;
+        let ytPlayerReady = false;
+
+        function loadYouTubeIframeAPI() {
+            if (window.YT && window.YT.Player) return;
+            if (document.getElementById('yt-iframe-api-script')) return;
+            const tag = document.createElement('script');
+            tag.id = 'yt-iframe-api-script';
+            tag.src = 'https://www.youtube.com/iframe_api';
+            document.head.appendChild(tag);
+        }
+
+        window.onYouTubeIframeAPIReady = function () {
+            ytPlayerInstance = new YT.Player('yt-audio-player', {
+                height: '1',
+                width: '1',
+                videoId: '5d20ihHg7GU',
+                playerVars: {
+                    autoplay: 0,
+                    controls: 0,
+                    rel: 0,
+                    playsinline: 1
+                },
+                events: {
+                    onReady: () => {
+                        ytPlayerReady = true;
+                    },
+                    onStateChange: (e) => {
+                        if (e.data === YT.PlayerState.ENDED && isHorrorOverlayActive) {
+                            try {
+                                ytPlayerInstance.seekTo(0, true);
+                                ytPlayerInstance.playVideo();
+                            } catch (err) {}
+                        }
+                    }
+                }
+            });
+        };
+
+        // ============================================================================
+        // 8. ХОРРОР-ИГРА «ПРОТОКОЛ: БЕЗДНА» (КАРТА X5, 20 СУЩНОСТЕЙ, ЛУЖИ, 2.5D ОСВЕЩЕНИЕ)
+        // ============================================================================
+        const HORROR_ENTITIES_CATALOG = [
+            { id: 1, name: 'ПАЛАЧ', tag: 'ОХОТНИК ПО СЛУХУ И ЗРЕНИЮ', speed: 2.15, mechanic: 'Патрулирует коридоры в окровавленной маске с мачете и мгновенно бежит на шум шагов или прямой взгляд.', hint: 'Заверни за два угла, зажми [ПРОБЕЛ / ПКМ], чтобы погасить фонарик и задержать дыхание на 4 секунды — он потеряет след.' },
+            { id: 2, name: 'СЛЕПОЙ СЛУХАЧ', tag: 'АБСОЛЮТНЫЙ СЛУХ', speed: 2.3, mechanic: 'Лишён глаз, но его раздутые локаторы слышат бег на SHIFT через половину сектора.', hint: 'Никогда не нажимай SHIFT рядом с ним. Передвигайся тихим шагом или замри на месте.' },
+            { id: 3, name: 'ФОТОФОБ', tag: 'БОЯЗНЬ СВЕТА', speed: 2.4, mechanic: 'Многосуставная тварь, которая стремительно атакует в темноте, но каменеет под прямым лучом фонарика.', hint: 'Свети включённым фонариком прямо ему в лицо и отступай спиной назад, не отводя луч.' },
+            { id: 4, name: 'НОЧНОЙ МОТЫЛЁК', tag: 'ОХОТНИК НА СВЕТ', speed: 2.45, mechanic: 'Слеп в темноте, но яростно летит на зажжённый луч твоего фонарика.', hint: 'Как только увидишь крылатый силуэт — зажми [ПРОБЕЛ / ПКМ], погаси фонарик и обойди его в темноте.' },
+            { id: 5, name: 'ПЛАЧУЩАЯ СТАТУЯ', tag: 'КВАНТОВАЯ БЛОКИРОВКА', speed: 3.35, mechanic: 'Каменный идол, который двигается с чудовищной скоростью только тогда, когда ты не смотришь на него.', hint: 'Держи прицел мыши направленным прямо на Статую, пока отходишь за поворот стены.' },
+            { id: 6, name: 'МИМИК ПЕЧАТИ', tag: 'МАСКИРОВКА', speed: 2.1, mechanic: 'Имитирует форму алтаря и раскрывает пасть с шипами при попытке подойти вплотную.', hint: 'Настоящие печати [✚] подсвечены кабелями на полу и отображаются точками на твоём пеленгаторе.' },
+            { id: 7, name: 'ПОЛЗУН', tag: 'РЫВКОВАЯ ТВАРЬ', speed: 2.5, mechanic: 'Шестилапый мутант, совершающий резкие прыжки по прямым коридорам.', hint: 'Держись перекрёстков и резко уходи в боковой проход перед его прыжком.' },
+            { id: 8, name: 'КРИКУН-СИРЕНА', tag: 'ТРЕВОЖНЫЙ ЗОВ', speed: 1.9, mechanic: 'При обнаружении игрока издаёт оглушающий вой из раструбов, стягивая соседних тварей.', hint: 'Гаси свет заранее и обходи Сирену по параллельному коридору, не попадая в её сектор.' },
+            { id: 9, name: 'ФАНТОМ СТЕН', tag: 'БЕСПЛОТНЫЙ ДУХ', speed: 1.48, mechanic: 'Проходит сквозь бетонные стены напрямую к тем, кто долго стоит на одном месте.', hint: 'Не стой неподвижно дольше 4–5 секунд — постоянно смещайся по коридорам.' },
+            { id: 10, name: 'ТКАЧ ПАУТИНЫ', tag: 'ЛОВУШКИ В ПРОХОДАХ', speed: 2.05, mechanic: 'Огромный арахнид, поджидающий жертву в узких развилках и тупиках.', hint: 'Освещай углы заранее и не забегай на спринте в непроверенные узкие коридоры.' },
+            { id: 11, name: 'ТАРАН', tag: 'ПРЯМОЛИНЕЙНЫЙ РАЗГОН', speed: 2.85, mechanic: 'Закованный в броню гигант, который разгоняется по прямой, но плохо поворачивает.', hint: 'В последний момент сверни в боковую нишу — Таран врежется в стену и потеряет скорость.' },
+            { id: 12, name: 'ДОППЕЛЬГАНГЕР', tag: 'ЗЕРКАЛЬНЫЙ ДВОЙНИК', speed: 2.2, mechanic: 'Искажённая копия выжившего, которая ускоряется каждый раз, когда ты переходишь на бег.', hint: 'Перейди на спокойный шаг и уведи его по кольцевому маршруту вокруг колонны.' },
+            { id: 13, name: 'ПИЯВКА ЗАРЯДА', tag: 'ПОЖИРАТЕЛЬ БАТАРЕИ', speed: 2.0, mechanic: 'Электромагнитный паразит, выжигающий заряд включённого фонарика на расстоянии.', hint: 'Выключай фонарик на [ПРОБЕЛ / ПКМ] вблизи Пиявки, чтобы не остаться без света.' },
+            { id: 14, name: 'СТРАЖ ШЛЮЗА', tag: 'ХРАНИТЕЛЬ ВЫХОДА', speed: 2.1, mechanic: 'Вооружённый алебардой часовой, патрулирующий окрестности выходного шлюза [🚪].', hint: 'Вымани Стража шумом шагов в соседний рукав лабиринта и рывком забегай в шлюз.' },
+            { id: 15, name: 'СКОВАННЫЙ ЦЕПЬЮ', tag: 'ТЯЖЁЛЫЙ УЗНИК', speed: 1.85, mechanic: 'Влачит за собой чугунное ядро на цепи, перекрывая широкие перекрёстки.', hint: 'Ориентируйся на звон его кандалов и используй обходные коридоры.' },
+            { id: 16, name: 'ПОХИТИТЕЛЬ ВЗДОХА', tag: 'ОХОТНИК НА ЗАТАИВШИХСЯ', speed: 2.1, mechanic: 'Чует спазмы лёгких у тех, кто слишком долго задерживает дыхание.', hint: 'Не держи [ПРОБЕЛ] зажатым дольше 3 секунд подряд рядом с Похитителем.' },
+            { id: 17, name: 'НАБЛЮДАТЕЛЬ', tag: 'КРУГОВОЙ СКАНЕР', speed: 1.95, mechanic: 'Парящее око с узким поисковым лучом, просвечивающим длинные пролёты.', hint: 'Прячься за выступами стен и пережидай, пока его сканирующий луч пройдёт мимо.' },
+            { id: 18, name: 'МЯСНИК', tag: 'НЕУМОЛИМЫЙ ГИГАНТ', speed: 1.78, mechanic: 'Массивный палач с зазубренным тесаком, который дольше остальных помнит твой след.', hint: 'Разрывай дистанцию на длинных прямых и скрывайся минимум за двумя поворотами.' },
+            { id: 19, name: 'ГЛИТЧ-АНОМАЛИЯ', tag: 'СКАЧКИ В ПРОСТРАНСТВЕ', speed: 2.3, mechanic: 'Рваный цифровой силуэт, который двигается прерывистыми рывками.', hint: 'Не приближайся к мерцающей зоне искажений ближе чем на 3 клетки.' },
+            { id: 20, name: 'АРХИТЕКТОР БЕЗДНЫ', tag: 'ВЛАДЫКА КОМПЛЕКСА', speed: 2.38, mechanic: 'Высшая сущность с венцом из осколков и щупальцами, сочетающая острый слух и зрение.', hint: 'Используй спринт только для разрыва дистанции за угол, затем мгновенно гаси свет.' }
+        ];
+
+        let isHorrorOverlayActive = false;
+        let horrorGameRunning = false;
+        let horrorAnimFrame = null;
+        let horrorCutsceneAnimFrame = null;
+        let horrorAmbienceNodes = null;
+        let horrorHeartbeatTimer = 0;
+
+        const MAZE_COLS = 55;
+        const MAZE_ROWS = 35;
+        const CELL_SIZE = 68;
+
+        let horrorState = {
+            sector: 1,
+            deaths: 0,
+            startTime: 0,
+            sectorElapsed: 0,
+            spawnCountdown: 22,
+            screenShake: 0,
+            grid: [],
+            wallDecor: [],
+            puddles: [],
+            props: [],
+            ripples: [],
+            footprints: [],
+            dustMotes: [],
+            seals: [],
+            exitDoor: { c: 1, r: 1, open: false },
+            player: {
+                x: 102,
+                y: 102,
+                vx: 0,
+                vy: 0,
+                angle: 0,
+                battery: 100,
+                stamina: 100,
+                flashlightOn: true,
+                holdingBreath: false,
+                sprinting: false,
+                noise: 0,
+                stepCycle: 0,
+                stepTimer: 0
+            },
+            camera: { x: 0, y: 0 },
+            entities: [],
+            keys: {},
+            mouse: { x: 530, y: 310 }
+        };
+
+        function openHorrorGameOverlay() {
+            ensureAudioContext();
+            isHorrorOverlayActive = true;
+
+            // Заглушаем всю музыку и звуки основного сайта
+            isMusicPlaying = false;
+            const siteAudioEl = document.getElementById('bg-audio-element');
+            if (siteAudioEl) siteAudioEl.pause();
+            stopProceduralDarkSynth();
+            updateNowPlayingMetaUI(DISFACTORY_PLAYLIST[currentTrackIndex] || DISFACTORY_PLAYLIST[0]);
+
+            const overlay = document.getElementById('horror-game-overlay');
+            const startScreen = document.getElementById('horror-start-screen');
+            const screamer = document.getElementById('horror-screamer-screen');
+            const victory = document.getElementById('horror-victory-screen');
+            const playScreen = document.getElementById('horror-play-screen');
+
+            if (overlay) {
+                overlay.classList.remove('hidden');
+                overlay.classList.add('flex');
+            }
+            playScreen?.classList.remove('hidden');
+            startScreen?.classList.remove('hidden');
+            screamer?.classList.add('hidden');
+            victory?.classList.add('hidden');
+
+            startHorrorYoutubeTrack();
+            startHorrorAmbience();
+        }
+
+        function closeHorrorGameOverlay() {
+            isHorrorOverlayActive = false;
+            horrorGameRunning = false;
+            if (horrorAnimFrame) cancelAnimationFrame(horrorAnimFrame);
+            if (horrorCutsceneAnimFrame) cancelAnimationFrame(horrorCutsceneAnimFrame);
+            stopHorrorYoutubeTrack();
+            stopHorrorAmbience();
+
+            const overlay = document.getElementById('horror-game-overlay');
+            if (overlay) {
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex');
+            }
+        }
+
+        function startHorrorYoutubeTrack() {
+            loadYouTubeIframeAPI();
+            const tryStart = () => {
+                if (!isHorrorOverlayActive) return;
+                if (ytPlayerReady && ytPlayerInstance && typeof ytPlayerInstance.loadVideoById === 'function') {
+                    try {
+                        ytPlayerInstance.loadVideoById('5d20ihHg7GU');
+                        ytPlayerInstance.setVolume(90);
+                        ytPlayerInstance.playVideo();
+                    } catch (e) {}
+                } else {
+                    setTimeout(tryStart, 400);
+                }
+            };
+            tryStart();
+        }
+
+        function stopHorrorYoutubeTrack() {
+            if (ytPlayerReady && ytPlayerInstance && typeof ytPlayerInstance.stopVideo === 'function') {
+                try { ytPlayerInstance.stopVideo(); } catch (e) {}
+            }
+        }
+
+        // Многослойный мрачный хоррор-эмбиент (возвращённый глубокий индустриальный гул + металлические резонансы)
+        function startHorrorAmbience() {
+            try {
+                ensureAudioContext();
+                if (!audioCtx || horrorAmbienceNodes) return;
+
+                const now = audioCtx.currentTime;
+                const masterGain = audioCtx.createGain();
+                masterGain.gain.setValueAtTime(0.08, now);
+                masterGain.connect(audioCtx.destination);
+
+                const subOsc = audioCtx.createOscillator();
+                const droneOsc = audioCtx.createOscillator();
+                const lfo = audioCtx.createOscillator();
+                const lfoGain = audioCtx.createGain();
+                const filter = audioCtx.createBiquadFilter();
+
+                subOsc.type = 'sawtooth';
+                subOsc.frequency.setValueAtTime(36.7, now); // Глубокий суб-бас D1
+                droneOsc.type = 'triangle';
+                droneOsc.frequency.setValueAtTime(55.0, now); // Тёмный квинтовый гул
+
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(145, now);
+                filter.Q.setValueAtTime(6.5, now);
+
+                lfo.type = 'sine';
+                lfo.frequency.setValueAtTime(0.18, now);
+                lfoGain.gain.setValueAtTime(55, now);
+
+                lfo.connect(lfoGain);
+                lfoGain.connect(filter.frequency);
+
+                subOsc.connect(filter);
+                droneOsc.connect(filter);
+                filter.connect(masterGain);
+
+                subOsc.start(now);
+                droneOsc.start(now);
+                lfo.start(now);
+
+                horrorAmbienceNodes = { subOsc, droneOsc, lfo, masterGain };
+            } catch (e) {}
+        }
+
+        function stopHorrorAmbience() {
+            if (horrorAmbienceNodes) {
+                try {
+                    horrorAmbienceNodes.subOsc.stop();
+                    horrorAmbienceNodes.droneOsc.stop();
+                    horrorAmbienceNodes.lfo.stop();
+                } catch (e) {}
+                horrorAmbienceNodes = null;
+            }
+        }
+
+        // Проработанный синтезатор хоррор-звуков (шаги, вода, тумблер фонарика, сердцебиение, рык, печать, шлюз, скример)
+        function playHorrorSfx(type) {
+            try {
+                ensureAudioContext();
+                if (!audioCtx) return;
+                const now = audioCtx.currentTime;
+
+                if (type === 'step') {
+                    // Глухой удар подошвы по бетону + короткий шорох гравия
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(115, now);
+                    osc.frequency.exponentialRampToValueAtTime(34, now + 0.075);
+                    gain.gain.setValueAtTime(0.09, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.085);
+                } else if (type === 'splash') {
+                    // Реалистичный всплеск воды в луже (резонансный фильтр)
+                    const bufferSize = audioCtx.sampleRate * 0.14;
+                    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.35));
+                    }
+                    const noise = audioCtx.createBufferSource();
+                    noise.buffer = buffer;
+                    const filter = audioCtx.createBiquadFilter();
+                    filter.type = 'bandpass';
+                    filter.frequency.setValueAtTime(620, now);
+                    filter.frequency.exponentialRampToValueAtTime(1180, now + 0.12);
+                    filter.Q.setValueAtTime(3.5, now);
+                    const gain = audioCtx.createGain();
+                    gain.gain.setValueAtTime(0.14, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    noise.start(now);
+                } else if (type === 'flashlight') {
+                    // Чёткий механический щелчок тумблера фонарика
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(1480, now);
+                    osc.frequency.setValueAtTime(820, now + 0.018);
+                    gain.gain.setValueAtTime(0.06, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.045);
+                } else if (type === 'heartbeat') {
+                    // Двойной удар сердца ("тук-тук") при близости монстра
+                    [0, 0.14].forEach((offset, idx) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(idx === 0 ? 68 : 54, now + offset);
+                        osc.frequency.exponentialRampToValueAtTime(26, now + offset + 0.11);
+                        gain.gain.setValueAtTime(idx === 0 ? 0.18 : 0.12, now + offset);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.12);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(now + offset);
+                        osc.stop(now + offset + 0.13);
+                    });
+                } else if (type === 'monster_aggro') {
+                    // Низкий утробный рык + металлический лязг при обнаружении игрока
+                    const osc1 = audioCtx.createOscillator();
+                    const osc2 = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc1.type = 'sawtooth';
+                    osc2.type = 'square';
+                    osc1.frequency.setValueAtTime(140, now);
+                    osc1.frequency.exponentialRampToValueAtTime(52, now + 0.42);
+                    osc2.frequency.setValueAtTime(215, now);
+                    osc2.frequency.linearRampToValueAtTime(98, now + 0.42);
+                    gain.gain.setValueAtTime(0.14, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+                    osc1.connect(gain);
+                    osc2.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc1.start(now);
+                    osc2.start(now);
+                    osc1.stop(now + 0.46);
+                    osc2.stop(now + 0.46);
+                } else if (type === 'seal') {
+                    // Разблокировка печати [✚]
+                    [520, 780, 1040].forEach((freq, i) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'square';
+                        osc.frequency.setValueAtTime(freq, now + i * 0.065);
+                        gain.gain.setValueAtTime(0.07, now + i * 0.065);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.065 + 0.15);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(now + i * 0.065);
+                        osc.stop(now + i * 0.065 + 0.16);
+                    });
+                } else if (type === 'airlock') {
+                    // Тяжёлый гидравлический гул открытия шлюза [🚪]
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(92, now);
+                    osc.frequency.linearRampToValueAtTime(185, now + 0.55);
+                    gain.gain.setValueAtTime(0.14, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.65);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now);
+                    osc.stop(now + 0.68);
+                } else if (type === 'scream') {
+                    // Многослойный хоррор-скример (диссонансный визг + удар белого шума)
+                    const bufferSize = audioCtx.sampleRate * 0.85;
+                    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.55));
+                    }
+                    const noise = audioCtx.createBufferSource();
+                    noise.buffer = buffer;
+                    const noiseGain = audioCtx.createGain();
+                    noiseGain.gain.setValueAtTime(0.28, now);
+                    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
+                    noise.connect(noiseGain);
+                    noiseGain.connect(audioCtx.destination);
+                    noise.start(now);
+
+                    [290, 415, 585, 830].forEach(freq => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'sawtooth';
+                        osc.frequency.setValueAtTime(freq, now);
+                        osc.frequency.linearRampToValueAtTime(freq * 1.45, now + 0.12);
+                        osc.frequency.exponentialRampToValueAtTime(75, now + 0.82);
+                        gain.gain.setValueAtTime(0.11, now);
+                        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.86);
+                    });
+                }
+            } catch (e) {}
+        }
+
+        function beginHorrorNightmareNow() {
+            document.getElementById('horror-start-screen')?.classList.add('hidden');
+            document.getElementById('horror-screamer-screen')?.classList.add('hidden');
+            if (horrorCutsceneAnimFrame) cancelAnimationFrame(horrorCutsceneAnimFrame);
+            horrorState.sector = 1;
+            horrorState.startTime = performance.now();
+            startHorrorYoutubeTrack();
+            startHorrorAmbience();
+            generateHorrorSector(1);
+            horrorGameRunning = true;
+            lastLoopStamp = performance.now();
+            if (horrorAnimFrame) cancelAnimationFrame(horrorAnimFrame);
+            horrorAnimFrame = requestAnimationFrame(horrorMainLoop);
+        }
+
+        function retryHorrorAfterCutscene() {
+            beginHorrorNightmareNow();
+        }
+
+        function generateHorrorSector(sectorNum) {
+            horrorState.sector = sectorNum;
+            horrorState.sectorElapsed = 0;
+            horrorState.spawnCountdown = Math.max(12, 23 - sectorNum);
+
+            // Генерация большого лабиринта 55x35 с кольцевыми обходами
+            const grid = Array.from({ length: MAZE_ROWS }, () => Array(MAZE_COLS).fill(1));
+            const stack = [{ c: 1, r: 1 }];
+            grid[1][1] = 0;
+
+            const dirs = [
+                { dc: 2, dr: 0 },
+                { dc: -2, dr: 0 },
+                { dc: 0, dr: 2 },
+                { dc: 0, dr: -2 }
+            ];
+
+            while (stack.length > 0) {
+                const cur = stack[stack.length - 1];
+                const shuffled = dirs.slice().sort(() => Math.random() - 0.5);
+                let carved = false;
+                for (const d of shuffled) {
+                    const nc = cur.c + d.dc;
+                    const nr = cur.r + d.dr;
+                    if (nc > 0 && nc < MAZE_COLS - 1 && nr > 0 && nr < MAZE_ROWS - 1 && grid[nr][nc] === 1) {
+                        grid[cur.r + d.dr / 2][cur.c + d.dc / 2] = 0;
+                        grid[nr][nc] = 0;
+                        stack.push({ c: nc, r: nr });
+                        carved = true;
+                        break;
+                    }
+                }
+                if (!carved) stack.pop();
+            }
+
+            // Пробиваем дополнительные проходы для тактических манёвров от монстров
+            for (let r = 2; r < MAZE_ROWS - 2; r++) {
+                for (let c = 2; c < MAZE_COLS - 2; c++) {
+                    if (grid[r][c] === 1 && Math.random() < 0.17) {
+                        grid[r][c] = 0;
+                    }
+                }
+            }
+
+            horrorState.grid = grid;
+            horrorState.player.x = 1.5 * CELL_SIZE;
+            horrorState.player.y = 1.5 * CELL_SIZE;
+            horrorState.player.battery = 100;
+            horrorState.player.stamina = 100;
+            horrorState.player.flashlightOn = true;
+            horrorState.footprints = [];
+            horrorState.ripples = [];
+
+            // Пылинки в воздухе для реалистичного объёмного луча фонарика
+            horrorState.dustMotes = Array.from({ length: 85 }, () => ({
+                x: Math.random() * MAZE_COLS * CELL_SIZE,
+                y: Math.random() * MAZE_ROWS * CELL_SIZE,
+                vx: (Math.random() - 0.5) * 14,
+                vy: (Math.random() - 0.5) * 14,
+                sz: 1 + Math.random() * 1.6
+            }));
+
+            // Лужи воды по коридорам с органическими контурами
+            horrorState.puddles = [];
+            for (let i = 0; i < 46; i++) {
+                const cell = pickFreeMazeCell(3);
+                horrorState.puddles.push({
+                    x: (cell.c + 0.5) * CELL_SIZE + (Math.random() - 0.5) * 14,
+                    y: (cell.r + 0.5) * CELL_SIZE + (Math.random() - 0.5) * 14,
+                    rx: 19 + Math.random() * 13,
+                    ry: 13 + Math.random() * 9,
+                    rot: Math.random() * Math.PI,
+                    seed: Math.random() * 10
+                });
+            }
+
+            // Страшные декорации на полу (решётки стока, кости, черепа, паутина в углах)
+            horrorState.props = [];
+            for (let i = 0; i < 65; i++) {
+                const cell = pickFreeMazeCell(2);
+                const types = ['grate', 'skull', 'bones', 'blood_crack'];
+                horrorState.props.push({
+                    c: cell.c,
+                    r: cell.r,
+                    x: (cell.c + 0.5) * CELL_SIZE + (Math.random() - 0.5) * 24,
+                    y: (cell.r + 0.5) * CELL_SIZE + (Math.random() - 0.5) * 24,
+                    type: types[i % types.length],
+                    rot: Math.random() * Math.PI * 2
+                });
+            }
+
+            // 3 печати [✚]
+            horrorState.seals = [];
+            for (let i = 0; i < 3; i++) {
+                const cell = pickFreeMazeCell(10);
+                horrorState.seals.push({ c: cell.c, r: cell.r, unlocked: false, pulse: 0 });
+            }
+
+            // Шлюз выхода [🚪]
+            const exitCell = pickFreeMazeCell(22);
+            horrorState.exitDoor = { c: exitCell.c, r: exitCell.r, open: false };
+
+            // Стартовые сущности: на 1-м уровне 2, с каждым сектором больше
+            horrorState.entities = [];
+            const initialCount = Math.min(14, 1 + sectorNum);
+            for (let i = 0; i < initialCount; i++) {
+                spawnNewHorrorEntity();
+            }
+
+            updateHorrorHUD();
+        }
+
+        function pickFreeMazeCell(minDistFromStart = 6) {
+            for (let tries = 0; tries < 500; tries++) {
+                const c = 1 + Math.floor(Math.random() * (MAZE_COLS - 2));
+                const r = 1 + Math.floor(Math.random() * (MAZE_ROWS - 2));
+                if (horrorState.grid[r]?.[c] === 0 && Math.hypot(c - 1, r - 1) >= minDistFromStart) {
+                    return { c, r };
+                }
+            }
+            return { c: MAZE_COLS - 2, r: MAZE_ROWS - 2 };
+        }
+
+        function spawnNewHorrorEntity() {
+            const cell = pickFreeMazeCell(11);
+            const template = HORROR_ENTITIES_CATALOG[horrorState.entities.length % HORROR_ENTITIES_CATALOG.length];
+            horrorState.entities.push({
+                ...template,
+                x: (cell.c + 0.5) * CELL_SIZE,
+                y: (cell.r + 0.5) * CELL_SIZE,
+                angle: 0,
+                state: 'patrol',
+                memoryTimer: 0,
+                targetX: (cell.c + 0.5) * CELL_SIZE,
+                targetY: (cell.r + 0.5) * CELL_SIZE,
+                bfsTimer: 0,
+                nextWaypointX: (cell.c + 0.5) * CELL_SIZE,
+                nextWaypointY: (cell.r + 0.5) * CELL_SIZE,
+                stepPhase: Math.random() * 10
+            });
+        }
+
+        // Умный поиск пути BFS по коридорам лабиринта, чтобы сущности обходили стены и углы
+        function computeNextCorridorWaypoint(startX, startY, goalX, goalY) {
+            const sc = Math.max(1, Math.min(MAZE_COLS - 2, Math.floor(startX / CELL_SIZE)));
+            const sr = Math.max(1, Math.min(MAZE_ROWS - 2, Math.floor(startY / CELL_SIZE)));
+            const gc = Math.max(1, Math.min(MAZE_COLS - 2, Math.floor(goalX / CELL_SIZE)));
+            const gr = Math.max(1, Math.min(MAZE_ROWS - 2, Math.floor(goalY / CELL_SIZE)));
+
+            if (sc === gc && sr === gr) return { x: goalX, y: goalY };
+
+            const queue = [{ c: sc, r: sr }];
+            const parent = new Map();
+            const key = (c, r) => (r << 6) | c;
+            parent.set(key(sc, sr), null);
+
+            const dirs = [
+                { dc: 1, dr: 0 },
+                { dc: -1, dr: 0 },
+                { dc: 0, dr: 1 },
+                { dc: 0, dr: -1 }
+            ];
+
+            let found = false;
+            let steps = 0;
+            while (queue.length > 0 && steps < 900) {
+                steps++;
+                const cur = queue.shift();
+                if (cur.c === gc && cur.r === gr) {
+                    found = true;
+                    break;
+                }
+                for (const d of dirs) {
+                    const nc = cur.c + d.dc;
+                    const nr = cur.r + d.dr;
+                    const k = key(nc, nr);
+                    if (nr >= 0 && nr < MAZE_ROWS && nc >= 0 && nc < MAZE_COLS && horrorState.grid[nr][nc] === 0 && !parent.has(k)) {
+                        parent.set(k, cur);
+                        queue.push({ c: nc, r: nr });
+                    }
+                }
+            }
+
+            if (!found) return { x: goalX, y: goalY };
+
+            let stepCell = { c: gc, r: gr };
+            let prev = parent.get(key(stepCell.c, stepCell.r));
+            while (prev && !(prev.c === sc && prev.r === sr)) {
+                stepCell = prev;
+                prev = parent.get(key(stepCell.c, stepCell.r));
+            }
+            return {
+                x: (stepCell.c + 0.5) * CELL_SIZE,
+                y: (stepCell.r + 0.5) * CELL_SIZE
+            };
+        }
+
+        function canMoveHorrorPoint(x, y, radius = 13) {
+            const pts = [
+                [x - radius, y - radius],
+                [x + radius, y - radius],
+                [x - radius, y + radius],
+                [x + radius, y + radius]
+            ];
+            for (const [px, py] of pts) {
+                const c = Math.floor(px / CELL_SIZE);
+                const r = Math.floor(py / CELL_SIZE);
+                if (r < 0 || r >= MAZE_ROWS || c < 0 || c >= MAZE_COLS || horrorState.grid[r][c] === 1) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function hasClearLineOfSight(x1, y1, x2, y2) {
+            const dist = Math.hypot(x2 - x1, y2 - y1);
+            const steps = Math.ceil(dist / 14);
+            for (let i = 1; i < steps; i++) {
+                const t = i / steps;
+                const x = x1 + (x2 - x1) * t;
+                const y = y1 + (y2 - y1) * t;
+                const c = Math.floor(x / CELL_SIZE);
+                const r = Math.floor(y / CELL_SIZE);
+                if (horrorState.grid[r]?.[c] === 1) return false;
+            }
+            return true;
+        }
+
+        // Лучевой кастинг (Raycasting) до ближайшей стены для реалистичного конуса света без просвечивания сквозь бетон
+        function castFlashlightRay(ox, oy, angle, maxDist) {
+            const dx = Math.cos(angle);
+            const dy = Math.sin(angle);
+            const step = 8;
+            for (let d = 8; d < maxDist; d += step) {
+                const rx = ox + dx * d;
+                const ry = oy + dy * d;
+                const c = Math.floor(rx / CELL_SIZE);
+                const r = Math.floor(ry / CELL_SIZE);
+                if (r < 0 || r >= MAZE_ROWS || c < 0 || c >= MAZE_COLS || horrorState.grid[r][c] === 1) {
+                    return { x: rx, y: ry, dist: d };
+                }
+            }
+            return { x: ox + dx * maxDist, y: oy + dy * maxDist, dist: maxDist };
+        }
+
+        let lastLoopStamp = performance.now();
+
+        function horrorMainLoop(now) {
+            if (!horrorGameRunning || !isHorrorOverlayActive) return;
+            const dt = Math.min(0.05, (now - lastLoopStamp) / 1000);
+            lastLoopStamp = now;
+
+            updateHorrorState(dt);
+            renderHorrorScene(now);
+            renderHorrorEKG(now);
+
+            horrorAnimFrame = requestAnimationFrame(horrorMainLoop);
+        }
+
+        function updateHorrorState(dt) {
+            const p = horrorState.player;
+            horrorState.sectorElapsed += dt;
+            horrorState.spawnCountdown -= dt;
+            if (horrorState.screenShake > 0) {
+                horrorState.screenShake = Math.max(0, horrorState.screenShake - dt * 22);
+            }
+
+            // Появление новых сущностей со временем
+            if (horrorState.spawnCountdown <= 0) {
+                if (horrorState.entities.length < 20) {
+                    spawnNewHorrorEntity();
+                    playHorrorSfx('monster_aggro');
+                }
+                horrorState.spawnCountdown = Math.max(11, 22 - horrorState.sector);
+            }
+
+            // Управление игроком
+            const k = horrorState.keys;
+            let mx = 0;
+            let my = 0;
+            if (k['KeyW'] || k['ArrowUp']) my -= 1;
+            if (k['KeyS'] || k['ArrowDown']) my += 1;
+            if (k['KeyA'] || k['ArrowLeft']) mx -= 1;
+            if (k['KeyD'] || k['ArrowRight']) mx += 1;
+
+            const prevFlashlight = p.flashlightOn;
+            p.holdingBreath = Boolean(k['Space'] || horrorState.rightMouseHeld);
+            p.flashlightOn = !p.holdingBreath && p.battery > 0;
+            if (prevFlashlight !== p.flashlightOn) {
+                playHorrorSfx('flashlight');
+            }
+
+            p.sprinting = Boolean((k['ShiftLeft'] || k['ShiftRight']) && !p.holdingBreath && p.stamina > 8 && (mx !== 0 || my !== 0));
+
+            if (p.holdingBreath) {
+                p.stamina = Math.max(0, p.stamina - dt * 17);
+            } else if (p.sprinting) {
+                p.stamina = Math.max(0, p.stamina - dt * 23);
+            } else {
+                p.stamina = Math.min(100, p.stamina + dt * 16);
+            }
+
+            if (p.flashlightOn) {
+                p.battery = Math.max(0, p.battery - dt * 1.25);
+            } else {
+                p.battery = Math.min(100, p.battery + dt * 0.85);
+            }
+
+            const baseSpeed = p.holdingBreath ? 88 : (p.sprinting ? 236 : 150);
+            if (mx !== 0 || my !== 0) {
+                const len = Math.hypot(mx, my);
+                const vx = (mx / len) * baseSpeed * dt;
+                const vy = (my / len) * baseSpeed * dt;
+
+                if (canMoveHorrorPoint(p.x + vx, p.y)) p.x += vx;
+                if (canMoveHorrorPoint(p.x, p.y + vy)) p.y += vy;
+
+                p.stepCycle += dt * (p.sprinting ? 14 : 9);
+                p.stepTimer -= dt;
+                p.noise = p.holdingBreath ? 7 : (p.sprinting ? 95 : 40);
+
+                if (p.stepTimer <= 0) {
+                    p.stepTimer = p.sprinting ? 0.23 : 0.41;
+                    const inPuddle = horrorState.puddles.some(pd => Math.hypot(p.x - pd.x, p.y - pd.y) < pd.rx + 8);
+                    playHorrorSfx(inPuddle ? 'splash' : 'step');
+                    if (inPuddle) {
+                        horrorState.ripples.push({ x: p.x, y: p.y, r: 3, alpha: 1 });
+                    }
+                    horrorState.footprints.push({
+                        x: p.x,
+                        y: p.y,
+                        angle: p.angle,
+                        side: horrorState.footprints.length % 2 === 0 ? -4 : 4,
+                        wet: inPuddle,
+                        alpha: inPuddle ? 0.9 : 0.55
+                    });
+                    if (horrorState.footprints.length > 52) horrorState.footprints.shift();
+                }
+            } else {
+                p.noise = p.holdingBreath ? 0 : 4;
+            }
+
+            // Плавная камера с эффектом живого дыхания и шага
+            const canvas = document.getElementById('horror-maze-canvas');
+            const cw = canvas ? canvas.width : 1060;
+            const ch = canvas ? canvas.height : 620;
+            const headBobX = Math.cos(p.stepCycle) * (p.sprinting ? 3.5 : 1.5);
+            const headBobY = Math.sin(p.stepCycle * 2) * (p.sprinting ? 3.5 : 1.5);
+            const lookOffsetX = Math.cos(p.angle) * 58 + headBobX;
+            const lookOffsetY = Math.sin(p.angle) * 58 + headBobY;
+            horrorState.camera.x += (p.x + lookOffsetX - cw / 2 - horrorState.camera.x) * 0.14;
+            horrorState.camera.y += (p.y + lookOffsetY - ch / 2 - horrorState.camera.y) * 0.14;
+
+            p.angle = Math.atan2(
+                horrorState.mouse.y + horrorState.camera.y - p.y,
+                horrorState.mouse.x + horrorState.camera.x - p.x
+            );
+
+            // Пылинки в воздухе
+            for (const dm of horrorState.dustMotes) {
+                dm.x += dm.vx * dt;
+                dm.y += dm.vy * dt;
+            }
+
+            // Проверка печатей [✚]
+            for (const seal of horrorState.seals) {
+                seal.pulse += dt * 4;
+                if (!seal.unlocked) {
+                    const sx = (seal.c + 0.5) * CELL_SIZE;
+                    const sy = (seal.r + 0.5) * CELL_SIZE;
+                    if (Math.hypot(p.x - sx, p.y - sy) < 34) {
+                        seal.unlocked = true;
+                        horrorState.screenShake = 5;
+                        playHorrorSfx('seal');
+                        const allDone = horrorState.seals.every(s => s.unlocked);
+                        if (allDone) {
+                            horrorState.exitDoor.open = true;
+                            playHorrorSfx('airlock');
+                        }
+                    }
+                }
+            }
+
+            // Проверка выхода в шлюз [🚪]
+            if (horrorState.exitDoor.open) {
+                const ex = (horrorState.exitDoor.c + 0.5) * CELL_SIZE;
+                const ey = (horrorState.exitDoor.r + 0.5) * CELL_SIZE;
+                if (Math.hypot(p.x - ex, p.y - ey) < 36) {
+                    if (horrorState.sector >= 10) {
+                        triggerHorrorVictory();
+                        return;
+                    } else {
+                        playHorrorSfx('airlock');
+                        generateHorrorSector(horrorState.sector + 1);
+                        return;
+                    }
+                }
+            }
+
+            // Круги на воде
+            horrorState.ripples.forEach(rp => {
+                rp.r += dt * 34;
+                rp.alpha -= dt * 0.85;
+            });
+            horrorState.ripples = horrorState.ripples.filter(rp => rp.alpha > 0);
+
+            // ИИ 20 сущностей + Звук сердцебиения при погоне
+            let closestDist = 9999;
+
+            for (const ent of horrorState.entities) {
+                const dist = Math.hypot(p.x - ent.x, p.y - ent.y);
+                if (dist < closestDist) closestDist = dist;
+
+                const los = dist < 410 && hasClearLineOfSight(ent.x, ent.y, p.x, p.y);
+                const anglePlayerToEnt = Math.atan2(ent.y - p.y, ent.x - p.x);
+                const angleDiff = Math.abs(Math.atan2(Math.sin(anglePlayerToEnt - p.angle), Math.cos(anglePlayerToEnt - p.angle)));
+                const isLitByFlashlight = p.flashlightOn && los && dist < 330 && angleDiff < 0.48;
+
+                // Индивидуальные механики монстров
+                // #3 Фотофоб каменеет под прямым лучом фонарика
+                if (ent.id === 3 && isLitByFlashlight) {
+                    continue;
+                }
+                // #5 Плачущая Статуя замирает, когда ты смотришь в её сторону
+                if (ent.id === 5 && los && angleDiff < 0.68) {
+                    continue;
+                }
+                // #13 Пиявка Заряда выжигает батарею включённого фонарика вблизи
+                if (ent.id === 13 && dist < 190 && p.flashlightOn) {
+                    p.battery = Math.max(0, p.battery - dt * 7.5);
+                }
+
+                let heardNoise = dist < (p.noise * 3.5);
+                if (ent.id === 2) heardNoise = dist < (p.noise * 5.0); // Слепой Слухач слышит дальше
+                if (ent.id === 16 && p.holdingBreath && dist < 240) heardNoise = true; // Похититель Вздоха чует задержку дыхания
+
+                let sawPlayer = los && (p.flashlightOn || dist < 175);
+                if (ent.id === 2) sawPlayer = false; // Слепой Слухач слеп
+                if (ent.id === 4 && !p.flashlightOn) sawPlayer = false; // Ночной Мотылёк летит только на свет
+
+                if (sawPlayer || heardNoise) {
+                    if (ent.state !== 'hunt') {
+                        playHorrorSfx('monster_aggro');
+                        horrorState.screenShake = 4;
+                    }
+                    ent.state = 'hunt';
+                    ent.memoryTimer = ent.id === 18 ? 5.0 : 4.0; // Память 4–5 секунд
+                    ent.targetX = p.x;
+                    ent.targetY = p.y;
+                } else if (ent.state === 'hunt') {
+                    ent.memoryTimer -= dt;
+                    if (ent.memoryTimer <= 0) {
+                        ent.state = 'patrol';
+                        const rnd = pickFreeMazeCell(4);
+                        ent.targetX = (rnd.c + 0.5) * CELL_SIZE;
+                        ent.targetY = (rnd.r + 0.5) * CELL_SIZE;
+                    }
+                }
+
+                if (ent.state === 'patrol' && Math.hypot(ent.targetX - ent.x, ent.targetY - ent.y) < 30) {
+                    const rnd = pickFreeMazeCell(4);
+                    ent.targetX = (rnd.c + 0.5) * CELL_SIZE;
+                    ent.targetY = (rnd.r + 0.5) * CELL_SIZE;
+                }
+
+                // Если прямая видимость открыта — бежит прямо на тебя! Иначе обходит углы по BFS
+                let moveGoalX = ent.targetX;
+                let moveGoalY = ent.targetY;
+                if (ent.state === 'hunt' && los) {
+                    moveGoalX = p.x;
+                    moveGoalY = p.y;
+                } else if (ent.id !== 9) {
+                    ent.bfsTimer -= dt;
+                    if (ent.bfsTimer <= 0) {
+                        ent.bfsTimer = 0.28;
+                        const wp = computeNextCorridorWaypoint(ent.x, ent.y, ent.targetX, ent.targetY);
+                        ent.nextWaypointX = wp.x;
+                        ent.nextWaypointY = wp.y;
+                    }
+                    moveGoalX = ent.nextWaypointX;
+                    moveGoalY = ent.nextWaypointY;
+                }
+
+                const dirAngle = Math.atan2(moveGoalY - ent.y, moveGoalX - ent.x);
+                ent.angle = dirAngle;
+
+                let mult = ent.state === 'hunt' ? 68 : 42;
+                if (ent.id === 12 && p.sprinting) mult = 82; // Доппельгангер ускоряется, когда ты бежишь
+                const spd = ent.speed * mult * dt;
+                const nx = ent.x + Math.cos(dirAngle) * spd;
+                const ny = ent.y + Math.sin(dirAngle) * spd;
+
+                if (ent.id === 9 || canMoveHorrorPoint(nx, ent.y, 11)) ent.x = nx;
+                if (ent.id === 9 || canMoveHorrorPoint(ent.x, ny, 11)) ent.y = ny;
+                ent.stepPhase += dt * (ent.state === 'hunt' ? 12 : 6.5);
+
+                // Всплески луж под ногами монстров
+                if (Math.random() < 0.04) {
+                    const inPuddle = horrorState.puddles.some(pd => Math.hypot(ent.x - pd.x, ent.y - pd.y) < pd.rx);
+                    if (inPuddle) {
+                        horrorState.ripples.push({ x: ent.x, y: ent.y, r: 4, alpha: 0.85 });
+                    }
+                }
+
+                // Гибель при захвате
+                if (dist < 24) {
+                    triggerHorrorDeathCutscene(ent);
+                    return;
+                }
+            }
+
+            // Сердцебиение ускоряется, когда монстр близко
+            if (closestDist < 290) {
+                horrorHeartbeatTimer -= dt;
+                if (horrorHeartbeatTimer <= 0) {
+                    playHorrorSfx('heartbeat');
+                    horrorHeartbeatTimer = Math.max(0.32, (closestDist / 290) * 0.85);
+                }
+            }
+
+            updateHorrorHUD();
+        }
+
+        function updateHorrorHUD() {
+            const p = horrorState.player;
+            const unlockedCount = horrorState.seals.filter(s => s.unlocked).length;
+            const secEl = document.getElementById('horror-sector-num');
+            const sealsEl = document.getElementById('horror-seals-num');
+            const batEl = document.getElementById('horror-battery-num');
+            const stamEl = document.getElementById('horror-stamina-num');
+            const entEl = document.getElementById('horror-entities-num');
+            const spwEl = document.getElementById('horror-spawn-timer');
+            const timEl = document.getElementById('horror-timer-num');
+            const noiseEl = document.getElementById('horror-noise-indicator');
+            const stateEl = document.getElementById('horror-danger-state');
+
+            if (secEl) secEl.textContent = String(horrorState.sector);
+            if (sealsEl) sealsEl.textContent = `${unlockedCount} / ${horrorState.seals.length}`;
+            if (batEl) batEl.textContent = `${Math.round(p.battery)}%`;
+            if (stamEl) stamEl.textContent = `${Math.round(p.stamina)}%`;
+            if (entEl) entEl.textContent = String(horrorState.entities.length);
+            if (spwEl) spwEl.textContent = `${Math.max(1, Math.ceil(horrorState.spawnCountdown))}С`;
+
+            const totalSec = Math.floor((performance.now() - horrorState.startTime) / 1000);
+            if (timEl) timEl.textContent = formatSec(totalSec);
+            if (noiseEl) noiseEl.textContent = `УРОВЕНЬ ШУМА: ${Math.round(p.noise)}%`;
+
+            const anyHunting = horrorState.entities.some(e => e.state === 'hunt');
+            if (stateEl) {
+                stateEl.textContent = anyHunting ? 'ПОГОНЯ!' : 'СКРЫТНОСТЬ';
+                stateEl.className = anyHunting
+                    ? 'text-xs font-black uppercase px-2 py-0.5 bg-white text-black border border-white'
+                    : 'text-xs font-black uppercase px-2 py-0.5 bg-black text-white border border-white';
+            }
+        }
+
+        function renderHorrorScene(now = 0) {
+            const canvas = document.getElementById('horror-maze-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const cw = canvas.width;
+            const ch = canvas.height;
+            const shakeX = horrorState.screenShake > 0 ? (Math.random() - 0.5) * horrorState.screenShake * 3 : 0;
+            const shakeY = horrorState.screenShake > 0 ? (Math.random() - 0.5) * horrorState.screenShake * 3 : 0;
+            const camX = horrorState.camera.x + shakeX;
+            const camY = horrorState.camera.y + shakeY;
+            const p = horrorState.player;
+
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, cw, ch);
+
+            ctx.save();
+            ctx.translate(-camX, -camY);
+
+            const startCol = Math.max(0, Math.floor(camX / CELL_SIZE) - 1);
+            const endCol = Math.min(MAZE_COLS - 1, Math.ceil((camX + cw) / CELL_SIZE) + 1);
+            const startRow = Math.max(0, Math.floor(camY / CELL_SIZE) - 1);
+            const endRow = Math.min(MAZE_ROWS - 1, Math.ceil((camY + ch) / CELL_SIZE) + 1);
+
+            // 1. Детализированная плитка пола с трещинами и тех-разметкой
+            for (let r = startRow; r <= endRow; r++) {
+                for (let c = startCol; c <= endCol; c++) {
+                    const x = c * CELL_SIZE;
+                    const y = r * CELL_SIZE;
+                    if (horrorState.grid[r][c] === 0) {
+                        ctx.strokeStyle = 'rgba(255,255,255,0.11)';
+                        ctx.lineWidth = 1;
+                        ctx.strokeRect(x, y, CELL_SIZE, CELL_SIZE);
+
+                        // Внутренние швы бетонных плит
+                        if ((r + c) % 2 === 0) {
+                            ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+                            ctx.beginPath();
+                            ctx.moveTo(x + CELL_SIZE * 0.5, y);
+                            ctx.lineTo(x + CELL_SIZE * 0.5, y + CELL_SIZE);
+                            ctx.moveTo(x, y + CELL_SIZE * 0.5);
+                            ctx.lineTo(x + CELL_SIZE, y + CELL_SIZE * 0.5);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            // 2. Промышленные кабели на полу, ведущие от старта к печатям [✚]
+            ctx.strokeStyle = 'rgba(255,255,255,0.22)';
+            ctx.lineWidth = 1.5;
+            for (const seal of horrorState.seals) {
+                const sx = (seal.c + 0.5) * CELL_SIZE;
+                const sy = (seal.r + 0.5) * CELL_SIZE;
+                ctx.beginPath();
+                ctx.moveTo(sx - 28, sy);
+                ctx.lineTo(sx + 28, sy);
+                ctx.moveTo(sx, sy - 28);
+                ctx.lineTo(sx, sy + 28);
+                ctx.stroke();
+            }
+
+            // 3. Декорации на полу (вентиляционные решётки, черепа, кости, трещины)
+            for (const pr of horrorState.props) {
+                if (pr.c < startCol || pr.c > endCol || pr.r < startRow || pr.r > endRow) continue;
+                ctx.save();
+                ctx.translate(pr.x, pr.y);
+                ctx.rotate(pr.rot);
+                ctx.strokeStyle = 'rgba(255,255,255,0.32)';
+                ctx.lineWidth = 1.2;
+
+                if (pr.type === 'grate') {
+                    ctx.strokeRect(-10, -10, 20, 20);
+                    for (let k = -6; k <= 6; k += 4) {
+                        ctx.beginPath();
+                        ctx.moveTo(k, -10);
+                        ctx.lineTo(k, 10);
+                        ctx.stroke();
+                    }
+                } else if (pr.type === 'skull') {
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 5.5, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#000000';
+                    ctx.fillRect(-3, -1, 2, 2);
+                    ctx.fillRect(1, -1, 2, 2);
+                } else if (pr.type === 'bones') {
+                    ctx.beginPath();
+                    ctx.moveTo(-8, -6);
+                    ctx.lineTo(8, 6);
+                    ctx.moveTo(-8, 6);
+                    ctx.lineTo(8, -6);
+                    ctx.stroke();
+                } else {
+                    ctx.beginPath();
+                    ctx.moveTo(-12, 0);
+                    ctx.lineTo(-3, 5);
+                    ctx.lineTo(4, -4);
+                    ctx.lineTo(12, 3);
+                    ctx.stroke();
+                }
+                ctx.restore();
+            }
+
+            // 4. Реалистичные лужи воды с двойным контуром и зеркальными бликами света
+            for (const pd of horrorState.puddles) {
+                if (pd.x < camX - 60 || pd.x > camX + cw + 60 || pd.y < camY - 60 || pd.y > camY + ch + 60) continue;
+                ctx.save();
+                ctx.translate(pd.x, pd.y);
+                ctx.rotate(pd.rot);
+
+                ctx.fillStyle = '#050505';
+                ctx.strokeStyle = 'rgba(255,255,255,0.68)';
+                ctx.lineWidth = 1.3;
+                ctx.beginPath();
+                ctx.ellipse(0, 0, pd.rx, pd.ry, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                // Зеркальный блик на воде от фонарика
+                const shimmer = Math.sin(now * 0.004 + pd.seed) * 3;
+                ctx.strokeStyle = 'rgba(255,255,255,0.45)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.arc(shimmer, -pd.ry * 0.25, pd.rx * 0.45, 0.2, Math.PI - 0.2);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            // 5. Расходящиеся круги на воде при шагах
+            for (const rp of horrorState.ripples) {
+                ctx.beginPath();
+                ctx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(255,255,255,${rp.alpha})`;
+                ctx.lineWidth = 1.4;
+                ctx.stroke();
+            }
+
+            // 6. Мокрые и сухие следы подошв с протектором
+            for (const fp of horrorState.footprints) {
+                ctx.save();
+                ctx.translate(fp.x, fp.y);
+                ctx.rotate(fp.angle);
+                ctx.fillStyle = `rgba(255,255,255,${fp.wet ? 0.48 : 0.22})`;
+                ctx.fillRect(-4, fp.side - 2, 7, 3.5);
+                ctx.restore();
+            }
+
+            // 7. Алтари печатей [✚] с вращающимся контуром
+            for (const seal of horrorState.seals) {
+                const sx = (seal.c + 0.5) * CELL_SIZE;
+                const sy = (seal.r + 0.5) * CELL_SIZE;
+                ctx.save();
+                ctx.translate(sx, sy);
+
+                if (!seal.unlocked) {
+                    ctx.save();
+                    ctx.rotate(seal.pulse * 0.4);
+                    ctx.strokeStyle = '#FFFFFF';
+                    ctx.lineWidth = 1.5;
+                    ctx.strokeRect(-19, -19, 38, 38);
+                    ctx.restore();
+                }
+
+                ctx.fillStyle = seal.unlocked ? '#FFFFFF' : '#000000';
+                ctx.strokeStyle = '#FFFFFF';
+                ctx.lineWidth = 2.2;
+                ctx.fillRect(-14, -14, 28, 28);
+                ctx.strokeRect(-14, -14, 28, 28);
+
+                ctx.fillStyle = seal.unlocked ? '#000000' : '#FFFFFF';
+                ctx.font = '900 16px "JetBrains Mono", monospace';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(seal.unlocked ? '✓' : '✚', 0, 1);
+                ctx.restore();
+            }
+
+            // 8. Бронированный шлюз выхода [🚪]
+            const ex = (horrorState.exitDoor.c + 0.5) * CELL_SIZE;
+            const ey = (horrorState.exitDoor.r + 0.5) * CELL_SIZE;
+            ctx.save();
+            ctx.translate(ex, ey);
+            ctx.fillStyle = horrorState.exitDoor.open ? '#FFFFFF' : '#000000';
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 3;
+            ctx.fillRect(-22, -22, 44, 44);
+            ctx.strokeRect(-22, -22, 44, 44);
+            ctx.fillStyle = horrorState.exitDoor.open ? '#000000' : '#FFFFFF';
+            ctx.font = '900 11px "JetBrains Mono", monospace';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(horrorState.exitDoor.open ? 'ВЫХОД' : 'ШЛЮЗ', 0, 0);
+            ctx.restore();
+
+            // 9. Отрисовка 20 уникальных моделей сущностей
+            for (const ent of horrorState.entities) {
+                const dist = Math.hypot(ent.x - p.x, ent.y - p.y);
+                if (dist < 410 && hasClearLineOfSight(p.x, p.y, ent.x, ent.y)) {
+                    drawUniqueMonsterByType(ctx, ent, now);
+                }
+            }
+
+            // 10. Отрисовка детализированного выжившего
+            drawDetailedSurvivorModel(ctx, p);
+
+            // 11. 2.5D перспектива стен со штриховкой, заклёпками и объёмной крышей
+            const screenCenterWorldX = camX + cw * 0.5;
+            const screenCenterWorldY = camY + ch * 0.5;
+
+            for (let r = startRow; r <= endRow; r++) {
+                for (let c = startCol; c <= endCol; c++) {
+                    if (horrorState.grid[r][c] === 1) {
+                        const x = c * CELL_SIZE;
+                        const y = r * CELL_SIZE;
+                        const cx = x + CELL_SIZE * 0.5;
+                        const cy = y + CELL_SIZE * 0.5;
+                        const offX = Math.max(-10, Math.min(10, (cx - screenCenterWorldX) * 0.022));
+                        const offY = Math.max(-10, Math.min(10, (cy - screenCenterWorldY) * 0.022));
+
+                        // Основание стены
+                        ctx.fillStyle = '#000000';
+                        ctx.fillRect(x, y, CELL_SIZE, CELL_SIZE);
+                        ctx.strokeStyle = '#FFFFFF';
+                        ctx.lineWidth = 1.6;
+                        ctx.strokeRect(x, y, CELL_SIZE, CELL_SIZE);
+
+                        // Верхняя грань 2.5D стены
+                        ctx.fillStyle = '#000000';
+                        ctx.fillRect(x + offX, y + offY, CELL_SIZE, CELL_SIZE);
+                        ctx.strokeStyle = '#FFFFFF';
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(x + offX + 2, y + offY + 2, CELL_SIZE - 4, CELL_SIZE - 4);
+
+                        // Диагональная гравюрная штриховка внутри стены
+                        ctx.strokeStyle = 'rgba(255,255,255,0.22)';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(x + offX + 8, y + offY + 8);
+                        ctx.lineTo(x + offX + CELL_SIZE - 8, y + offY + CELL_SIZE - 8);
+                        ctx.moveTo(x + offX + CELL_SIZE - 8, y + offY + 8);
+                        ctx.lineTo(x + offX + 8, y + offY + CELL_SIZE - 8);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // 12. Пылинки в луче фонарика
+            if (p.flashlightOn) {
+                ctx.fillStyle = '#FFFFFF';
+                for (const dm of horrorState.dustMotes) {
+                    if (Math.hypot(dm.x - p.x, dm.y - p.y) < 310) {
+                        ctx.fillRect(dm.x, dm.y, dm.sz, dm.sz);
+                    }
+                }
+            }
+
+            // 13. Тактический пеленгатор к печатям и выходу
+            drawTacticalCompassRing(ctx, p);
+
+            ctx.restore();
+
+            // 14. Реалистичное Raycast-освещение (свет не проходит сквозь стены!)
+            ctx.save();
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.95)';
+            ctx.beginPath();
+            ctx.rect(0, 0, cw, ch);
+
+            // Полигон видимости в мировых координатах, переведённый в экранные
+            ctx.moveTo(p.x - camX, p.y - camY);
+            const rayCount = 96;
+            const coneHalf = 0.48;
+            for (let i = 0; i <= rayCount; i++) {
+                const ang = p.flashlightOn
+                    ? (p.angle - coneHalf + (i / rayCount) * (coneHalf * 2))
+                    : ((i / rayCount) * Math.PI * 2);
+                const maxD = p.flashlightOn ? 345 : 64;
+                const hit = castFlashlightRay(p.x, p.y, ang, maxD);
+                ctx.lineTo(hit.x - camX, hit.y - camY);
+            }
+            ctx.closePath();
+
+            // Ближний ореол вокруг самого выжившего
+            ctx.moveTo(p.x - camX + 54, p.y - camY);
+            ctx.arc(p.x - camX, p.y - camY, 54, 0, Math.PI * 2, true);
+
+            ctx.fill('evenodd');
+            ctx.restore();
+        }
+
+        function drawDetailedSurvivorModel(ctx, p) {
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.angle);
+
+            const stride = Math.sin(p.stepCycle) * 6;
+            // Шагающие ботинки
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(-5 + stride, -10, 7, 4);
+            ctx.fillRect(-5 - stride, 6, 7, 4);
+
+            // Тёмный плащ и наплечники с белым контуром
+            ctx.fillStyle = '#000000';
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 2.2;
+            ctx.beginPath();
+            ctx.roundRect(-11, -12, 19, 24, 6);
+            ctx.fill();
+            ctx.stroke();
+
+            // Складки брони на спине
+            ctx.beginPath();
+            ctx.moveTo(-6, -7);
+            ctx.lineTo(2, -4);
+            ctx.moveTo(-6, 7);
+            ctx.lineTo(2, 4);
+            ctx.stroke();
+
+            // Вытянутая рука с тактическим фонариком
+            ctx.fillStyle = '#FFFFFF';
+            ctx.fillRect(5, 4, 11, 3.5);
+            if (p.flashlightOn) {
+                ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.moveTo(16, 5.5);
+                ctx.lineTo(28, 0);
+                ctx.moveTo(16, 5.5);
+                ctx.lineTo(28, 11);
+                ctx.stroke();
+            }
+
+            // Голова в капюшоне
+            ctx.fillStyle = '#FFFFFF';
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(0, 0, 7.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        // Индивидуальная прорисовка каждого из 20 монстров
+        function drawUniqueMonsterByType(ctx, ent, now = 0) {
+            ctx.save();
+            ctx.translate(ent.x, ent.y);
+            ctx.rotate(ent.angle);
+
+            const swing = Math.sin(ent.stepPhase) * 6;
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.fillStyle = '#000000';
+            ctx.lineWidth = 2.2;
+
+            if (ent.id === 3 || ent.id === 7 || ent.id === 10) {
+                // Паукообразные / Многолапые твари (#3 Фотофоб, #7 Ползун, #10 Ткач Паутины)
+                for (let side of [-1, 1]) {
+                    for (let leg = -1; leg <= 1; leg++) {
+                        const off = Math.sin(ent.stepPhase + leg * 1.4) * 5;
+                        ctx.beginPath();
+                        ctx.moveTo(leg * 5, side * 8);
+                        ctx.lineTo(leg * 8 + off, side * 19);
+                        ctx.lineTo(leg * 12 + off, side * 24);
+                        ctx.stroke();
+                    }
+                }
+                ctx.beginPath();
+                ctx.ellipse(-3, 0, 14, 10, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                ctx.fillStyle = '#FFFFFF';
+                for (let ey = -4; ey <= 4; ey += 4) {
+                    ctx.fillRect(6, ey - 1, 3, 2);
+                }
+            } else if (ent.id === 4) {
+                // #4 Ночной Мотылёк с рваными крыльями
+                const wingFlap = Math.sin(ent.stepPhase * 1.8) * 8;
+                ctx.beginPath();
+                ctx.moveTo(-4, 0);
+                ctx.lineTo(-14, -22 - wingFlap);
+                ctx.lineTo(8, -14);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(-4, 0);
+                ctx.lineTo(-14, 22 + wingFlap);
+                ctx.lineTo(8, 14);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = '#FFFFFF';
+                ctx.beginPath();
+                ctx.ellipse(0, 0, 11, 5, 0, 0, Math.PI * 2);
+                ctx.fill();
+            } else if (ent.id === 8) {
+                // #8 Крикун-Сирена с двумя раструбами-рупорами
+                ctx.beginPath();
+                ctx.arc(0, 0, 13, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(4, -4);
+                ctx.lineTo(20, -14);
+                ctx.lineTo(20, -2);
+                ctx.closePath();
+                ctx.moveTo(4, 4);
+                ctx.lineTo(20, 2);
+                ctx.lineTo(20, 14);
+                ctx.closePath();
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fill();
+            } else if (ent.id === 17) {
+                // #17 Наблюдатель — гигантское парящее око с щупальцами
+                for (let t = -2; t <= 2; t++) {
+                    ctx.beginPath();
+                    ctx.moveTo(-10, t * 4);
+                    ctx.lineTo(-24 - Math.sin(ent.stepPhase + t) * 4, t * 6);
+                    ctx.stroke();
+                }
+                ctx.fillStyle = '#FFFFFF';
+                ctx.beginPath();
+                ctx.arc(0, 0, 14, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                ctx.fillStyle = '#000000';
+                ctx.beginPath();
+                ctx.arc(5, 0, 5.5, 0, Math.PI * 2);
+                ctx.fill();
+            } else if (ent.id === 1 || ent.id === 14 || ent.id === 18) {
+                // #1 Палач / #14 Страж / #18 Мясник (с огромным тесаком/мачете и в хоккейной маске)
+                ctx.beginPath();
+                ctx.roundRect(-12, -15, 22, 30, 6);
+                ctx.fill();
+                ctx.stroke();
+
+                // Огромный клинок в правой руке
+                ctx.fillStyle = '#FFFFFF';
+                ctx.beginPath();
+                ctx.moveTo(6, 11);
+                ctx.lineTo(28 + swing, 14);
+                ctx.lineTo(22 + swing, 20);
+                ctx.lineTo(4, 15);
+                ctx.closePath();
+                ctx.fill();
+
+                // Белая хоккейная маска с чёрными глазницами
+                ctx.fillStyle = '#FFFFFF';
+                ctx.beginPath();
+                ctx.ellipse(2, 0, 10, 8.5, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(4, -5, 3.5, 3);
+                ctx.fillRect(4, 2, 3.5, 3);
+            } else {
+                // Вытянутые когтистые гуманоидные сущности и аномалии
+                ctx.beginPath();
+                ctx.moveTo(4, -12);
+                ctx.lineTo(20 + swing, -16);
+                ctx.moveTo(4, 12);
+                ctx.lineTo(20 - swing, 16);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.arc(0, 0, 14, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                // Белый череп/маска с пустыми глазницами
+                ctx.fillStyle = '#FFFFFF';
+                ctx.beginPath();
+                ctx.arc(2, 0, 9, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(4, -5, 3, 3);
+                ctx.fillRect(4, 2, 3, 3);
+            }
+            ctx.restore();
+
+            // Метка сущности и таймер её памяти (3-5 секунд)
+            ctx.save();
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 10px "JetBrains Mono", monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText(`#${ent.id} ${ent.name}`, ent.x, ent.y - 25);
+            if (ent.state === 'hunt' && ent.memoryTimer > 0) {
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(ent.x - 21, ent.y - 21, 42, 5);
+                ctx.strokeStyle = '#FFFFFF';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(ent.x - 21, ent.y - 21, 42, 5);
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(ent.x - 20, ent.y - 20, Math.max(0, (ent.memoryTimer / 4.0) * 40), 3);
+            }
+            ctx.restore();
+        }
+
+        function drawTacticalCompassRing(ctx, p) {
+            const targets = horrorState.seals
+                .filter(s => !s.unlocked)
+                .map(s => ({ x: (s.c + 0.5) * CELL_SIZE, y: (s.r + 0.5) * CELL_SIZE, isExit: false }));
+
+            if (horrorState.exitDoor.open) {
+                targets.push({
+                    x: (horrorState.exitDoor.c + 0.5) * CELL_SIZE,
+                    y: (horrorState.exitDoor.r + 0.5) * CELL_SIZE,
+                    isExit: true
+                });
+            }
+
+            for (const t of targets) {
+                const ang = Math.atan2(t.y - p.y, t.x - p.x);
+                const rx = p.x + Math.cos(ang) * 44;
+                const ry = p.y + Math.sin(ang) * 44;
+                ctx.save();
+                ctx.translate(rx, ry);
+                ctx.rotate(ang);
+                ctx.fillStyle = '#FFFFFF';
+                ctx.beginPath();
+                ctx.moveTo(6, 0);
+                ctx.lineTo(-4, -4);
+                ctx.lineTo(-4, 4);
+                ctx.closePath();
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function renderHorrorEKG(now) {
+            const c = document.getElementById('horror-ekg-canvas');
+            if (!c) return;
+            const ctx = c.getContext('2d');
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, c.width, c.height);
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            const anyHunting = horrorState.entities.some(e => e.state === 'hunt');
+            const spd = anyHunting ? 0.16 : 0.08;
+            for (let x = 0; x < c.width; x++) {
+                const phase = (x + now * spd) % 28;
+                const y = phase > 11 && phase < 16 ? (phase < 13.5 ? 2 : 20) : 11;
+                if (x === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+        }
+
+        // Анимированная двухфазная катсцена смерти (1: динамический скример-бросок на холсте, 2: живое досье с тактикой)
+        function triggerHorrorDeathCutscene(entity) {
+            horrorGameRunning = false;
+            horrorState.deaths++;
+            playHorrorSfx('scream');
+
+            const screen = document.getElementById('horror-screamer-screen');
+            const flashPhase = document.getElementById('horror-cutscene-phase-flash');
+            const dossierPhase = document.getElementById('horror-cutscene-phase-dossier');
+            const flashName = document.getElementById('horror-cutscene-flash-name');
+
+            if (flashName) flashName.textContent = `СУЩНОСТЬ #${entity.id}: ${entity.name}`;
+            screen?.classList.remove('hidden');
+            flashPhase?.classList.remove('hidden');
+            dossierPhase?.classList.add('hidden');
+
+            const startJump = performance.now();
+            const jumpCanvas = document.getElementById('horror-jumpscare-canvas');
+
+            const animateJumpscare = (now) => {
+                const elapsed = now - startJump;
+                if (jumpCanvas) {
+                    drawAnimatedEntityCloseUp(jumpCanvas, entity, elapsed, true);
+                }
+                if (elapsed < 1150) {
+                    horrorCutsceneAnimFrame = requestAnimationFrame(animateJumpscare);
+                } else {
+                    flashPhase?.classList.add('hidden');
+                    dossierPhase?.classList.remove('hidden');
+
+                    document.getElementById('horror-cutscene-entity-tag').textContent = entity.tag;
+                    document.getElementById('horror-cutscene-entity-title').textContent = `СУЩНОСТЬ #${entity.id}: ${entity.name}`;
+                    document.getElementById('horror-death-reason').textContent = `ПРИЧИНА ГИБЕЛИ: УБИТ В СЕКТОРЕ ${horrorState.sector} СУЩНОСТЬЮ «${entity.name}»`;
+                    document.getElementById('horror-cutscene-mechanic').textContent = entity.mechanic;
+                    document.getElementById('horror-cutscene-hint').textContent = entity.hint;
+
+                    const portraitCanvas = document.getElementById('horror-cutscene-portrait-canvas');
+                    const animateDossierPortrait = (tNow) => {
+                        if (!isHorrorOverlayActive || horrorGameRunning) return;
+                        if (portraitCanvas) {
+                            drawAnimatedEntityCloseUp(portraitCanvas, entity, tNow, false);
+                        }
+                        horrorCutsceneAnimFrame = requestAnimationFrame(animateDossierPortrait);
+                    };
+                    horrorCutsceneAnimFrame = requestAnimationFrame(animateDossierPortrait);
+                }
+            };
+            if (horrorCutsceneAnimFrame) cancelAnimationFrame(horrorCutsceneAnimFrame);
+            horrorCutsceneAnimFrame = requestAnimationFrame(animateJumpscare);
+        }
+
+        // Высокодетализированный чёрно-белый портрет сущности для скримера и досье
+        function drawAnimatedEntityCloseUp(canvas, entity, timeMs, isViolentJumpscare) {
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+
+            const invertStrobe = isViolentJumpscare && Math.floor(timeMs / 65) % 2 === 1;
+            ctx.fillStyle = invertStrobe ? '#FFFFFF' : '#000000';
+            ctx.fillRect(0, 0, w, h);
+
+            const fg = invertStrobe ? '#000000' : '#FFFFFF';
+            const bg = invertStrobe ? '#FFFFFF' : '#000000';
+
+            ctx.save();
+            const shake = isViolentJumpscare ? 18 : 2.5;
+            const zoom = isViolentJumpscare ? Math.min(1.48, 0.85 + (timeMs / 900) * 0.65) : 1.0 + Math.sin(timeMs * 0.004) * 0.03;
+            ctx.translate(w / 2 + (Math.random() - 0.5) * shake, h / 2 + (Math.random() - 0.5) * shake);
+            ctx.scale(zoom, zoom);
+
+            // Радиальные лучи ужаса на фоне
+            ctx.strokeStyle = fg;
+            ctx.lineWidth = 1.2;
+            for (let i = 0; i < 24; i++) {
+                const a = (i / 24) * Math.PI * 2 + timeMs * 0.001;
+                ctx.beginPath();
+                ctx.moveTo(Math.cos(a) * 65, Math.sin(a) * 65);
+                ctx.lineTo(Math.cos(a) * 190, Math.sin(a) * 190);
+                ctx.stroke();
+            }
+
+            // Голова / Маска сущности крупным планом
+            ctx.fillStyle = fg;
+            ctx.strokeStyle = bg;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.ellipse(0, -4, 64, 82, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // Глубокие чёрные глазницы или уникальные черты
+            ctx.fillStyle = bg;
+            if (entity.id === 2) {
+                // Слепой Слухач — зашитые глаза и огромная зубастая пасть
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = bg;
+                ctx.beginPath();
+                ctx.moveTo(-38, -22);
+                ctx.lineTo(-10, -18);
+                ctx.moveTo(10, -18);
+                ctx.lineTo(38, -22);
+                ctx.stroke();
+            } else if (entity.id === 17) {
+                // Наблюдатель — одно гигантское циклопическое око
+                ctx.beginPath();
+                ctx.arc(0, -12, 30, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = fg;
+                ctx.beginPath();
+                ctx.arc(Math.sin(timeMs * 0.01) * 6, -12, 10, 0, Math.PI * 2);
+                ctx.fill();
+            } else {
+                // Жуткие провалы глазниц с белыми зрачками
+                ctx.beginPath();
+                ctx.ellipse(-24, -18, 16, 13, -0.2, 0, Math.PI * 2);
+                ctx.ellipse(24, -18, 16, 13, 0.2, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = fg;
+                ctx.beginPath();
+                ctx.arc(-24 + (Math.random() - 0.5) * 3, -18, 3.5, 0, Math.PI * 2);
+                ctx.arc(24 + (Math.random() - 0.5) * 3, -18, 3.5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Трещины и оскал / отверстия маски
+            ctx.fillStyle = bg;
+            ctx.beginPath();
+            const jawOpen = 12 + Math.abs(Math.sin(timeMs * 0.018)) * 18;
+            ctx.ellipse(0, 36, 28, jawOpen, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Острые зубы / решётка в пасти
+            ctx.fillStyle = fg;
+            for (let x = -20; x <= 20; x += 8) {
+                ctx.beginPath();
+                ctx.moveTo(x - 3, 36 - jawOpen * 0.6);
+                ctx.lineTo(x, 36);
+                ctx.lineTo(x + 3, 36 - jawOpen * 0.6);
+                ctx.fill();
+            }
+
+            ctx.restore();
+        }
+
+        function openHorrorBestiaryModal() {
+            const modal = document.getElementById('horror-bestiary-modal');
+            const grid = document.getElementById('horror-bestiary-grid');
+            if (!modal || !grid) return;
+
+            grid.innerHTML = HORROR_ENTITIES_CATALOG.map(e => `
+                <div class="border-2 border-white bg-black p-3.5 text-left">
+                    <div class="flex items-center justify-between border-b border-white pb-1.5 mb-2">
+                        <strong class="text-sm font-black uppercase text-white">#${e.id} ${e.name}</strong>
+                        <span class="bg-white text-black px-2 py-0.5 text-[10px] font-black uppercase">${e.tag}</span>
+                    </div>
+                    <p class="text-xs text-white uppercase mb-2">${e.mechanic}</p>
+                    <div class="bg-white text-black p-2 text-[11px] font-black uppercase">
+                        КАК КОНТРИТЬ: ${e.hint}
+                    </div>
+                </div>
+            `).join('');
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeHorrorBestiaryModal() {
+            document.getElementById('horror-bestiary-modal')?.classList.add('hidden');
+        }
+
+        function triggerHorrorVictory() {
+            horrorGameRunning = false;
+            stopHorrorYoutubeTrack();
+            stopHorrorAmbience();
+
+            document.getElementById('horror-play-screen')?.classList.add('hidden');
+            const vic = document.getElementById('horror-victory-screen');
+            vic?.classList.remove('hidden');
+            vic?.classList.add('flex');
+
+            const totalSec = Math.floor((performance.now() - horrorState.startTime) / 1000);
+            document.getElementById('horror-final-time').textContent = formatSec(totalSec);
+            document.getElementById('horror-final-deaths').textContent = String(horrorState.deaths);
+            generateSurvivorProofCode();
+        }
+
+        function generateSurvivorProofCode() {
+            const nick = (document.getElementById('horror-winner-nickname')?.value || '').trim() || 'БЕЗ_НИКА';
+            document.getElementById('horror-cert-nick-display').textContent = nick.toUpperCase();
+            let hash = 2166136261;
+            for (let i = 0; i < nick.length; i++) {
+                hash ^= nick.charCodeAt(i);
+                hash = Math.imul(hash, 16777619);
+            }
+            const hex = (hash >>> 0).toString(16).toUpperCase().padStart(8, '0');
+            document.getElementById('horror-cert-hash').textContent = `DF-X10-${hex}`;
+        }
+
+        function initHorrorInputListeners() {
+            window.addEventListener('keydown', e => {
+                horrorState.keys[e.code] = true;
+                if (isHorrorOverlayActive && e.code === 'Space') {
+                    e.preventDefault();
+                }
+            });
+            window.addEventListener('keyup', e => {
+                horrorState.keys[e.code] = false;
+            });
+
+            const canvas = document.getElementById('horror-maze-canvas');
+            if (!canvas) return;
+            canvas.addEventListener('mousemove', e => {
+                const rect = canvas.getBoundingClientRect();
+                horrorState.mouse.x = ((e.clientX - rect.left) / rect.width) * canvas.width;
+                horrorState.mouse.y = ((e.clientY - rect.top) / rect.height) * canvas.height;
+            });
+            canvas.addEventListener('mousedown', e => {
+                if (e.button === 2) horrorState.rightMouseHeld = true;
+            });
+            window.addEventListener('mouseup', e => {
+                if (e.button === 2) horrorState.rightMouseHeld = false;
+            });
+            canvas.addEventListener('contextmenu', e => e.preventDefault());
+        }
+
+        // ============================================================================
+        // 9. ИНИЦИАЛИЗАЦИЯ ВСЕХ СИСТЕМ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
+        // ============================================================================
         window.addEventListener('DOMContentLoaded', () => {
             runTitleScramble();
             updateNowPlayingMetaUI(DISFACTORY_PLAYLIST[0]);
@@ -3305,12 +5295,13 @@
             initAudioVisualizerLoop();
             initBackgroundParticles();
             initInteractiveCardsAndScroll();
+            initHorrorInputListeners();
 
             // Пробуем сразу запустить фоновый трек; если браузер ждёт первого клика — включим при первом касании
             loadAndPlayTrackObject(DISFACTORY_PLAYLIST[0], true);
             const unlockAudioOnFirstInteraction = () => {
                 ensureAudioContext();
-                if (!isMusicPlaying) {
+                if (!isMusicPlaying && !isHorrorOverlayActive) {
                     loadAndPlayTrackObject(DISFACTORY_PLAYLIST[currentTrackIndex] || DISFACTORY_PLAYLIST[0], true);
                 }
                 document.removeEventListener('click', unlockAudioOnFirstInteraction);
